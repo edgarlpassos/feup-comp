@@ -6,3 +6,6 @@ Project done cooperatively with [Maria Joao Mira Paulo](https://github.com/Maria
 # Resources
 
 * [Viz](https://github.com/mdaines/viz.js/)
+* [Antlr Tutorial] (https://tomassetti.me/antlr-mega-tutorial/)
+* [Antlr Getting Started] (https://github.com/antlr/antlr4/blob/master/doc/getting-started.md#unix)
+
