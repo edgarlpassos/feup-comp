@@ -2,8 +2,8 @@
 grammar DotFile;
 
 r  : GRAPH NAME OPEN_BRACKET content CLOSE_BRACKET;
-content: START stateTransition SEMICOLON | ;
-stateTransition: TRANSITION NAME stateTransition SEMICOLON | TRANSITION NAME |   ;
+content: START stateTransition | ;
+stateTransition: TRANSITION NAME stateTransition SEMICOLON | TRANSITION NAME stateTransition | SEMICOLON  ;
 WS : [ \n\t\r]+ -> skip;
 
 GRAPH: 'graph';
