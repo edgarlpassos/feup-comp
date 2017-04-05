@@ -1,60 +1,70 @@
-// Generated from grammar/DotFile.g4 by ANTLR 4.7
+// Generated from /Users/mariajoaomirapaulo/Desktop/Joao/Feup_3Ano/feup-comp/src/grammar/DotFile.g4 by ANTLR 4.6
 package grammar;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
  * This interface defines a complete listener for a parse tree produced by
- * {@link DotFileParser}.
+ * {@link DotFile}.
  */
 public interface DotFileListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link DotFileParser#r}.
+	 * Enter a parse tree produced by {@link DotFile#r}.
 	 * @param ctx the parse tree
 	 */
-	void enterR(DotFileParser.RContext ctx);
+	void enterR(DotFile.RContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DotFileParser#r}.
+	 * Exit a parse tree produced by {@link DotFile#r}.
 	 * @param ctx the parse tree
 	 */
-	void exitR(DotFileParser.RContext ctx);
+	void exitR(DotFile.RContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DotFileParser#instruction}.
+	 * Enter a parse tree produced by {@link DotFile#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void enterInstruction(DotFileParser.InstructionContext ctx);
+	void enterInstruction(DotFile.InstructionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DotFileParser#instruction}.
+	 * Exit a parse tree produced by {@link DotFile#instruction}.
 	 * @param ctx the parse tree
 	 */
-	void exitInstruction(DotFileParser.InstructionContext ctx);
+	void exitInstruction(DotFile.InstructionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DotFileParser#stateTransition}.
+	 * Enter a parse tree produced by {@link DotFile#stateTransition}.
 	 * @param ctx the parse tree
 	 */
-	void enterStateTransition(DotFileParser.StateTransitionContext ctx);
+	void enterStateTransition(DotFile.StateTransitionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DotFileParser#stateTransition}.
+	 * Exit a parse tree produced by {@link DotFile#stateTransition}.
 	 * @param ctx the parse tree
 	 */
-	void exitStateTransition(DotFileParser.StateTransitionContext ctx);
+	void exitStateTransition(DotFile.StateTransitionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DotFileParser#labeling}.
+	 * Enter a parse tree produced by {@link DotFile#labeling}.
 	 * @param ctx the parse tree
 	 */
-	void enterLabeling(DotFileParser.LabelingContext ctx);
+	void enterLabeling(DotFile.LabelingContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DotFileParser#labeling}.
+	 * Exit a parse tree produced by {@link DotFile#labeling}.
 	 * @param ctx the parse tree
 	 */
-	void exitLabeling(DotFileParser.LabelingContext ctx);
+	void exitLabeling(DotFile.LabelingContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link DotFileParser#shaping}.
+	 * Enter a parse tree produced by {@link DotFile#shaping}.
 	 * @param ctx the parse tree
 	 */
-	void enterShaping(DotFileParser.ShapingContext ctx);
+	void enterShaping(DotFile.ShapingContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link DotFileParser#shaping}.
+	 * Exit a parse tree produced by {@link DotFile#shaping}.
 	 * @param ctx the parse tree
 	 */
-	void exitShaping(DotFileParser.ShapingContext ctx);
+	void exitShaping(DotFile.ShapingContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link DotFile#startpoint}.
+	 * @param ctx the parse tree
+	 */
+	void enterStartpoint(DotFile.StartpointContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link DotFile#startpoint}.
+	 * @param ctx the parse tree
+	 */
+	void exitStartpoint(DotFile.StartpointContext ctx);
 }
