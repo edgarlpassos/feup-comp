@@ -1,4 +1,4 @@
-package main;
+package main;;
 import grammar.*;
 import org.antlr.v4.runtime.*;
 
@@ -9,10 +9,10 @@ import java.io.IOException;
  */
 public class Main {
     public static void main(String[] args){
-        try {
+       try {
             DotFileLexer lexer = new DotFileLexer(new ANTLRFileStream(args[0]));
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-            DotFileParser dotFileParser = new DotFileParser(commonTokenStream);
+            DotFile dotFile = new DotFile(commonTokenStream);
 
         } catch (IOException e) {
             e.printStackTrace();
