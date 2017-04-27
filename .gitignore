@@ -35,6 +35,7 @@
 .idea_modules/
 .idea/*
 src/feup-comp.iml
+feup-comp.iml
 
 # JIRA plugin
 atlassian-ide-plugin.xml
