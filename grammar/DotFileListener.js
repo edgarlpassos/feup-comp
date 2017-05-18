@@ -1,8 +1,8 @@
-// Generated from DotFile.g4 by ANTLR 4.5.1
+// Generated from DotFile.g4 by ANTLR 4.5.2
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 
-// This class defines a complete listener for a parse tree produced by DotFile.
+// This class defines a complete listener for a parse tree produced by DotFileParser.
 function DotFileListener() {
 	antlr4.tree.ParseTreeListener.call(this);
 	return this;
@@ -11,56 +11,56 @@ function DotFileListener() {
 DotFileListener.prototype = Object.create(antlr4.tree.ParseTreeListener.prototype);
 DotFileListener.prototype.constructor = DotFileListener;
 
-// Enter a parse tree produced by DotFile#r.
-DotFileListener.prototype.enterR = function(ctx) {
+// Enter a parse tree produced by DotFileParser#entry.
+DotFileListener.prototype.enterEntry = function(ctx) {
 };
 
-// Exit a parse tree produced by DotFile#r.
-DotFileListener.prototype.exitR = function(ctx) {
+// Exit a parse tree produced by DotFileParser#entry.
+DotFileListener.prototype.exitEntry = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DotFile#instruction.
+// Enter a parse tree produced by DotFileParser#instruction.
 DotFileListener.prototype.enterInstruction = function(ctx) {
 };
 
-// Exit a parse tree produced by DotFile#instruction.
+// Exit a parse tree produced by DotFileParser#instruction.
 DotFileListener.prototype.exitInstruction = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DotFile#stateTransition.
+// Enter a parse tree produced by DotFileParser#stateTransition.
 DotFileListener.prototype.enterStateTransition = function(ctx) {
 };
 
-// Exit a parse tree produced by DotFile#stateTransition.
+// Exit a parse tree produced by DotFileParser#stateTransition.
 DotFileListener.prototype.exitStateTransition = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DotFile#labeling.
+// Enter a parse tree produced by DotFileParser#labeling.
 DotFileListener.prototype.enterLabeling = function(ctx) {
 };
 
-// Exit a parse tree produced by DotFile#labeling.
+// Exit a parse tree produced by DotFileParser#labeling.
 DotFileListener.prototype.exitLabeling = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DotFile#shaping.
+// Enter a parse tree produced by DotFileParser#shaping.
 DotFileListener.prototype.enterShaping = function(ctx) {
 };
 
-// Exit a parse tree produced by DotFile#shaping.
+// Exit a parse tree produced by DotFileParser#shaping.
 DotFileListener.prototype.exitShaping = function(ctx) {
 };
 
 
-// Enter a parse tree produced by DotFile#startpoint.
+// Enter a parse tree produced by DotFileParser#startpoint.
 DotFileListener.prototype.enterStartpoint = function(ctx) {
 };
 
-// Exit a parse tree produced by DotFile#startpoint.
+// Exit a parse tree produced by DotFileParser#startpoint.
 DotFileListener.prototype.exitStartpoint = function(ctx) {
 };
 

@@ -63,7 +63,7 @@ var symbolicNames = [ null, "WS", "GRAPH", "LABEL", "STYLE", "SHAPE", "DOUBLE_CI
 var ruleNames =  [ "entry", "instruction", "stateTransition", "labeling", 
                    "shaping", "startpoint" ];
 
-function DotFile (input) {
+function DotFileParser (input) {
 	antlr4.Parser.call(this, input);
     this._interp = new antlr4.atn.ParserATNSimulator(this, atn, decisionsToDFA, sharedContextCache);
     this.ruleNames = ruleNames;
@@ -72,39 +72,39 @@ function DotFile (input) {
     return this;
 }
 
-DotFile.prototype = Object.create(antlr4.Parser.prototype);
-DotFile.prototype.constructor = DotFile;
+DotFileParser.prototype = Object.create(antlr4.Parser.prototype);
+DotFileParser.prototype.constructor = DotFileParser;
 
-Object.defineProperty(DotFile.prototype, "atn", {
+Object.defineProperty(DotFileParser.prototype, "atn", {
 	get : function() {
 		return atn;
 	}
 });
 
-DotFile.EOF = antlr4.Token.EOF;
-DotFile.WS = 1;
-DotFile.GRAPH = 2;
-DotFile.LABEL = 3;
-DotFile.STYLE = 4;
-DotFile.SHAPE = 5;
-DotFile.DOUBLE_CIRCLE = 6;
-DotFile.TRANSITION = 7;
-DotFile.QUOTATION = 8;
-DotFile.EQUAL = 9;
-DotFile.SEMICOLON = 10;
-DotFile.OPEN_BRACKET = 11;
-DotFile.CLOSE_BRACKET = 12;
-DotFile.OPEN_SQUARE = 13;
-DotFile.CLOSE_SQUARE = 14;
-DotFile.NAME = 15;
-DotFile.DIGIT = 16;
+DotFileParser.EOF = antlr4.Token.EOF;
+DotFileParser.WS = 1;
+DotFileParser.GRAPH = 2;
+DotFileParser.LABEL = 3;
+DotFileParser.STYLE = 4;
+DotFileParser.SHAPE = 5;
+DotFileParser.DOUBLE_CIRCLE = 6;
+DotFileParser.TRANSITION = 7;
+DotFileParser.QUOTATION = 8;
+DotFileParser.EQUAL = 9;
+DotFileParser.SEMICOLON = 10;
+DotFileParser.OPEN_BRACKET = 11;
+DotFileParser.CLOSE_BRACKET = 12;
+DotFileParser.OPEN_SQUARE = 13;
+DotFileParser.CLOSE_SQUARE = 14;
+DotFileParser.NAME = 15;
+DotFileParser.DIGIT = 16;
 
-DotFile.RULE_entry = 0;
-DotFile.RULE_instruction = 1;
-DotFile.RULE_stateTransition = 2;
-DotFile.RULE_labeling = 3;
-DotFile.RULE_shaping = 4;
-DotFile.RULE_startpoint = 5;
+DotFileParser.RULE_entry = 0;
+DotFileParser.RULE_instruction = 1;
+DotFileParser.RULE_stateTransition = 2;
+DotFileParser.RULE_labeling = 3;
+DotFileParser.RULE_shaping = 4;
+DotFileParser.RULE_startpoint = 5;
 
 function EntryContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -115,7 +115,7 @@ function EntryContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DotFile.RULE_entry;
+    this.ruleIndex = DotFileParser.RULE_entry;
     return this;
 }
 
@@ -123,15 +123,15 @@ EntryContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 EntryContext.prototype.constructor = EntryContext;
 
 EntryContext.prototype.GRAPH = function() {
-    return this.getToken(DotFile.GRAPH, 0);
+    return this.getToken(DotFileParser.GRAPH, 0);
 };
 
 EntryContext.prototype.NAME = function() {
-    return this.getToken(DotFile.NAME, 0);
+    return this.getToken(DotFileParser.NAME, 0);
 };
 
 EntryContext.prototype.OPEN_BRACKET = function() {
-    return this.getToken(DotFile.OPEN_BRACKET, 0);
+    return this.getToken(DotFileParser.OPEN_BRACKET, 0);
 };
 
 EntryContext.prototype.instruction = function() {
@@ -139,7 +139,7 @@ EntryContext.prototype.instruction = function() {
 };
 
 EntryContext.prototype.CLOSE_BRACKET = function() {
-    return this.getToken(DotFile.CLOSE_BRACKET, 0);
+    return this.getToken(DotFileParser.CLOSE_BRACKET, 0);
 };
 
 EntryContext.prototype.enterRule = function(listener) {
@@ -157,24 +157,24 @@ EntryContext.prototype.exitRule = function(listener) {
 
 
 
-DotFile.EntryContext = EntryContext;
+DotFileParser.EntryContext = EntryContext;
 
-DotFile.prototype.entry = function() {
+DotFileParser.prototype.entry = function() {
 
     var localctx = new EntryContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 0, DotFile.RULE_entry);
+    this.enterRule(localctx, 0, DotFileParser.RULE_entry);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 12;
-        this.match(DotFile.GRAPH);
+        this.match(DotFileParser.GRAPH);
         this.state = 13;
-        this.match(DotFile.NAME);
+        this.match(DotFileParser.NAME);
         this.state = 14;
-        this.match(DotFile.OPEN_BRACKET);
+        this.match(DotFileParser.OPEN_BRACKET);
         this.state = 15;
         this.instruction();
         this.state = 16;
-        this.match(DotFile.CLOSE_BRACKET);
+        this.match(DotFileParser.CLOSE_BRACKET);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -198,7 +198,7 @@ function InstructionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DotFile.RULE_instruction;
+    this.ruleIndex = DotFileParser.RULE_instruction;
     return this;
 }
 
@@ -206,7 +206,7 @@ InstructionContext.prototype = Object.create(antlr4.ParserRuleContext.prototype)
 InstructionContext.prototype.constructor = InstructionContext;
 
 InstructionContext.prototype.NAME = function() {
-    return this.getToken(DotFile.NAME, 0);
+    return this.getToken(DotFileParser.NAME, 0);
 };
 
 InstructionContext.prototype.stateTransition = function() {
@@ -222,7 +222,7 @@ InstructionContext.prototype.instruction = function() {
 };
 
 InstructionContext.prototype.SEMICOLON = function() {
-    return this.getToken(DotFile.SEMICOLON, 0);
+    return this.getToken(DotFileParser.SEMICOLON, 0);
 };
 
 InstructionContext.prototype.enterRule = function(listener) {
@@ -240,19 +240,19 @@ InstructionContext.prototype.exitRule = function(listener) {
 
 
 
-DotFile.InstructionContext = InstructionContext;
+DotFileParser.InstructionContext = InstructionContext;
 
-DotFile.prototype.instruction = function() {
+DotFileParser.prototype.instruction = function() {
 
     var localctx = new InstructionContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 2, DotFile.RULE_instruction);
+    this.enterRule(localctx, 2, DotFileParser.RULE_instruction);
     try {
         this.state = 26;
         switch(this._input.LA(1)) {
-        case DotFile.NAME:
+        case DotFileParser.NAME:
             this.enterOuterAlt(localctx, 1);
             this.state = 18;
-            this.match(DotFile.NAME);
+            this.match(DotFileParser.NAME);
             this.state = 19;
             this.stateTransition();
             this.state = 20;
@@ -260,14 +260,14 @@ DotFile.prototype.instruction = function() {
             this.state = 21;
             this.instruction();
             break;
-        case DotFile.SEMICOLON:
+        case DotFileParser.SEMICOLON:
             this.enterOuterAlt(localctx, 2);
             this.state = 23;
-            this.match(DotFile.SEMICOLON);
+            this.match(DotFileParser.SEMICOLON);
             this.state = 24;
             this.instruction();
             break;
-        case DotFile.CLOSE_BRACKET:
+        case DotFileParser.CLOSE_BRACKET:
             this.enterOuterAlt(localctx, 3);
 
             break;
@@ -297,7 +297,7 @@ function StateTransitionContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DotFile.RULE_stateTransition;
+    this.ruleIndex = DotFileParser.RULE_stateTransition;
     return this;
 }
 
@@ -305,11 +305,11 @@ StateTransitionContext.prototype = Object.create(antlr4.ParserRuleContext.protot
 StateTransitionContext.prototype.constructor = StateTransitionContext;
 
 StateTransitionContext.prototype.TRANSITION = function() {
-    return this.getToken(DotFile.TRANSITION, 0);
+    return this.getToken(DotFileParser.TRANSITION, 0);
 };
 
 StateTransitionContext.prototype.NAME = function() {
-    return this.getToken(DotFile.NAME, 0);
+    return this.getToken(DotFileParser.NAME, 0);
 };
 
 StateTransitionContext.prototype.stateTransition = function() {
@@ -321,7 +321,7 @@ StateTransitionContext.prototype.labeling = function() {
 };
 
 StateTransitionContext.prototype.SEMICOLON = function() {
-    return this.getToken(DotFile.SEMICOLON, 0);
+    return this.getToken(DotFileParser.SEMICOLON, 0);
 };
 
 StateTransitionContext.prototype.enterRule = function(listener) {
@@ -339,12 +339,12 @@ StateTransitionContext.prototype.exitRule = function(listener) {
 
 
 
-DotFile.StateTransitionContext = StateTransitionContext;
+DotFileParser.StateTransitionContext = StateTransitionContext;
 
-DotFile.prototype.stateTransition = function() {
+DotFileParser.prototype.stateTransition = function() {
 
     var localctx = new StateTransitionContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 4, DotFile.RULE_stateTransition);
+    this.enterRule(localctx, 4, DotFileParser.RULE_stateTransition);
     try {
         this.state = 38;
         this._errHandler.sync(this);
@@ -353,23 +353,23 @@ DotFile.prototype.stateTransition = function() {
         case 1:
             this.enterOuterAlt(localctx, 1);
             this.state = 28;
-            this.match(DotFile.TRANSITION);
+            this.match(DotFileParser.TRANSITION);
             this.state = 29;
-            this.match(DotFile.NAME);
+            this.match(DotFileParser.NAME);
             this.state = 30;
             this.stateTransition();
             this.state = 31;
             this.labeling();
             this.state = 32;
-            this.match(DotFile.SEMICOLON);
+            this.match(DotFileParser.SEMICOLON);
             break;
 
         case 2:
             this.enterOuterAlt(localctx, 2);
             this.state = 34;
-            this.match(DotFile.TRANSITION);
+            this.match(DotFileParser.TRANSITION);
             this.state = 35;
-            this.match(DotFile.NAME);
+            this.match(DotFileParser.NAME);
             this.state = 36;
             this.labeling();
             break;
@@ -403,7 +403,7 @@ function LabelingContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DotFile.RULE_labeling;
+    this.ruleIndex = DotFileParser.RULE_labeling;
     return this;
 }
 
@@ -411,15 +411,15 @@ LabelingContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 LabelingContext.prototype.constructor = LabelingContext;
 
 LabelingContext.prototype.OPEN_SQUARE = function() {
-    return this.getToken(DotFile.OPEN_SQUARE, 0);
+    return this.getToken(DotFileParser.OPEN_SQUARE, 0);
 };
 
 LabelingContext.prototype.LABEL = function() {
-    return this.getToken(DotFile.LABEL, 0);
+    return this.getToken(DotFileParser.LABEL, 0);
 };
 
 LabelingContext.prototype.EQUAL = function() {
-    return this.getToken(DotFile.EQUAL, 0);
+    return this.getToken(DotFileParser.EQUAL, 0);
 };
 
 LabelingContext.prototype.QUOTATION = function(i) {
@@ -427,19 +427,19 @@ LabelingContext.prototype.QUOTATION = function(i) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(DotFile.QUOTATION);
+        return this.getTokens(DotFileParser.QUOTATION);
     } else {
-        return this.getToken(DotFile.QUOTATION, i);
+        return this.getToken(DotFileParser.QUOTATION, i);
     }
 };
 
 
 LabelingContext.prototype.NAME = function() {
-    return this.getToken(DotFile.NAME, 0);
+    return this.getToken(DotFileParser.NAME, 0);
 };
 
 LabelingContext.prototype.CLOSE_SQUARE = function() {
-    return this.getToken(DotFile.CLOSE_SQUARE, 0);
+    return this.getToken(DotFileParser.CLOSE_SQUARE, 0);
 };
 
 LabelingContext.prototype.enterRule = function(listener) {
@@ -457,12 +457,12 @@ LabelingContext.prototype.exitRule = function(listener) {
 
 
 
-DotFile.LabelingContext = LabelingContext;
+DotFileParser.LabelingContext = LabelingContext;
 
-DotFile.prototype.labeling = function() {
+DotFileParser.prototype.labeling = function() {
 
     var localctx = new LabelingContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 6, DotFile.RULE_labeling);
+    this.enterRule(localctx, 6, DotFileParser.RULE_labeling);
     try {
         this.state = 48;
         this._errHandler.sync(this);
@@ -471,19 +471,19 @@ DotFile.prototype.labeling = function() {
         case 1:
             this.enterOuterAlt(localctx, 1);
             this.state = 40;
-            this.match(DotFile.OPEN_SQUARE);
+            this.match(DotFileParser.OPEN_SQUARE);
             this.state = 41;
-            this.match(DotFile.LABEL);
+            this.match(DotFileParser.LABEL);
             this.state = 42;
-            this.match(DotFile.EQUAL);
+            this.match(DotFileParser.EQUAL);
             this.state = 43;
-            this.match(DotFile.QUOTATION);
+            this.match(DotFileParser.QUOTATION);
             this.state = 44;
-            this.match(DotFile.NAME);
+            this.match(DotFileParser.NAME);
             this.state = 45;
-            this.match(DotFile.QUOTATION);
+            this.match(DotFileParser.QUOTATION);
             this.state = 46;
-            this.match(DotFile.CLOSE_SQUARE);
+            this.match(DotFileParser.CLOSE_SQUARE);
             break;
 
         case 2:
@@ -515,7 +515,7 @@ function ShapingContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DotFile.RULE_shaping;
+    this.ruleIndex = DotFileParser.RULE_shaping;
     return this;
 }
 
@@ -523,15 +523,15 @@ ShapingContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 ShapingContext.prototype.constructor = ShapingContext;
 
 ShapingContext.prototype.OPEN_SQUARE = function() {
-    return this.getToken(DotFile.OPEN_SQUARE, 0);
+    return this.getToken(DotFileParser.OPEN_SQUARE, 0);
 };
 
 ShapingContext.prototype.SHAPE = function() {
-    return this.getToken(DotFile.SHAPE, 0);
+    return this.getToken(DotFileParser.SHAPE, 0);
 };
 
 ShapingContext.prototype.EQUAL = function() {
-    return this.getToken(DotFile.EQUAL, 0);
+    return this.getToken(DotFileParser.EQUAL, 0);
 };
 
 ShapingContext.prototype.QUOTATION = function(i) {
@@ -539,19 +539,19 @@ ShapingContext.prototype.QUOTATION = function(i) {
 		i = null;
 	}
     if(i===null) {
-        return this.getTokens(DotFile.QUOTATION);
+        return this.getTokens(DotFileParser.QUOTATION);
     } else {
-        return this.getToken(DotFile.QUOTATION, i);
+        return this.getToken(DotFileParser.QUOTATION, i);
     }
 };
 
 
 ShapingContext.prototype.DOUBLE_CIRCLE = function() {
-    return this.getToken(DotFile.DOUBLE_CIRCLE, 0);
+    return this.getToken(DotFileParser.DOUBLE_CIRCLE, 0);
 };
 
 ShapingContext.prototype.CLOSE_SQUARE = function() {
-    return this.getToken(DotFile.CLOSE_SQUARE, 0);
+    return this.getToken(DotFileParser.CLOSE_SQUARE, 0);
 };
 
 ShapingContext.prototype.enterRule = function(listener) {
@@ -569,35 +569,35 @@ ShapingContext.prototype.exitRule = function(listener) {
 
 
 
-DotFile.ShapingContext = ShapingContext;
+DotFileParser.ShapingContext = ShapingContext;
 
-DotFile.prototype.shaping = function() {
+DotFileParser.prototype.shaping = function() {
 
     var localctx = new ShapingContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 8, DotFile.RULE_shaping);
+    this.enterRule(localctx, 8, DotFileParser.RULE_shaping);
     try {
         this.state = 58;
         switch(this._input.LA(1)) {
-        case DotFile.OPEN_SQUARE:
+        case DotFileParser.OPEN_SQUARE:
             this.enterOuterAlt(localctx, 1);
             this.state = 50;
-            this.match(DotFile.OPEN_SQUARE);
+            this.match(DotFileParser.OPEN_SQUARE);
             this.state = 51;
-            this.match(DotFile.SHAPE);
+            this.match(DotFileParser.SHAPE);
             this.state = 52;
-            this.match(DotFile.EQUAL);
+            this.match(DotFileParser.EQUAL);
             this.state = 53;
-            this.match(DotFile.QUOTATION);
+            this.match(DotFileParser.QUOTATION);
             this.state = 54;
-            this.match(DotFile.DOUBLE_CIRCLE);
+            this.match(DotFileParser.DOUBLE_CIRCLE);
             this.state = 55;
-            this.match(DotFile.QUOTATION);
+            this.match(DotFileParser.QUOTATION);
             this.state = 56;
-            this.match(DotFile.CLOSE_SQUARE);
+            this.match(DotFileParser.CLOSE_SQUARE);
             break;
-        case DotFile.SEMICOLON:
-        case DotFile.CLOSE_BRACKET:
-        case DotFile.NAME:
+        case DotFileParser.SEMICOLON:
+        case DotFileParser.CLOSE_BRACKET:
+        case DotFileParser.NAME:
             this.enterOuterAlt(localctx, 2);
 
             break;
@@ -627,7 +627,7 @@ function StartpointContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DotFile.RULE_startpoint;
+    this.ruleIndex = DotFileParser.RULE_startpoint;
     return this;
 }
 
@@ -653,12 +653,12 @@ StartpointContext.prototype.exitRule = function(listener) {
 
 
 
-DotFile.StartpointContext = StartpointContext;
+DotFileParser.StartpointContext = StartpointContext;
 
-DotFile.prototype.startpoint = function() {
+DotFileParser.prototype.startpoint = function() {
 
     var localctx = new StartpointContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 10, DotFile.RULE_startpoint);
+    this.enterRule(localctx, 10, DotFileParser.RULE_startpoint);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 60;
@@ -678,4 +678,4 @@ DotFile.prototype.startpoint = function() {
 };
 
 
-exports.DotFile = DotFile;
+exports.DotFileParser = DotFileParser;
