@@ -4,10 +4,11 @@
 
 const http = require('http');
 const antlr4 = require('antlr4/index');
-const DotFileLexer = require('./DotFileLexer');
-const DotFileParser = require('./DotFileParser');
-const DotFileListener = require('./DotFileListener').DotFileListener;
-const CustomDotFileListener = require('./CustomDotFileListener').CustomDotFileListener;
+const DotFileLexer = require('../grammar/DotFileLexer');
+const DotFileParser = require('../grammar/DotFileParser');
+const DotFileListener = require('../grammar/DotFileListener').DotFileListener;
+const CustomDotFileListener = require('../grammar/CustomDotFileListener').CustomDotFileListener;
+const Graph = require('../graph/graph.js');
 
 inputParser = function(){}
 

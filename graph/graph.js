@@ -1,3 +1,5 @@
+const Node = require('./graphNode.js').Node;
+
 function Graph(){
     this.nodeSet = {};
     this.startNode = null;
@@ -18,3 +20,5 @@ Graph.getStartNode = function(){
 Graph.getEndNode = function(){
     return this.endNode;
 }
+
+exports.Graph = Graph;
