@@ -1,4 +1,4 @@
-// Generated from DotFile.g4 by ANTLR 4.5.2
+// Generated from DotFile.g4 by ANTLR 4.6
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 

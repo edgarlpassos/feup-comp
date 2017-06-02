@@ -1,7 +1,9 @@
-// Generated from DotFile.g4 by ANTLR 4.5.2
+// Generated from DotFile.g4 by ANTLR 4.6
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 var DotFileListener = require('./DotFileListener').DotFileListener;
+var DotFileVisitor = require('./DotFileVisitor').DotFileVisitor;
+
 var grammarFileName = "DotFile.g4";
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
@@ -51,7 +53,7 @@ var decisionsToDFA = atn.decisionToState.map( function(ds, index) { return new a
 
 var sharedContextCache = new antlr4.PredictionContextCache();
 
-var literalNames = [ null, null, "'graph'", "'label'", "'style'", "'shape'", 
+var literalNames = [ null, null, "'digraph'", "'label'", "'style'", "'shape'", 
                      "'doublecircle'", "'->'", "'\"'", "'='", "';'", "'{'", 
                      "'}'", "'['", "']'" ];
 
@@ -154,6 +156,14 @@ EntryContext.prototype.exitRule = function(listener) {
 	}
 };
 
+EntryContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DotFileVisitor ) {
+        return visitor.visitEntry(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
 
 
 
@@ -237,6 +247,14 @@ InstructionContext.prototype.exitRule = function(listener) {
 	}
 };
 
+InstructionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DotFileVisitor ) {
+        return visitor.visitInstruction(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
 
 
 
@@ -248,6 +266,7 @@ DotFileParser.prototype.instruction = function() {
     this.enterRule(localctx, 2, DotFileParser.RULE_instruction);
     try {
         this.state = 26;
+        this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case DotFileParser.NAME:
             this.enterOuterAlt(localctx, 1);
@@ -334,6 +353,14 @@ StateTransitionContext.prototype.exitRule = function(listener) {
     if(listener instanceof DotFileListener ) {
         listener.exitStateTransition(this);
 	}
+};
+
+StateTransitionContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DotFileVisitor ) {
+        return visitor.visitStateTransition(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 
@@ -454,6 +481,14 @@ LabelingContext.prototype.exitRule = function(listener) {
 	}
 };
 
+LabelingContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DotFileVisitor ) {
+        return visitor.visitLabeling(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
 
 
 
@@ -566,6 +601,14 @@ ShapingContext.prototype.exitRule = function(listener) {
 	}
 };
 
+ShapingContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DotFileVisitor ) {
+        return visitor.visitShaping(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
 
 
 
@@ -577,6 +620,7 @@ DotFileParser.prototype.shaping = function() {
     this.enterRule(localctx, 8, DotFileParser.RULE_shaping);
     try {
         this.state = 58;
+        this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case DotFileParser.OPEN_SQUARE:
             this.enterOuterAlt(localctx, 1);
@@ -648,6 +692,14 @@ StartpointContext.prototype.exitRule = function(listener) {
     if(listener instanceof DotFileListener ) {
         listener.exitStartpoint(this);
 	}
+};
+
+StartpointContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DotFileVisitor ) {
+        return visitor.visitStartpoint(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
 };
 
 

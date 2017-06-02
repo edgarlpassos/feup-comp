@@ -1,7 +1,7 @@
 import * as antlr from 'antlr4';
 import * as vizJs from 'viz.js';
 
-let inputParser = require('../grammar/main.js').inputParser;
+let inputParser = require('./main.js').inputParser;
 $(document).ready(function () {
   console.log("sadfsdfasdfas");
 

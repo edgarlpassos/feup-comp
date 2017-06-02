@@ -7,8 +7,7 @@ const antlr4 = require('antlr4/index');
 const DotFileLexer = require('../grammar/DotFileLexer');
 const DotFileParser = require('../grammar/DotFileParser');
 const DotFileListener = require('../grammar/DotFileListener').DotFileListener;
-const CustomDotFileListener = require('../grammar/CustomDotFileListener').CustomDotFileListener;
-const Graph = require('../graph/graph.js');
+const CustomDotFileVisitor = require('../grammar/CustomDotFileVisitor').CustomDotFileVisitor;
 
 inputParser = function(){}
 
@@ -23,8 +22,9 @@ inputParser.parse = function(input){
     var parser = new DotFileParser.DotFileParser(tokens);
     parser.buildParseTrees = true;
     var tree = parser.entry();
-    var listener = new CustomDotFileListener();
-    antlr4.tree.ParseTreeWalker.DEFAULT.walk(listener, tree);
+    var visitor = new CustomDotFileVisitor();
+    visitor.visitEntry(tree);
+
 }
 
 exports.inputParser = inputParser;

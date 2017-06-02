@@ -9,15 +9,15 @@ function Graph(){
 Graph.prototype = Object.create(Object.prototype);
 Graph.prototype.constructor = Graph;
 
-Graph.getNodeSet = function(){
+Graph.prototype.getNodeSet = function(){
     return this.nodeSet;
 }
 
-Graph.getStartNode = function(){
+Graph.prototype.getStartNode = function(){
     return this.startNode;
 }
 
-Graph.getEndNode = function(){
+Graph.prototype.getEndNode = function(){
     return this.endNode;
 }
 
