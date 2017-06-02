@@ -14082,7 +14082,7 @@ exports.Graph = Graph;
 /* 59 */
 /***/ (function(module, exports) {
 
-function Edge(nodeFrom, nodeTo, transition){
+function Edge(nodeTo, transition){
     this.nodeTo = nodeTo;
     this.transition = transition;
 }
@@ -14106,8 +14106,9 @@ exports.Edge = Edge;
 
 const Edge = __webpack_require__(59).Edge;
 
-function GraphNode(){
+function GraphNode(val){
     this.edgeSet = {};
+    this.val = val;
 }
 
 GraphNode.prototype = Object.create(Object.prototype);
