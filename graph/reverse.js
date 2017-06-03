@@ -43,8 +43,7 @@ Reverse.prototype.invertTransitions = function(){
         if(node.nodeEquals(node,this.graph.startNode)){
              node.acceptanceNode = true;
         }
-       
-        
+
         for(var j=0; j< node.getEdgeSet().length; j++){
 
             if(! node.getEdgeSet()[j].new){

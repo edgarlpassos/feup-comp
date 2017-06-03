@@ -13040,11 +13040,22 @@ function Complement(graph){
     this.dead = new Node("dead",false);
     this.addDeadStates();
     this.changeStates();
+    this.addTransitionsToDeadState();
+    console.log("Final Graph: ");
     console.log(graph);
 }
 
 Complement.prototype = Object.create(Object.prototype);
 Complement.prototype.constructor = Complement;
+
+Complement.prototype.addTransitionsToDeadState = function(){
+    var transitionsArray = this.graph.getTransitionsArray();
+    for(var i = 0; i < transitionsArray.length; i++){
+         //Adds transictions to dead state
+        let deadEdge = new Edge(this.dead,transitionsArray[i]);
+        this.dead.addEdge(deadEdge);
+     }
+}
 
 /**
  * Add dead state to complete DFA. Change states
@@ -13065,29 +13076,28 @@ Complement.prototype.addDeadStates = function() {
 Complement.prototype.deadStates = function(transitionsArray, node, edges){
 
     for(var i = 0; i < transitionsArray.length; i++){
-
         for(var j= 0; j < edges.length; j++){
+
            if(edges[j].transition == transitionsArray[i]){
                 break;
            } 
            if(j===(edges.length-1)){
                console.log("Adding transition to dead state with label " + transitionsArray[i]);
-               node.addEdge(transitionsArray[i],this.dead);
+               let edge = new Edge(this.dead,transitionsArray[i]);
+               node.addEdge(edge);
             }
         }
         if(edges.length==0){
             console.log("Adding transition to dead state with label " + transitionsArray[i]);
-            node.addEdge(transitionsArray[i],this.dead);
+             let edge = new Edge(this.dead,transitionsArray[i]);
+             node.addEdge(edge);
         }
     }
 }
 
 Complement.prototype.changeStates = function(){
-
-     for(var i = 0; i< this.graph.getNodeSet().length; i++){
+     for(var i = 0; i< this.graph.getNodeSet().length; i++)
         this.graph.getNodeSet()[i].changeNodeType();
-     }
-
 }
 
 exports.Complement = Complement;
@@ -13141,8 +13151,7 @@ Reverse.prototype.invertTransitions = function(){
         if(node.nodeEquals(node,this.graph.startNode)){
              node.acceptanceNode = true;
         }
-       
-        
+
         for(var j=0; j< node.getEdgeSet().length; j++){
 
             if(! node.getEdgeSet()[j].new){
@@ -13403,37 +13412,57 @@ const Edge = __webpack_require__(20).Edge;
 let inputParser = __webpack_require__(55).inputParser;
 $(document).ready(function () {
 
-  //creating a graph test
+  /*
+  //creating a graph test for reverse
   let graph = new Graph();
   //creatiang nodes
   let p0 = new Node("p0",false);
   let p1 = new Node("p1",false);
   let p2 = new Node("p2",true);
-
   //creating edges
   let edge = new Edge(p2,"ε");
   let edge1 = new Edge(p1,"0");
   let edge2 = new Edge(p0,"0");
   let edge3 = new Edge(p2,"1");
-
   //ading edges
-
   p0.addEdge(edge1);
   p0.addEdge(edge2);
   p0.addEdge(edge);
   p1.addEdge(edge2);
   p2.addEdge(edge3);
-  
   graph.addNode(p0);
   graph.addNode(p1);
   graph.addNode(p2);
-
   graph.setStartNode(p0);
   graph.addTransitions("0");
   graph.addTransitions("1");
   graph.addTransitions("ε");
+  let reverse = new Reverse(graph);*/
 
-  let reverse = new Reverse(graph);
+  //creating a graph test for complement
+  let graph = new Graph();
+
+  //creatiang nodes
+  let q0 = new Node("q0",true);
+  let q1 = new Node("q1",false);
+
+  //creating edges
+  let edge = new Edge(q1,"0");
+  let edge1 = new Edge(q0,"1");
+  let edge2 = new Edge(q0,"0");
+
+  //ading edges
+  q0.addEdge(edge1);
+  q0.addEdge(edge);
+  q1.addEdge(edge2);
+
+  graph.addNode(q0);
+  graph.addNode(q1);
+  graph.setStartNode(q0);
+  graph.addTransitions("0");
+  graph.addTransitions("1");
+
+  let complement = new Complement(graph);
 
   $('#text-input-submit').on('click',function(e){
     e.preventDefault();
