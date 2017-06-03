@@ -5914,6 +5914,7 @@ function Graph(){
     this.nodeSet = new Array();
     this.startNode = null;
     this.transitions = new Set();
+    this.graphName = null;
 }
 
 Graph.prototype = Object.create(Object.prototype);
@@ -5948,6 +5949,10 @@ Graph.prototype.getTransitionsArray = function(value){
     return Array.from(this.transitions);
 }
 
+Graph.prototype.setGraphName = function(name){
+    this.graphName = name;
+}
+
 Graph.prototype.cloneGraph = function(){
 
     let object = new Graph();
@@ -5958,7 +5963,13 @@ Graph.prototype.cloneGraph = function(){
 
 Graph.prototype.toDotFile = function(){
 
-    return startNode.toDotFile();
+    let ret = "digraph " + this.graphName + " {\n";
+
+    ret += this.startNode.toDotFile();
+
+    ret += "}";
+
+    return ret;
 }
     
 exports.Graph = Graph;
@@ -6060,6 +6071,23 @@ Node.prototype.nodeEquals = function(node1,node2){
             }
     }
     return true;
+}
+
+Node.prototype.toDotFile = function(){
+
+    if(this.edgeSet.length == 0)
+        return this.val + ";\n";
+
+    let ret = "";
+
+    console.log(this);
+    for(let i = 0; i < this.edgeSet.length; i++){
+        console.log(this.edgeSet[i].getNodeTo().getVal());
+        let node = this.edgeSet[i].getNodeTo();
+        ret += this.val + "->" + node.toDotFile();
+    }
+
+    return ret;
 }
 
 exports.Node = Node;
@@ -13011,7 +13039,7 @@ inputParser.parse = function(input){
     var tree = parser.entry();
     var visitor = new CustomDotFileVisitor();
     visitor.visitEntry(tree);
-
+       
 }
 
 exports.inputParser = inputParser;
@@ -13501,7 +13529,37 @@ const Edge = __webpack_require__(19).Edge;
 let inputParser = __webpack_require__(55).inputParser;
 $(document).ready(function () {
 
-  /*
+  let graph = new Graph();
+  //creatiang nodes
+  let a = new Node("a", false);
+  let b = new Node("b", false);
+  let c = new Node("c", true);
+  let d = new Node("d", false);
+  //creating edges
+  let edge = new Edge(b, "1");
+  let edge1 = new Edge(c, "1");
+  let edge2 = new Edge(d, "1");
+  //ading edges
+  a.addEdge(edge);
+  a.addEdge(edge2);
+  b.addEdge(edge1);
+  d.addEdge(edge1);
+
+  graph.addNode(a);
+  graph.addNode(b);
+  graph.addNode(c);
+  graph.addNode(d);
+  graph.setStartNode(a);
+  graph.addTransitions("0");
+  graph.addTransitions("1");
+  graph.addTransitions("ε");
+
+  graph.setGraphName('name');
+
+  let dotFile = graph.toDotFile();
+  console.log(dotFile);
+
+  /* 
   //creating a graph test for reverse
   let graph = new Graph();
   //creatiang nodes
@@ -13528,78 +13586,77 @@ $(document).ready(function () {
   graph.addTransitions("ε");
   let reverse = new Reverse(graph);*/
 
+  /*
+    //creating a graph test for complement
+    let graph = new Graph();
+    //creatiang nodes
+    let q0 = new Node("q0",true);
+    let q1 = new Node("q1",false);
+    //creating edges
+    let edge = new Edge(q1,"0");
+    let edge1 = new Edge(q0,"1");
+    let edge2 = new Edge(q0,"0");
+    //ading edges
+    q0.addEdge(edge1);
+    q0.addEdge(edge);
+    q1.addEdge(edge2);
+    graph.addNode(q0);
+    graph.addNode(q1);
+    graph.setStartNode(q0);
+    graph.addTransitions("0");
+    graph.addTransitions("1");
+    let complement = new Complement(graph);*/
 
-/*
-  //creating a graph test for complement
-  let graph = new Graph();
-  //creatiang nodes
-  let q0 = new Node("q0",true);
-  let q1 = new Node("q1",false);
-  //creating edges
-  let edge = new Edge(q1,"0");
-  let edge1 = new Edge(q0,"1");
-  let edge2 = new Edge(q0,"0");
-  //ading edges
-  q0.addEdge(edge1);
-  q0.addEdge(edge);
-  q1.addEdge(edge2);
-  graph.addNode(q0);
-  graph.addNode(q1);
-  graph.setStartNode(q0);
-  graph.addTransitions("0");
-  graph.addTransitions("1");
-  let complement = new Complement(graph);*/
+  /*
+     //creating a graph test for product
+    let graph1 = new Graph();
+    let graph2 = new Graph();
+    //creatiang nodes
+    let q1 = new Node("q1",true);
+    let q2 = new Node("q2",false);
+    let q3 = new Node("q3",false);
+    let q4= new Node("q4",true);
+      
+    //creating edges
+    let edge = new Edge(q1,"b");
+    let edge1 = new Edge(q2,"b");
+    let edge2 = new Edge(q2,"a");
+    let edge3 = new Edge(q1,"a");
 
+    let edge4 = new Edge(q3,"b");
+    let edge5 = new Edge(q3,"a");
+    let edge6 = new Edge(q4,"a");
+    let edge7 = new Edge(q4,"b");
 
-   //creating a graph test for product
-  let graph1 = new Graph();
-  let graph2 = new Graph();
-  //creatiang nodes
-  let q1 = new Node("q1",true);
-  let q2 = new Node("q2",false);
-  let q3 = new Node("q3",false);
-  let q4= new Node("q4",true);
-    
-  //creating edges
-  let edge = new Edge(q1,"b");
-  let edge1 = new Edge(q2,"b");
-  let edge2 = new Edge(q2,"a");
-  let edge3 = new Edge(q1,"a");
+    q1.addEdge(edge2);
+    q1.addEdge(edge);
+    q2.addEdge(edge1);
+    q2.addEdge(edge3);
 
-  let edge4 = new Edge(q3,"b");
-  let edge5 = new Edge(q3,"a");
-  let edge6 = new Edge(q4,"a");
-  let edge7 = new Edge(q4,"b");
+    q3.addEdge(edge7);
+    q3.addEdge(edge5);
+    q4.addEdge(edge4);
+    q4.addEdge(edge6);
 
-  q1.addEdge(edge2);
-  q1.addEdge(edge);
-  q2.addEdge(edge1);
-  q2.addEdge(edge3);
+    graph1.addNode(q1);
+    graph1.addNode(q2);
 
-  q3.addEdge(edge7);
-  q3.addEdge(edge5);
-  q4.addEdge(edge4);
-  q4.addEdge(edge6);
+    graph1.setStartNode(q1);
+    graph1.addTransitions("b");
+    graph1.addTransitions("a");
 
-  graph1.addNode(q1);
-  graph1.addNode(q2);
+    graph2.addNode(q3);
+    graph2.addNode(q4);
 
-  graph1.setStartNode(q1);
-  graph1.addTransitions("b");
-  graph1.addTransitions("a");
+    graph2.setStartNode(q3);
+    graph2.addTransitions("b");
+    graph2.addTransitions("a");
 
-  graph2.addNode(q3);
-  graph2.addNode(q4);
-
-  graph2.setStartNode(q3);
-  graph2.addTransitions("b");
-  graph2.addTransitions("a");
-
-  let product = new Product(graph1,graph2);
-
+    let product = new Product(graph1,graph2);*/
 
 
-  $('#text-input-submit').on('click',function(e){
+
+  $('#text-input-submit').on('click', function (e) {
     e.preventDefault();
     let textarea = $('#text-input-area');
     let input = textarea.val();
@@ -13608,24 +13665,22 @@ $(document).ready(function () {
     let currentImg = outputDiv.children('#output-image');
     console.log(currentImg);
 
-    if(currentImg != null){
+    if (currentImg != null) {
       currentImg.remove();
     }
 
-    let image = __WEBPACK_IMPORTED_MODULE_1_viz_js__(input,{format: "png-image-element"});
+    let image = __WEBPACK_IMPORTED_MODULE_1_viz_js__(input, {
+      format: "png-image-element"
+    });
 
     outputDiv.append(image);
 
-    if(input === '')
+    if (input === '')
       return;
-    
+
     inputParser.parse(input)
   });
 });
-
-
-
-
 
 /***/ }),
 /* 61 */

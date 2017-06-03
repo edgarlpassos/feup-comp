@@ -4,6 +4,7 @@ function Graph(){
     this.nodeSet = new Array();
     this.startNode = null;
     this.transitions = new Set();
+    this.graphName = null;
 }
 
 Graph.prototype = Object.create(Object.prototype);
@@ -38,6 +39,10 @@ Graph.prototype.getTransitionsArray = function(value){
     return Array.from(this.transitions);
 }
 
+Graph.prototype.setGraphName = function(name){
+    this.graphName = name;
+}
+
 Graph.prototype.cloneGraph = function(){
 
     let object = new Graph();
@@ -48,7 +53,13 @@ Graph.prototype.cloneGraph = function(){
 
 Graph.prototype.toDotFile = function(){
 
-    return startNode.toDotFile();
+    let ret = "digraph " + this.graphName + " {\n";
+
+    ret += this.startNode.toDotFile();
+
+    ret += "}";
+
+    return ret;
 }
     
 exports.Graph = Graph;
