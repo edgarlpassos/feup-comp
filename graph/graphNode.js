@@ -1,11 +1,13 @@
 const Edge = require('./graphEdge.js').Edge;
-
 function Node(val,acceptanceNode){
     this.edgeSet = new Array();
     this.val = val;
     this.acceptanceNode = acceptanceNode;
     
 }
+Node.prototype = Object.create(Object.prototype);
+Node.prototype.constructor = Node;
+
 Node.prototype = Object.create(Object.prototype);
 Node.prototype.constructor = Node;
 

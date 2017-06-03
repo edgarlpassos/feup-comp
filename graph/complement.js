@@ -12,7 +12,6 @@ function Complement(graph){
     this.addDeadStates();
     this.changeStates();
     this.addTransitionsToDeadState();
-    console.log("Final Graph: ");
     console.log(graph);
 }
 
