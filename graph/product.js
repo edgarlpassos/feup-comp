@@ -42,15 +42,16 @@ Product.prototype.chooseNodes = function(){
 
             if(node1.nodeEquals(node1,this.graph1.startNode) && node2.nodeEquals(node2, this.graph2.startNode))
                 this.resultGraph.startNode = newNode;
-    
          }
     }
 }
 
+/**
+ * Adds Transitions to new nodes
+ */
 Product.prototype.addTransitions = function(){
 
     for(var i = 0; i < this.resultGraph.nodeSet.length; i++){
-
         let node = this.resultGraph.nodeSet[i];
         let nameNode1 = node.val[0];
         console.log("Node 1: " + nameNode1);
@@ -60,27 +61,29 @@ Product.prototype.addTransitions = function(){
         let transitionsArray = this.resultGraph.getTransitionsArray();
 
         for(var j = 0; j < transitionsArray.length; j++){
-            //graph containing that node
-
+            
             let transitionVal = transitionsArray[j];
-            console.log("Transition: " +transitionVal);
+            //graph containing that node
             let graph = this.graphResponsibleForNode(nameNode1);
+            //graph containing that node
             let graph2 = this.graphResponsibleForNode(nameNode2);
             let destinationNode1Name, destinationNode2Name;
 
+            /**
+             * Finds destination node name of node1 with transition "transitionVal"
+             */
             for(var k=0; k < graph.nodeSet.length; k++){
                 if(graph.nodeSet[k].val == nameNode1){
-                    console.log("encontrei node with value " + graph.nodeSet[k].val);
                     for(var l=0; l < graph.nodeSet[k].edgeSet.length; l++){
-                        if(graph.nodeSet[k].edgeSet[l].transition==transitionVal){
-                            console.log("tentando encontrar node destino com transição "+ graph.nodeSet[k].edgeSet[l].transition);
+                        if(graph.nodeSet[k].edgeSet[l].transition==transitionVal)
                              destinationNode1Name = graph.nodeSet[k].edgeSet[l].nodeTo.val;
-                        }
-                            
                     }
                 }
             }
 
+            /**
+             * Finds destination node name of node2 with transition "transitionVal"
+             */
             for(var l=0; l < graph2.nodeSet.length; l++){
                 if(graph2.nodeSet[l].val == nameNode2){
                     for(var m=0; m < graph2.nodeSet[l].edgeSet.length; m++){
@@ -90,8 +93,15 @@ Product.prototype.addTransitions = function(){
                 }
             }
 
+            /**
+             * Finds destination node of node1+node2 with transition "transitionVal"
+             */
             let destination = [destinationNode1Name,destinationNode2Name];
             let destinationNode = this.getNode(destination);
+
+            /**
+             * Adds edge to node1+node2 
+             */
             let edge = new Edge(destinationNode, transitionVal);
             node.addEdge(edge);
         }
@@ -100,13 +110,10 @@ Product.prototype.addTransitions = function(){
 
 Product.prototype.getNode = function(destination){
 
-    console.log("procurar node with : " + destination);
-
     for(var i = 0; i < this.resultGraph.nodeSet.length; i++){
         if(this.resultGraph.nodeSet[i].val.toString()===destination.toString()){
             return this.resultGraph.nodeSet[i];
-        }
-            
+        }     
     }
 }
 
