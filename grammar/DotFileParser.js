@@ -7,44 +7,43 @@ var DotFileVisitor = require('./DotFileVisitor').DotFileVisitor;
 var grammarFileName = "DotFile.g4";
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
-    "\u0003\u0012A\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003\u0012@\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0003",
     "\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003",
     "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
-    "\u0003\u0003\u0003\u0005\u0003\u001d\n\u0003\u0003\u0004\u0003\u0004",
-    "\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004",
-    "\u0003\u0004\u0003\u0004\u0005\u0004)\n\u0004\u0003\u0005\u0003\u0005",
-    "\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005",
-    "\u0005\u00053\n\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006",
-    "\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0005\u0006=\n\u0006",
-    "\u0003\u0007\u0003\u0007\u0003\u0007\u0002\u0002\b\u0002\u0004\u0006",
-    "\b\n\f\u0002\u0002@\u0002\u000e\u0003\u0002\u0002\u0002\u0004\u001c",
-    "\u0003\u0002\u0002\u0002\u0006(\u0003\u0002\u0002\u0002\b2\u0003\u0002",
-    "\u0002\u0002\n<\u0003\u0002\u0002\u0002\f>\u0003\u0002\u0002\u0002\u000e",
-    "\u000f\u0007\u0004\u0002\u0002\u000f\u0010\u0007\u0011\u0002\u0002\u0010",
-    "\u0011\u0007\r\u0002\u0002\u0011\u0012\u0005\u0004\u0003\u0002\u0012",
-    "\u0013\u0007\u000e\u0002\u0002\u0013\u0003\u0003\u0002\u0002\u0002\u0014",
-    "\u0015\u0007\u0011\u0002\u0002\u0015\u0016\u0005\u0006\u0004\u0002\u0016",
-    "\u0017\u0005\n\u0006\u0002\u0017\u0018\u0005\u0004\u0003\u0002\u0018",
-    "\u001d\u0003\u0002\u0002\u0002\u0019\u001a\u0007\f\u0002\u0002\u001a",
-    "\u001d\u0005\u0004\u0003\u0002\u001b\u001d\u0003\u0002\u0002\u0002\u001c",
-    "\u0014\u0003\u0002\u0002\u0002\u001c\u0019\u0003\u0002\u0002\u0002\u001c",
-    "\u001b\u0003\u0002\u0002\u0002\u001d\u0005\u0003\u0002\u0002\u0002\u001e",
-    "\u001f\u0007\t\u0002\u0002\u001f \u0007\u0011\u0002\u0002 !\u0005\u0006",
-    "\u0004\u0002!\"\u0005\b\u0005\u0002\"#\u0007\f\u0002\u0002#)\u0003\u0002",
-    "\u0002\u0002$%\u0007\t\u0002\u0002%&\u0007\u0011\u0002\u0002&)\u0005",
-    "\b\u0005\u0002\')\u0003\u0002\u0002\u0002(\u001e\u0003\u0002\u0002\u0002",
-    "($\u0003\u0002\u0002\u0002(\'\u0003\u0002\u0002\u0002)\u0007\u0003\u0002",
-    "\u0002\u0002*+\u0007\u000f\u0002\u0002+,\u0007\u0005\u0002\u0002,-\u0007",
-    "\u000b\u0002\u0002-.\u0007\n\u0002\u0002./\u0007\u0011\u0002\u0002/",
-    "0\u0007\n\u0002\u000203\u0007\u0010\u0002\u000213\u0003\u0002\u0002",
-    "\u00022*\u0003\u0002\u0002\u000221\u0003\u0002\u0002\u00023\t\u0003",
-    "\u0002\u0002\u000245\u0007\u000f\u0002\u000256\u0007\u0007\u0002\u0002",
-    "67\u0007\u000b\u0002\u000278\u0007\n\u0002\u000289\u0007\b\u0002\u0002",
-    "9:\u0007\n\u0002\u0002:=\u0007\u0010\u0002\u0002;=\u0003\u0002\u0002",
-    "\u0002<4\u0003\u0002\u0002\u0002<;\u0003\u0002\u0002\u0002=\u000b\u0003",
-    "\u0002\u0002\u0002>?\u0005\u0002\u0002\u0002?\r\u0003\u0002\u0002\u0002",
-    "\u0006\u001c(2<"].join("");
+    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0005\u0003 ",
+    "\n\u0003\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004",
+    "\u0003\u0004\u0005\u0004(\n\u0004\u0003\u0005\u0003\u0005\u0003\u0005",
+    "\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0005\u0005",
+    "2\n\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006",
+    "\u0003\u0006\u0003\u0006\u0003\u0006\u0005\u0006<\n\u0006\u0003\u0007",
+    "\u0003\u0007\u0003\u0007\u0002\u0002\b\u0002\u0004\u0006\b\n\f\u0002",
+    "\u0002?\u0002\u000e\u0003\u0002\u0002\u0002\u0004\u001f\u0003\u0002",
+    "\u0002\u0002\u0006\'\u0003\u0002\u0002\u0002\b1\u0003\u0002\u0002\u0002",
+    "\n;\u0003\u0002\u0002\u0002\f=\u0003\u0002\u0002\u0002\u000e\u000f\u0007",
+    "\u0004\u0002\u0002\u000f\u0010\u0007\u0011\u0002\u0002\u0010\u0011\u0007",
+    "\r\u0002\u0002\u0011\u0012\u0005\u0004\u0003\u0002\u0012\u0013\u0007",
+    "\u000e\u0002\u0002\u0013\u0003\u0003\u0002\u0002\u0002\u0014\u0015\u0007",
+    "\u0011\u0002\u0002\u0015\u0016\u0005\u0006\u0004\u0002\u0016\u0017\u0005",
+    "\u0004\u0003\u0002\u0017 \u0003\u0002\u0002\u0002\u0018\u0019\u0007",
+    "\f\u0002\u0002\u0019 \u0005\u0004\u0003\u0002\u001a\u001b\u0007\u0011",
+    "\u0002\u0002\u001b\u001c\u0005\n\u0006\u0002\u001c\u001d\u0005\u0004",
+    "\u0003\u0002\u001d \u0003\u0002\u0002\u0002\u001e \u0003\u0002\u0002",
+    "\u0002\u001f\u0014\u0003\u0002\u0002\u0002\u001f\u0018\u0003\u0002\u0002",
+    "\u0002\u001f\u001a\u0003\u0002\u0002\u0002\u001f\u001e\u0003\u0002\u0002",
+    "\u0002 \u0005\u0003\u0002\u0002\u0002!\"\u0007\t\u0002\u0002\"#\u0007",
+    "\u0011\u0002\u0002#(\u0005\u0006\u0004\u0002$%\u0007\t\u0002\u0002%",
+    "&\u0007\u0011\u0002\u0002&(\u0005\b\u0005\u0002\'!\u0003\u0002\u0002",
+    "\u0002\'$\u0003\u0002\u0002\u0002(\u0007\u0003\u0002\u0002\u0002)*\u0007",
+    "\u000f\u0002\u0002*+\u0007\u0005\u0002\u0002+,\u0007\u000b\u0002\u0002",
+    ",-\u0007\n\u0002\u0002-.\u0007\u0011\u0002\u0002./\u0007\n\u0002\u0002",
+    "/2\u0007\u0010\u0002\u000202\u0003\u0002\u0002\u00021)\u0003\u0002\u0002",
+    "\u000210\u0003\u0002\u0002\u00022\t\u0003\u0002\u0002\u000234\u0007",
+    "\u000f\u0002\u000245\u0007\u0007\u0002\u000256\u0007\u000b\u0002\u0002",
+    "67\u0007\n\u0002\u000278\u0007\b\u0002\u000289\u0007\n\u0002\u00029",
+    "<\u0007\u0010\u0002\u0002:<\u0003\u0002\u0002\u0002;3\u0003\u0002\u0002",
+    "\u0002;:\u0003\u0002\u0002\u0002<\u000b\u0003\u0002\u0002\u0002=>\u0005",
+    "\u0002\u0002\u0002>\r\u0003\u0002\u0002\u0002\u0006\u001f\'1;"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -223,16 +222,16 @@ InstructionContext.prototype.stateTransition = function() {
     return this.getTypedRuleContext(StateTransitionContext,0);
 };
 
-InstructionContext.prototype.shaping = function() {
-    return this.getTypedRuleContext(ShapingContext,0);
-};
-
 InstructionContext.prototype.instruction = function() {
     return this.getTypedRuleContext(InstructionContext,0);
 };
 
 InstructionContext.prototype.SEMICOLON = function() {
     return this.getToken(DotFileParser.SEMICOLON, 0);
+};
+
+InstructionContext.prototype.shaping = function() {
+    return this.getTypedRuleContext(ShapingContext,0);
 };
 
 InstructionContext.prototype.enterRule = function(listener) {
@@ -265,33 +264,43 @@ DotFileParser.prototype.instruction = function() {
     var localctx = new InstructionContext(this, this._ctx, this.state);
     this.enterRule(localctx, 2, DotFileParser.RULE_instruction);
     try {
-        this.state = 26;
+        this.state = 29;
         this._errHandler.sync(this);
-        switch(this._input.LA(1)) {
-        case DotFileParser.NAME:
+        var la_ = this._interp.adaptivePredict(this._input,0,this._ctx);
+        switch(la_) {
+        case 1:
             this.enterOuterAlt(localctx, 1);
             this.state = 18;
             this.match(DotFileParser.NAME);
             this.state = 19;
             this.stateTransition();
             this.state = 20;
-            this.shaping();
-            this.state = 21;
             this.instruction();
             break;
-        case DotFileParser.SEMICOLON:
+
+        case 2:
             this.enterOuterAlt(localctx, 2);
-            this.state = 23;
+            this.state = 22;
             this.match(DotFileParser.SEMICOLON);
-            this.state = 24;
+            this.state = 23;
             this.instruction();
             break;
-        case DotFileParser.CLOSE_BRACKET:
+
+        case 3:
             this.enterOuterAlt(localctx, 3);
+            this.state = 24;
+            this.match(DotFileParser.NAME);
+            this.state = 25;
+            this.shaping();
+            this.state = 26;
+            this.instruction();
+            break;
+
+        case 4:
+            this.enterOuterAlt(localctx, 4);
 
             break;
-        default:
-            throw new antlr4.error.NoViableAltException(this);
+
         }
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -339,10 +348,6 @@ StateTransitionContext.prototype.labeling = function() {
     return this.getTypedRuleContext(LabelingContext,0);
 };
 
-StateTransitionContext.prototype.SEMICOLON = function() {
-    return this.getToken(DotFileParser.SEMICOLON, 0);
-};
-
 StateTransitionContext.prototype.enterRule = function(listener) {
     if(listener instanceof DotFileListener ) {
         listener.enterStateTransition(this);
@@ -373,22 +378,18 @@ DotFileParser.prototype.stateTransition = function() {
     var localctx = new StateTransitionContext(this, this._ctx, this.state);
     this.enterRule(localctx, 4, DotFileParser.RULE_stateTransition);
     try {
-        this.state = 38;
+        this.state = 37;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,1,this._ctx);
         switch(la_) {
         case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 28;
-            this.match(DotFileParser.TRANSITION);
-            this.state = 29;
-            this.match(DotFileParser.NAME);
-            this.state = 30;
-            this.stateTransition();
             this.state = 31;
-            this.labeling();
+            this.match(DotFileParser.TRANSITION);
             this.state = 32;
-            this.match(DotFileParser.SEMICOLON);
+            this.match(DotFileParser.NAME);
+            this.state = 33;
+            this.stateTransition();
             break;
 
         case 2:
@@ -399,11 +400,6 @@ DotFileParser.prototype.stateTransition = function() {
             this.match(DotFileParser.NAME);
             this.state = 36;
             this.labeling();
-            break;
-
-        case 3:
-            this.enterOuterAlt(localctx, 3);
-
             break;
 
         }
@@ -499,33 +495,34 @@ DotFileParser.prototype.labeling = function() {
     var localctx = new LabelingContext(this, this._ctx, this.state);
     this.enterRule(localctx, 6, DotFileParser.RULE_labeling);
     try {
-        this.state = 48;
+        this.state = 47;
         this._errHandler.sync(this);
-        var la_ = this._interp.adaptivePredict(this._input,2,this._ctx);
-        switch(la_) {
-        case 1:
+        switch(this._input.LA(1)) {
+        case DotFileParser.OPEN_SQUARE:
             this.enterOuterAlt(localctx, 1);
-            this.state = 40;
+            this.state = 39;
             this.match(DotFileParser.OPEN_SQUARE);
-            this.state = 41;
+            this.state = 40;
             this.match(DotFileParser.LABEL);
-            this.state = 42;
+            this.state = 41;
             this.match(DotFileParser.EQUAL);
+            this.state = 42;
+            this.match(DotFileParser.QUOTATION);
             this.state = 43;
-            this.match(DotFileParser.QUOTATION);
-            this.state = 44;
             this.match(DotFileParser.NAME);
-            this.state = 45;
+            this.state = 44;
             this.match(DotFileParser.QUOTATION);
-            this.state = 46;
+            this.state = 45;
             this.match(DotFileParser.CLOSE_SQUARE);
             break;
-
-        case 2:
+        case DotFileParser.SEMICOLON:
+        case DotFileParser.CLOSE_BRACKET:
+        case DotFileParser.NAME:
             this.enterOuterAlt(localctx, 2);
 
             break;
-
+        default:
+            throw new antlr4.error.NoViableAltException(this);
         }
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -619,24 +616,24 @@ DotFileParser.prototype.shaping = function() {
     var localctx = new ShapingContext(this, this._ctx, this.state);
     this.enterRule(localctx, 8, DotFileParser.RULE_shaping);
     try {
-        this.state = 58;
+        this.state = 57;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case DotFileParser.OPEN_SQUARE:
             this.enterOuterAlt(localctx, 1);
-            this.state = 50;
+            this.state = 49;
             this.match(DotFileParser.OPEN_SQUARE);
-            this.state = 51;
+            this.state = 50;
             this.match(DotFileParser.SHAPE);
-            this.state = 52;
+            this.state = 51;
             this.match(DotFileParser.EQUAL);
+            this.state = 52;
+            this.match(DotFileParser.QUOTATION);
             this.state = 53;
-            this.match(DotFileParser.QUOTATION);
-            this.state = 54;
             this.match(DotFileParser.DOUBLE_CIRCLE);
-            this.state = 55;
+            this.state = 54;
             this.match(DotFileParser.QUOTATION);
-            this.state = 56;
+            this.state = 55;
             this.match(DotFileParser.CLOSE_SQUARE);
             break;
         case DotFileParser.SEMICOLON:
@@ -713,7 +710,7 @@ DotFileParser.prototype.startpoint = function() {
     this.enterRule(localctx, 10, DotFileParser.RULE_startpoint);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 60;
+        this.state = 59;
         this.entry();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {

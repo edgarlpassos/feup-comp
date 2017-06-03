@@ -52,11 +52,17 @@ Graph.prototype.toDotFile = function () {
 }
 
 Graph.prototype.hasNode = function (node) {
-    for (let i = 0; i < nodeSet.length; i++)
-        if(node.getVal() === nodeSet[i].getVal())
+    for (let i = 0; i < this.nodeSet.length; i++)
+        if(node.getVal() === this.nodeSet[i].getVal())
             return true;
 
    return false; 
+}
+
+Graph.prototype.toString = function () {
+    console.log('Nodes: ');
+    console.log(this.nodeSet.toString());
+    // TODO end this
 }
 
 exports.Graph = Graph;
