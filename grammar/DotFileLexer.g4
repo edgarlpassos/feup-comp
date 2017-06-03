@@ -1,7 +1,7 @@
 lexer grammar DotFileLexer;
 
 WS : [ \n\t\r]+ -> skip;
-GRAPH: 'graph';
+GRAPH: 'digraph';
 LABEL: 'label';
 STYLE: 'style';
 SHAPE: 'shape';

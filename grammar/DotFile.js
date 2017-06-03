@@ -1,4 +1,4 @@
-// Generated from DotFile.g4 by ANTLR 4.5.1
+// Generated from DotFile.g4 by ANTLR 4.5.2
 // jshint ignore: start
 var antlr4 = require('antlr4/index');
 var DotFileListener = require('./DotFileListener').DotFileListener;
@@ -60,8 +60,8 @@ var symbolicNames = [ null, "WS", "GRAPH", "LABEL", "STYLE", "SHAPE", "DOUBLE_CI
                       "CLOSE_BRACKET", "OPEN_SQUARE", "CLOSE_SQUARE", "NAME", 
                       "DIGIT" ];
 
-var ruleNames =  [ "r", "instruction", "stateTransition", "labeling", "shaping", 
-                   "startpoint" ];
+var ruleNames =  [ "entry", "instruction", "stateTransition", "labeling", 
+                   "shaping", "startpoint" ];
 
 function DotFile (input) {
 	antlr4.Parser.call(this, input);
@@ -99,14 +99,14 @@ DotFile.CLOSE_SQUARE = 14;
 DotFile.NAME = 15;
 DotFile.DIGIT = 16;
 
-DotFile.RULE_r = 0;
+DotFile.RULE_entry = 0;
 DotFile.RULE_instruction = 1;
 DotFile.RULE_stateTransition = 2;
 DotFile.RULE_labeling = 3;
 DotFile.RULE_shaping = 4;
 DotFile.RULE_startpoint = 5;
 
-function RContext(parser, parent, invokingState) {
+function EntryContext(parser, parent, invokingState) {
 	if(parent===undefined) {
 	    parent = null;
 	}
@@ -115,54 +115,54 @@ function RContext(parser, parent, invokingState) {
 	}
 	antlr4.ParserRuleContext.call(this, parent, invokingState);
     this.parser = parser;
-    this.ruleIndex = DotFile.RULE_r;
+    this.ruleIndex = DotFile.RULE_entry;
     return this;
 }
 
-RContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
-RContext.prototype.constructor = RContext;
+EntryContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+EntryContext.prototype.constructor = EntryContext;
 
-RContext.prototype.GRAPH = function() {
+EntryContext.prototype.GRAPH = function() {
     return this.getToken(DotFile.GRAPH, 0);
 };
 
-RContext.prototype.NAME = function() {
+EntryContext.prototype.NAME = function() {
     return this.getToken(DotFile.NAME, 0);
 };
 
-RContext.prototype.OPEN_BRACKET = function() {
+EntryContext.prototype.OPEN_BRACKET = function() {
     return this.getToken(DotFile.OPEN_BRACKET, 0);
 };
 
-RContext.prototype.instruction = function() {
+EntryContext.prototype.instruction = function() {
     return this.getTypedRuleContext(InstructionContext,0);
 };
 
-RContext.prototype.CLOSE_BRACKET = function() {
+EntryContext.prototype.CLOSE_BRACKET = function() {
     return this.getToken(DotFile.CLOSE_BRACKET, 0);
 };
 
-RContext.prototype.enterRule = function(listener) {
+EntryContext.prototype.enterRule = function(listener) {
     if(listener instanceof DotFileListener ) {
-        listener.enterR(this);
+        listener.enterEntry(this);
 	}
 };
 
-RContext.prototype.exitRule = function(listener) {
+EntryContext.prototype.exitRule = function(listener) {
     if(listener instanceof DotFileListener ) {
-        listener.exitR(this);
+        listener.exitEntry(this);
 	}
 };
 
 
 
 
-DotFile.RContext = RContext;
+DotFile.EntryContext = EntryContext;
 
-DotFile.prototype.r = function() {
+DotFile.prototype.entry = function() {
 
-    var localctx = new RContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 0, DotFile.RULE_r);
+    var localctx = new EntryContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 0, DotFile.RULE_entry);
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 12;
@@ -634,8 +634,8 @@ function StartpointContext(parser, parent, invokingState) {
 StartpointContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
 StartpointContext.prototype.constructor = StartpointContext;
 
-StartpointContext.prototype.r = function() {
-    return this.getTypedRuleContext(RContext,0);
+StartpointContext.prototype.entry = function() {
+    return this.getTypedRuleContext(EntryContext,0);
 };
 
 StartpointContext.prototype.enterRule = function(listener) {
@@ -662,7 +662,7 @@ DotFile.prototype.startpoint = function() {
     try {
         this.enterOuterAlt(localctx, 1);
         this.state = 60;
-        this.r();
+        this.entry();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
