@@ -21,4 +21,9 @@ Graph.prototype.getEndNode = function(){
     return this.endNode;
 }
 
+Graph.prototype.toDotFile = function(){
+
+    return startNode.toDotFile();
+}
+    
 exports.Graph = Graph;

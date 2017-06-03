@@ -12,4 +12,19 @@ Node.prototype.getEdgeSet = function(){
     return this.edgeSet;
 }
 
+GraphNode.prototype.toDotFile = function(){
+
+    if(edgeSet.length == 0)
+        return val;
+
+    let ret = val;
+
+    for(let edge in edgeSet){
+        let node = edge.getNodeTo();
+        ret += node.toDotFile();
+    }
+
+    return ret;
+}
+
 exports.Node = Node;
