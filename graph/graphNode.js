@@ -1,30 +1,33 @@
 const Edge = require('./graphEdge.js').Edge;
 
-function GraphNode(val){
-    this.edgeSet = {};
+function Node(val,acceptanceNode){
+    this.edgeSet = new Array();
     this.val = val;
+    this.acceptanceNode = acceptanceNode;
+    
 }
+Node.prototype = Object.create(Object.prototype);
+Node.prototype.constructor = Node;
 
-GraphNode.prototype = Object.create(Object.prototype);
-GraphNode.prototype.constructor = GraphNode;
-
-GraphNode.prototype.getEdgeSet = function(){
+Node.prototype.getEdgeSet = function(){
     return this.edgeSet;
 }
 
-GraphNode.prototype.toDotFile = function(){
+Node.prototype.addEdge = function(transition, node){
+    var newEdge = new Edge(node,transition);
+    this.edgeSet.push(newEdge);
+}
 
-    if(edgeSet.length == 0)
-        return val;
+Node.prototype.getVal = function(){
+    return this.val;
+}
 
-    let ret = val;
+Node.prototype.isAcceptanceNode = function(){
+    return this.acceptanceNode;
+}
 
-    for(let edge in edgeSet){
-        let node = edge.getNodeTo();
-        ret += node.toDotFile();
-    }
-
-    return ret;
+Node.prototype.changeNodeType = function(){
+    this.acceptanceNode = !this.acceptanceNode;
 }
 
 exports.Node = Node;
