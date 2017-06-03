@@ -1,6 +1,7 @@
 function Edge(nodeTo, transition){
     this.nodeTo = nodeTo;
     this.transition = transition;
+    this.new = false;
 }
 
 Edge.prototype = Object.create(Object.prototype);

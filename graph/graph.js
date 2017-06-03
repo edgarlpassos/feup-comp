@@ -38,7 +38,13 @@ Graph.prototype.getTransitionsArray = function(value){
     return Array.from(this.transitions);
 }
 
+Graph.prototype.cloneGraph = function(){
 
+    let object = new Graph();
+
+    object= JSON.parse(JSON.stringify(this));
+    return object;
+}
 
 Graph.prototype.toDotFile = function(){
 
