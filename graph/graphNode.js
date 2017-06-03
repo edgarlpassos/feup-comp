@@ -70,6 +70,9 @@ Node.prototype.nodeEquals = function(node1,node2){
     return true;
 }
 
+/**
+ * This function returns dot file sintax
+ */
 Node.prototype.toDotFile = function(){
 
     if(this.edgeSet.length == 0)

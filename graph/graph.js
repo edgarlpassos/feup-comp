@@ -35,7 +35,7 @@ Graph.prototype.getTransitions = function(value){
     return this.transitions;
 }
 
-Graph.prototype.getTransitionsArray = function(value){
+Graph.prototype.getTransitionsArray = function(){
     return Array.from(this.transitions);
 }
 
@@ -51,6 +51,9 @@ Graph.prototype.cloneGraph = function(){
     return object;
 }
 
+/**
+ * This function returns dot file sintax
+ */
 Graph.prototype.toDotFile = function(){
 
     let ret = "digraph " + this.graphName + " {\n";

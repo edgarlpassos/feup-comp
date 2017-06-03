@@ -5945,7 +5945,7 @@ Graph.prototype.getTransitions = function(value){
     return this.transitions;
 }
 
-Graph.prototype.getTransitionsArray = function(value){
+Graph.prototype.getTransitionsArray = function(){
     return Array.from(this.transitions);
 }
 
@@ -13141,14 +13141,18 @@ function Product(graph1, graph2){
     let graph = new Graph();
     this.resultGraph = graph;
     this.chooseNodes();
-    this.addTransitions(this.graph1);
-    this.addTransitions(this.graph2);
+    this.setTransitions(graph1);
+    this.setTransitions(graph2);
+    this.addTransitions()
     console.log(graph);
 }
 
 Product.prototype = Object.create(Object.prototype);
 Product.prototype.constructor = Product;
 
+/**
+ * Adds nodes to result graph { Nodes Graph1 } x { Nodes Graph2 }
+ */
 Product.prototype.chooseNodes = function(){
     for(var i = 0; i < this.graph1.nodeSet.length; i++){
         let node1 = this.graph1.nodeSet[i];
@@ -13167,53 +13171,105 @@ Product.prototype.chooseNodes = function(){
 
             if(node1.nodeEquals(node1,this.graph1.startNode) && node2.nodeEquals(node2, this.graph2.startNode))
                 this.resultGraph.startNode = newNode;
-    
          }
     }
 }
 
-Product.prototype.addTransitions = function(graph){
+/**
+ * Adds Transitions to new nodes
+ */
+Product.prototype.addTransitions = function(){
 
-    console.log(graph);
-
-    for(var i = 0; i < graph.nodeSet.length; i++){
-        let node = graph.nodeSet[i];
+    for(var i = 0; i < this.resultGraph.nodeSet.length; i++){
+        let node = this.resultGraph.nodeSet[i];
+        let nameNode1 = node.val[0];
+        console.log("Node 1: " + nameNode1);
+        let nameNode2 = node.val[1];
+        console.log("Node 2: " + nameNode2);
         
-        for(var j=0; j< node.edgeSet.length; j++){
-            var edge = node.edgeSet[j];
-            var transition = edge.transition;
+        let transitionsArray = this.resultGraph.getTransitionsArray();
 
-            console.log(edge);
+        for(var j = 0; j < transitionsArray.length; j++){
+            
+            let transitionVal = transitionsArray[j];
+            //graph containing that node
+            let graph = this.graphResponsibleForNode(nameNode1);
+            //graph containing that node
+            let graph2 = this.graphResponsibleForNode(nameNode2);
+            let destinationNode1Name, destinationNode2Name;
 
-            var arrayNodes = this.getRelatedNodes(node);
-            console.log("Array originial");
-            console.log(arrayNodes);
-            console.log("Array Destino");
-            var destinationNodes = this.getRelatedNodes(edge.nodeTo);
-            console.log(destinationNodes);
-
-             for(var k=0; k< arrayNodes.length; k++){
-                for(var l=0; k < destinationNodes.length; k++){
-                    if(!destinationNodes[l].nodeEquals(destinationNodes[l],arrayNodes[k])){
-                        let edge = new Edge(destinationNodes[l],transition);
-                        arrayNodes[k].addEdge(edge);
+            /**
+             * Finds destination node name of node1 with transition "transitionVal"
+             */
+            for(var k=0; k < graph.nodeSet.length; k++){
+                if(graph.nodeSet[k].val == nameNode1){
+                    for(var l=0; l < graph.nodeSet[k].edgeSet.length; l++){
+                        if(graph.nodeSet[k].edgeSet[l].transition==transitionVal)
+                             destinationNode1Name = graph.nodeSet[k].edgeSet[l].nodeTo.val;
                     }
-                }      
+                }
             }
+
+            /**
+             * Finds destination node name of node2 with transition "transitionVal"
+             */
+            for(var l=0; l < graph2.nodeSet.length; l++){
+                if(graph2.nodeSet[l].val == nameNode2){
+                    for(var m=0; m < graph2.nodeSet[l].edgeSet.length; m++){
+                        if(graph2.nodeSet[l].edgeSet[m].transition==transitionVal)
+                            destinationNode2Name = graph2.nodeSet[l].edgeSet[m].nodeTo.val;
+                    }
+                }
+            }
+
+            /**
+             * Finds destination node of node1+node2 with transition "transitionVal"
+             */
+            let destination = [destinationNode1Name,destinationNode2Name];
+            let destinationNode = this.getNode(destination);
+
+            /**
+             * Adds edge to node1+node2 
+             */
+            let edge = new Edge(destinationNode, transitionVal);
+            node.addEdge(edge);
         }
     }
 }
 
-Product.prototype.getRelatedNodes = function(node){
-    let array = new Array();
+Product.prototype.getNode = function(destination){
 
     for(var i = 0; i < this.resultGraph.nodeSet.length; i++){
-        let nodeR = this.resultGraph.nodeSet[i].val;
-        if(nodeR.includes(node.val))
-            array.push(this.resultGraph.nodeSet[i]);
+        if(this.resultGraph.nodeSet[i].val.toString()===destination.toString()){
+            return this.resultGraph.nodeSet[i];
+        }     
+    }
+}
+
+Product.prototype.setTransitions = function(graph){
+
+    for(var i = 0; i < graph.nodeSet.length; i++){
+        for(var j=0; j< graph.nodeSet[i].edgeSet.length; j++){
+            this.resultGraph.addTransitions(graph.nodeSet[i].edgeSet[j].transition);
+        }
+    }
+}
+
+Product.prototype.graphResponsibleForNode = function(value){
+    let array = new Array();
+
+    for(var i = 0; i < this.graph1.nodeSet.length; i++){
+        let name = this.graph1.nodeSet[i].val;
+        if(name==value)
+            return this.graph1;
     }
 
-    return array;
+    for(var i = 0; i < this.graph2.nodeSet.length; i++){
+        let name = this.graph2.nodeSet[i].val;
+        if(name==value)
+            return this.graph2;
+    }
+
 }
 
 exports.Product = Product;
@@ -13529,7 +13585,7 @@ const Edge = __webpack_require__(19).Edge;
 let inputParser = __webpack_require__(55).inputParser;
 $(document).ready(function () {
 
-  let graph = new Graph();
+ /* let graph = new Graph();
   //creatiang nodes
   let a = new Node("a", false);
   let b = new Node("b", false);
@@ -13557,106 +13613,77 @@ $(document).ready(function () {
   graph.setGraphName('name');
 
   let dotFile = graph.toDotFile();
-  console.log(dotFile);
-
-  /* 
-  //creating a graph test for reverse
+  console.log(dotFile);*/
+/*
+  //creating a graph test for complement
   let graph = new Graph();
   //creatiang nodes
-  let p0 = new Node("p0",false);
-  let p1 = new Node("p1",false);
-  let p2 = new Node("p2",true);
+  let q0 = new Node("q0",true);
+  let q1 = new Node("q1",false);
   //creating edges
-  let edge = new Edge(p2,"ε");
-  let edge1 = new Edge(p1,"0");
-  let edge2 = new Edge(p0,"0");
-  let edge3 = new Edge(p2,"1");
+  let edge = new Edge(q1,"0");
+  let edge1 = new Edge(q0,"1");
+  let edge2 = new Edge(q0,"0");
   //ading edges
-  p0.addEdge(edge1);
-  p0.addEdge(edge2);
-  p0.addEdge(edge);
-  p1.addEdge(edge2);
-  p2.addEdge(edge3);
-  graph.addNode(p0);
-  graph.addNode(p1);
-  graph.addNode(p2);
-  graph.setStartNode(p0);
+  q0.addEdge(edge1);
+  q0.addEdge(edge);
+  q1.addEdge(edge2);
+  graph.addNode(q0);
+  graph.addNode(q1);
+  graph.setStartNode(q0);
   graph.addTransitions("0");
   graph.addTransitions("1");
-  graph.addTransitions("ε");
-  let reverse = new Reverse(graph);*/
-
-  /*
-    //creating a graph test for complement
-    let graph = new Graph();
-    //creatiang nodes
-    let q0 = new Node("q0",true);
-    let q1 = new Node("q1",false);
-    //creating edges
-    let edge = new Edge(q1,"0");
-    let edge1 = new Edge(q0,"1");
-    let edge2 = new Edge(q0,"0");
-    //ading edges
-    q0.addEdge(edge1);
-    q0.addEdge(edge);
-    q1.addEdge(edge2);
-    graph.addNode(q0);
-    graph.addNode(q1);
-    graph.setStartNode(q0);
-    graph.addTransitions("0");
-    graph.addTransitions("1");
-    let complement = new Complement(graph);*/
-
-  /*
-     //creating a graph test for product
-    let graph1 = new Graph();
-    let graph2 = new Graph();
-    //creatiang nodes
-    let q1 = new Node("q1",true);
-    let q2 = new Node("q2",false);
-    let q3 = new Node("q3",false);
-    let q4= new Node("q4",true);
-      
-    //creating edges
-    let edge = new Edge(q1,"b");
-    let edge1 = new Edge(q2,"b");
-    let edge2 = new Edge(q2,"a");
-    let edge3 = new Edge(q1,"a");
-
-    let edge4 = new Edge(q3,"b");
-    let edge5 = new Edge(q3,"a");
-    let edge6 = new Edge(q4,"a");
-    let edge7 = new Edge(q4,"b");
-
-    q1.addEdge(edge2);
-    q1.addEdge(edge);
-    q2.addEdge(edge1);
-    q2.addEdge(edge3);
-
-    q3.addEdge(edge7);
-    q3.addEdge(edge5);
-    q4.addEdge(edge4);
-    q4.addEdge(edge6);
-
-    graph1.addNode(q1);
-    graph1.addNode(q2);
-
-    graph1.setStartNode(q1);
-    graph1.addTransitions("b");
-    graph1.addTransitions("a");
-
-    graph2.addNode(q3);
-    graph2.addNode(q4);
-
-    graph2.setStartNode(q3);
-    graph2.addTransitions("b");
-    graph2.addTransitions("a");
-
-    let product = new Product(graph1,graph2);*/
+  let complement = new Complement(graph);*/
 
 
+   //creating a graph test for product
+  let graph1 = new Graph();
+  let graph2 = new Graph();
+  //creatiang nodes
+  let q1 = new Node("q1",true);
+  let q2 = new Node("q2",false);
+  let q3 = new Node("q3",false);
+  let q4= new Node("q4",true);
+    
+  //creating edges
+  let edge = new Edge(q1,"b");
+  let edge1 = new Edge(q2,"b");
+  let edge2 = new Edge(q2,"a");
+  let edge3 = new Edge(q1,"a");
 
-  $('#text-input-submit').on('click', function (e) {
+  let edge4 = new Edge(q3,"b");
+  let edge5 = new Edge(q3,"a");
+  let edge6 = new Edge(q4,"a");
+  let edge7 = new Edge(q4,"b");
+
+  q1.addEdge(edge2);
+  q1.addEdge(edge);
+  q2.addEdge(edge1);
+  q2.addEdge(edge3);
+
+  q3.addEdge(edge7);
+  q3.addEdge(edge5);
+  q4.addEdge(edge4);
+  q4.addEdge(edge6);
+
+  graph1.addNode(q1);
+  graph1.addNode(q2);
+
+  graph1.setStartNode(q1);
+  graph1.addTransitions("b");
+  graph1.addTransitions("a");
+
+  graph2.addNode(q3);
+  graph2.addNode(q4);
+
+  graph2.setStartNode(q3);
+  graph2.addTransitions("b");
+  graph2.addTransitions("a");
+
+  let product = new Product(graph1,graph2);
+
+
+  $('#text-input-submit').on('click',function(e){
     e.preventDefault();
     let textarea = $('#text-input-area');
     let input = textarea.val();
