@@ -1,7 +1,7 @@
 const Node = require('./graphNode.js').Node;
 
-function Graph(){
-    this.nodeSet = new Array();
+function Graph() {
+    this.nodeSet = [];
     this.startNode = null;
     this.transitions = new Set();
 }
@@ -9,46 +9,54 @@ function Graph(){
 Graph.prototype = Object.create(Object.prototype);
 Graph.prototype.constructor = Graph;
 
-Graph.prototype.getNodeSet = function(){
+Graph.prototype.getNodeSet = function () {
     return this.nodeSet;
 }
 
-Graph.prototype.getStartNode = function(){
+Graph.prototype.getStartNode = function () {
     return this.startNode;
 }
 
-Graph.prototype.setStartNode = function(node){
+Graph.prototype.setStartNode = function (node) {
     this.startNode = node;
 }
 
-Graph.prototype.addNode = function(node){
+Graph.prototype.addNode = function (node) {
     this.nodeSet.push(node);
 }
 
-Graph.prototype.addTransitions = function(value){
-    if(!this.transitions.has(value))
-         this.transitions.add(value);
+Graph.prototype.addTransitions = function (value) {
+    if (!this.transitions.has(value))
+        this.transitions.add(value);
 }
 
-Graph.prototype.getTransitions = function(value){
+Graph.prototype.getTransitions = function (value) {
     return this.transitions;
 }
 
-Graph.prototype.getTransitionsArray = function(){
+Graph.prototype.getTransitionsArray = function () {
     return Array.from(this.transitions);
 }
 
-Graph.prototype.cloneGraph = function(){
+Graph.prototype.cloneGraph = function () {
 
     let object = new Graph();
 
-    object= JSON.parse(JSON.stringify(this));
+    object = JSON.parse(JSON.stringify(this));
     return object;
 }
 
-Graph.prototype.toDotFile = function(){
+Graph.prototype.toDotFile = function () {
 
     return startNode.toDotFile();
 }
-    
+
+Graph.prototype.hasNode = function (node) {
+    for (let i = 0; i < nodeSet.length; i++)
+        if(node.getVal() === nodeSet[i].getVal())
+            return true;
+
+   return false; 
+}
+
 exports.Graph = Graph;
