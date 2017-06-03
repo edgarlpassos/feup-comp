@@ -1,14 +1,14 @@
 const Edge = require('./graphEdge.js').Edge;
 
-function GraphNode(val){
+function Node(val){
     this.edgeSet = {};
     this.val = val;
 }
 
-GraphNode.prototype = Object.create(Object.prototype);
-GraphNode.prototype.constructor = GraphNode;
+Node.prototype = Object.create(Object.prototype);
+Node.prototype.constructor = Node;
 
-GraphNode.prototype.getEdgeSet = function(){
+Node.prototype.getEdgeSet = function(){
     return this.edgeSet;
 }
 
