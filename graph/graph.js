@@ -34,7 +34,7 @@ Graph.prototype.getTransitions = function(value){
     return this.transitions;
 }
 
-Graph.prototype.getTransitionsArray = function(value){
+Graph.prototype.getTransitionsArray = function(){
     return Array.from(this.transitions);
 }
 

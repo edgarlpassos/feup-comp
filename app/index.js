@@ -107,7 +107,6 @@ $(document).ready(function () {
   let product = new Product(graph1,graph2);
 
 
-
   $('#text-input-submit').on('click',function(e){
     e.preventDefault();
     let textarea = $('#text-input-area');
