@@ -47,14 +47,9 @@ Node.prototype.deleteEdge = function(transition, nodeTo){
 Node.prototype.nodeEquals = function(node1,node2){
     if(node1.val != node2.val)
         return false;
-    
-    console.log(1);
 
     if(node1.acceptanceNode != node2.acceptanceNode)
         return false;
-
-    console.log(2);
-
 
     for(var i = 0; i <node1.getEdgeSet().length; i++){
             edge = node1.getEdgeSet()[i];
@@ -72,8 +67,6 @@ Node.prototype.nodeEquals = function(node1,node2){
                 return false;
             }
     }
-
-    console.log("iguais");
     return true;
 }
 

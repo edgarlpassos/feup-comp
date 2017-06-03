@@ -4,6 +4,7 @@ const Graph = require("../graph/graph.js").Graph;
 const Node = require("../graph/graphNode.js").Node;
 const Complement = require("../graph/complement.js").Complement;
 const Reverse = require("../graph/reverse.js").Reverse;
+const Product = require("../graph/product.js").Product;
 const Edge = require("../graph/graphEdge.js").Edge;
 
 let inputParser = require('./main.js').inputParser;
@@ -57,6 +58,54 @@ $(document).ready(function () {
   graph.addTransitions("0");
   graph.addTransitions("1");
   let complement = new Complement(graph);*/
+
+
+   //creating a graph test for product
+  let graph1 = new Graph();
+  let graph2 = new Graph();
+  //creatiang nodes
+  let q1 = new Node("q1",true);
+  let q2 = new Node("q2",false);
+  let q3 = new Node("q3",false);
+  let q4= new Node("q4",true);
+    
+  //creating edges
+  let edge = new Edge(q1,"b");
+  let edge1 = new Edge(q2,"b");
+  let edge2 = new Edge(q2,"a");
+  let edge3 = new Edge(q1,"a");
+
+  let edge4 = new Edge(q3,"b");
+  let edge5 = new Edge(q3,"a");
+  let edge6 = new Edge(q4,"a");
+  let edge7 = new Edge(q4,"b");
+
+  q1.addEdge(edge2);
+  q1.addEdge(edge);
+  q2.addEdge(edge1);
+  q2.addEdge(edge3);
+
+  q3.addEdge(edge7);
+  q3.addEdge(edge5);
+  q4.addEdge(edge4);
+  q4.addEdge(edge6);
+
+  graph1.addNode(q1);
+  graph1.addNode(q2);
+
+  graph1.setStartNode(q1);
+  graph1.addTransitions("b");
+  graph1.addTransitions("a");
+
+  graph2.addNode(q3);
+  graph2.addNode(q4);
+
+  graph2.setStartNode(q3);
+  graph2.addTransitions("b");
+  graph2.addTransitions("a");
+
+  let product = new Product(graph1,graph2);
+
 
 
   $('#text-input-submit').on('click',function(e){
