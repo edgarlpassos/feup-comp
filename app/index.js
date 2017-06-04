@@ -56,7 +56,7 @@ $(document).ready(function () {
   graph.setStartNode(q0);
   let complement = new Complement(graph);*/
 
-/*
+
    //creating a graph test for product
   let graph1 = new Graph();
   let graph2 = new Graph();
@@ -94,8 +94,10 @@ $(document).ready(function () {
   graph2.addNode(q3);
   graph2.addNode(q4);
   graph2.setStartNode(q3);
-  let product = new Product(graph1,graph2);
-  */
+
+  //INTERSECTION 1 UNION 2
+  let product = new Product(graph1,graph2,2);
+   
 
 
   $('#text-input-submit').on('click',function(e){
