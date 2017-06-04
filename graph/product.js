@@ -58,6 +58,8 @@ Product.prototype.addTransitions = function(){
         let nameNode2 = node.val[1];
         console.log("Node 2: " + nameNode2);
 
+        console.log(this.resultGraphTransitions);
+
         for(var j = 0; j < this.resultGraphTransitions.length; j++){
             
             let transitionVal = this.resultGraphTransitions[j];

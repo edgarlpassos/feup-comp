@@ -52,7 +52,7 @@ Graph.prototype.getTransitionsArray = function(){
 
     for(var i=0; i < this.nodeSet.length;  i++){
         for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
-            let value = this.nodeSet[i].edgeSet[i].value;
+            let value = this.nodeSet[i].edgeSet[i].transition;
              if(!transitions.has(value))
                 transitions.add(value);
         }
@@ -66,7 +66,7 @@ Graph.prototype.getTransitionsSet = function(){
 
     for(var i=0; i < this.nodeSet.length;  i++){
         for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
-            let value = this.nodeSet[i].edgeSet[i].value;
+            let value = this.nodeSet[i].edgeSet[i].transition;
              if(!transitions.has(value))
                 transitions.add(value);
         }
