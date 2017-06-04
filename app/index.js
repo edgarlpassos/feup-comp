@@ -93,18 +93,11 @@ $(document).ready(function () {
 
   graph1.addNode(q1);
   graph1.addNode(q2);
-
   graph1.setStartNode(q1);
-  graph1.addTransitions("b");
-  graph1.addTransitions("a");
 
   graph2.addNode(q3);
   graph2.addNode(q4);
-
   graph2.setStartNode(q3);
-  graph2.addTransitions("b");
-  graph2.addTransitions("a");
-
   let product = new Product(graph1,graph2);
 
 
