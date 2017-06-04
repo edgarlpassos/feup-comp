@@ -16,7 +16,11 @@ Node.prototype.getEdgeSet = function () {
     return this.edgeSet;
 }
 
-Node.prototype.addEdge = function (newEdge) {
+Node.prototype.addEdge = function(newEdge){
+    for(let i = 0; i < this.edgeSet.length; i++){
+        if(this.edgeSet[i].equals(newEdge))
+            return;
+    }
     this.edgeSet.push(newEdge);
 }
 
@@ -31,7 +35,11 @@ Node.prototype.isAcceptanceNode = function () {
     return this.acceptanceNode;
 }
 
-Node.prototype.changeNodeType = function () {
+Node.prototype.setAcceptanceNode = function(isAcceptance){
+    this.acceptanceNode = isAcceptance;
+}
+
+Node.prototype.toggleAcceptanceNodeFlag = function () {
     this.acceptanceNode = !this.acceptanceNode;
 }
 

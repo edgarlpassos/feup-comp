@@ -15,4 +15,5 @@ CLOSE_BRACKET: '}';
 OPEN_SQUARE: '[';
 CLOSE_SQUARE: ']';
 NAME : [A-Za-z][A-Za-z0-9]* ;
+EPS: 'ε';
 DIGIT: [0-9];

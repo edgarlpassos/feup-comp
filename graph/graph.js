@@ -1,9 +1,9 @@
 const Node = require('./graphNode.js').Node;
 
-function Graph() {
+function Graph(name) {
     this.nodeSet = [];
     this.startNode = null;
-    this.graphName = null;
+    this.graphName = name;
 }
 
 Graph.prototype = Object.create(Object.prototype);
@@ -18,6 +18,8 @@ Graph.prototype.getStartNode = function () {
 }
 
 Graph.prototype.setStartNode = function (node) {
+    if(this.startNode != null)
+        throw "A starting node was already set";
     this.startNode = node;
 }
 

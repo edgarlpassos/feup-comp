@@ -18,12 +18,19 @@ CustomDotFileVisitor.prototype.constructor = CustomDotFileVisitor;
 
 // Visit a parse tree produced by DotFileParser#entry.
 DotFileVisitor.prototype.visitEntry = function (ctx) {
-  this.graph = new Graph();
+  let name = '';
+  if (ctx.NAME() != null)
+    name = ctx.NAME().getText();
+
+  this.graph = new Graph(name);
+
   if (ctx.instruction() != null) {
     this.visitInstruction(ctx.instruction());
-    console.log(this.graph);
-    return this.graph;
   }
+
+  console.log(this.graph);
+  console.log(this.graph.toDotFile());
+  return this.graph;
 }
 
 
@@ -32,6 +39,7 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
   if (ctx.children == null)
     return null;
 
+
   let valToken = ctx.NAME();
   if (valToken != null) {
     let value = valToken.getText();
@@ -39,6 +47,8 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     if (node == null) {
       node = new Node(value);
       this.graph.addNode(node);
+      if (value === 'start')
+        this.graph.setStartNode(node);
     }
 
     /* Check for transitions */
@@ -54,7 +64,9 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     let shaping = ctx.shaping();
     if (shaping != null) {
       let shape = this.visitShaping(shaping);
-      if (shape != null) {}
+      if (shape != null) {
+        node.setAcceptanceNode(true);
+      }
     }
   }
 
@@ -80,20 +92,16 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
     if (node == null) {
       node = new Node(value);
       this.graph.addNode(node);
-    }
-
-    let transition = ctx.stateTransition();
-    if (transition != null) {
-      let newEdge = this.visitStateTransition(transition);
-      if (newEdge != null) {
-        node.addEdge(newEdge);
-      }
+      if (value === 'start')
+        this.graph.setStartNode(node);
     }
 
     let transitionChar = '';
     let labeling = ctx.labeling();
     if (labeling != null)
       transitionChar = this.visitLabeling(labeling);
+
+    console.log(transitionChar);
 
     let returnVal = new Edge(node, transitionChar);
     return returnVal;
@@ -104,15 +112,29 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
 
 // Visit a parse tree produced by DotFileParser#labeling.
 DotFileVisitor.prototype.visitLabeling = function (ctx) {
-  return null;
-  //return this.visitChildren(ctx);
+  let labelname = ctx.labelname();
+  if (labelname == null)
+    return null;
+  else return this.visitLabelname(labelname);
 };
 
 
+// Visit a parse tree produced by DotFileParser#labelname.
+DotFileVisitor.prototype.visitLabelname = function (ctx) {
+  let eps = ctx.EPS();
+  if (eps != null)
+    return eps.getText();
+  let name = ctx.NAME();
+  if (name != null)
+    return name.getText();
+  return null;
+};
+
 // Visit a parse tree produced by DotFileParser#shaping.
 DotFileVisitor.prototype.visitShaping = function (ctx) {
-  return null;
-  //return this.visitChildren(ctx);
+  let shape = ctx.DOUBLE_CIRCLE();
+  if (shape != null)
+    return shape.getText();
 };
 
 
