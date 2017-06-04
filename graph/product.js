@@ -20,7 +20,7 @@ function Product(graph1, graph2, operation) {
     this.setTransitions();
     this.addTransitions();
     console.log(graph);
-    console.log(this.resultGraph);
+    console.log(this.resultGraph.toDotFile());
 }
 
 Product.prototype = Object.create(Object.prototype);

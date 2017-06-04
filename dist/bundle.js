@@ -5287,7 +5287,7 @@ function Node(val,acceptanceNode){
     this.edgeSet = new Array();
     this.val = val;
     this.acceptanceNode = acceptanceNode;
-    
+    this.visited = false;
 }
 Node.prototype = Object.create(Object.prototype);
 Node.prototype.constructor = Node;
@@ -5304,6 +5304,9 @@ Node.prototype.addEdge = function(newEdge){
 }
 
 Node.prototype.getVal = function(){
+    if(this.val.length === 2)
+        return this.val[0] + '' + this.val[1];
+
     return this.val;
 }
 
@@ -5361,8 +5364,13 @@ Node.prototype.nodeEquals = function(node1,node2){
  */
 Node.prototype.toDotFile = function(){
 
+    if(this.visited)
+        return;
+
+    this.visited = true;
+
     if(this.edgeSet.length == 0)
-        return this.val + ";\n";
+        return this.getVal() + ";\n";
 
     let ret = "";
 
@@ -5370,10 +5378,20 @@ Node.prototype.toDotFile = function(){
     for(let i = 0; i < this.edgeSet.length; i++){
         console.log(this.edgeSet[i].getNodeTo().getVal());
         let node = this.edgeSet[i].getNodeTo();
-        ret += this.val + "->" + node.toDotFile();
+        if(node.isVisited())
+            ret += this.getVal() + "->" + node.getVal() + ";\n";
+        else ret += this.getVal() + "->" + node.toDotFile();
     }
 
     return ret;
+}
+
+Node.prototype.isVisited = function(){
+    return this.visited;
+}
+
+Node.prototype.setVisited = function(newValue){
+    this.visited = newValue;
 }
 
 exports.Node = Node;
@@ -6077,7 +6095,21 @@ Graph.prototype.toDotFile = function(){
     let ret = "digraph " + this.graphName + " {\n";
     ret += this.startNode.toDotFile();
     ret += "}";
+
+    this.resetVisited();    
+
     return ret;
+}
+
+/**
+ * Puts visited field of nodes false after a 
+ * depth search
+ */
+Graph.prototype.resetVisited = function(){
+
+    for(let node of this.nodeSet){
+        node.setVisited(false);
+    }
 }
 
 Graph.prototype.getTransitionsArray = function(){
@@ -13166,7 +13198,7 @@ function Product(graph1, graph2, operation) {
     this.setTransitions();
     this.addTransitions();
     console.log(graph);
-    console.log(this.resultGraph);
+    console.log(this.resultGraph.toDotFile());
 }
 
 Product.prototype = Object.create(Object.prototype);
@@ -13720,9 +13752,9 @@ $(document).ready(function () {
   graph2.setStartNode(q3);
 
   //INTERSECTION 1 UNION 2
+  console.log(graph1.toDotFile());
+  console.log(graph2.toDotFile());
   let product = new Product(graph1,graph2,2);
-  
-
 
   $('#text-input-submit').on('click',function(e){
     e.preventDefault();

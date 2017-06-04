@@ -96,9 +96,9 @@ $(document).ready(function () {
   graph2.setStartNode(q3);
 
   //INTERSECTION 1 UNION 2
+  console.log(graph1.toDotFile());
+  console.log(graph2.toDotFile());
   let product = new Product(graph1,graph2,2);
-   
-
 
   $('#text-input-submit').on('click',function(e){
     e.preventDefault();
