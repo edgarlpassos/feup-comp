@@ -5259,7 +5259,7 @@ process.umask = function() { return 0; };
 /* 15 */
 /***/ (function(module, exports) {
 
-function Edge(nodeTo, transition){
+function Edge(nodeTo, transition) {
     this.nodeTo = nodeTo;
     this.transition = transition;
     this.new = false;
@@ -5268,11 +5268,11 @@ function Edge(nodeTo, transition){
 Edge.prototype = Object.create(Object.prototype);
 Edge.prototype.constructor = Edge;
 
-Edge.prototype.getNodeTo = function(){
+Edge.prototype.getNodeTo = function () {
     return this.nodeTo;
 }
 
-Edge.prototype.getTransition = function(){
+Edge.prototype.getTransition = function () {
     return this.transition;
 }
 
@@ -5285,7 +5285,7 @@ exports.Edge = Edge;
 const Edge = __webpack_require__(15).Edge;
 
 function Node(val, acceptanceNode) {
-    this.edgeSet = new Array();
+    this.edgeSet = [];
     this.val = val;
     this.acceptanceNode = acceptanceNode;
     this.visited = false;
@@ -6049,8 +6049,8 @@ function forEach(xs, f) {
 
 const Node = __webpack_require__(16).Node;
 
-function Graph(){
-    this.nodeSet = new Array();
+function Graph() {
+    this.nodeSet = [];
     this.startNode = null;
     this.graphName = null;
 }
@@ -6058,37 +6058,37 @@ function Graph(){
 Graph.prototype = Object.create(Object.prototype);
 Graph.prototype.constructor = Graph;
 
-Graph.prototype.getNodeSet = function(){
+Graph.prototype.getNodeSet = function () {
     return this.nodeSet;
 }
 
-Graph.prototype.getStartNode = function(){
+Graph.prototype.getStartNode = function () {
     return this.startNode;
 }
 
-Graph.prototype.setStartNode = function(node){
+Graph.prototype.setStartNode = function (node) {
     this.startNode = node;
 }
 
-Graph.prototype.addNode = function(node){
+Graph.prototype.addNode = function (node) {
     this.nodeSet.push(node);
 }
 
-Graph.prototype.setGraphName = function(name){
+Graph.prototype.setGraphName = function (name) {
     this.graphName = name;
 }
 
-Graph.prototype.cloneGraph = function(){
+Graph.prototype.cloneGraph = function () {
 
     let object = new Graph();
-    object= JSON.parse(JSON.stringify(this));
+    object = JSON.parse(JSON.stringify(this));
     return object;
 }
 
 /**
  * This function returns dot file sintax
  */
-Graph.prototype.toDotFile = function(){
+Graph.prototype.toDotFile = function () {
 
     let ret = "digraph " + this.graphName + " {\n";
     ret += this.startNode.toDotFile();
@@ -6103,11 +6103,11 @@ Graph.prototype.toDotFile = function(){
 /**
  * Gets final nodes of the graph and returns dot file final node sintax
  */
-Graph.prototype.finalNodes = function(){
+Graph.prototype.finalNodes = function () {
     let ret = "";
 
-    for(let node of this.nodeSet){
-        if(node.isAcceptanceNode())
+    for (let node of this.nodeSet) {
+        if (node.isAcceptanceNode())
             ret += node.getVal() + "[shape=doublecircle];\n"
     }
 
@@ -6118,20 +6118,20 @@ Graph.prototype.finalNodes = function(){
  * Puts visited field of nodes false after a 
  * depth search
  */
-Graph.prototype.resetVisited = function(){
+Graph.prototype.resetVisited = function () {
 
-    for(let node of this.nodeSet){
+    for (let node of this.nodeSet) {
         node.setVisited(false);
     }
 }
 
-Graph.prototype.getTransitionsArray = function(){
+Graph.prototype.getTransitionsArray = function () {
     let transitions = new Set();
 
-    for(var i=0; i < this.nodeSet.length;  i++){
-        for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
+    for (var i = 0; i < this.nodeSet.length; i++) {
+        for (var j = 0; j < this.nodeSet[i].edgeSet.length; j++) {
             let value = this.nodeSet[i].edgeSet[j].transition;
-             if(!transitions.has(value))
+            if (!transitions.has(value))
                 transitions.add(value);
         }
     }
@@ -6139,20 +6139,36 @@ Graph.prototype.getTransitionsArray = function(){
     return Array.from(transitions);
 }
 
-Graph.prototype.getTransitionsSet = function(){
+Graph.prototype.getTransitionsSet = function () {
     let transitions = new Set();
 
-    for(var i=0; i < this.nodeSet.length;  i++){
-        for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
+    for (var i = 0; i < this.nodeSet.length; i++) {
+        for (var j = 0; j < this.nodeSet[i].edgeSet.length; j++) {
             let value = this.nodeSet[i].edgeSet[j].transition;
-             if(!transitions.has(value))
+            if (!transitions.has(value))
                 transitions.add(value);
         }
     }
 
     return transitions;
 }
-    
+
+Graph.prototype.getNode = function (value) {
+    for (let i = 0; i < this.nodeSet.length; i++) {
+        let node = this.nodeSet[i];
+        if (value === node.getVal())
+            return node;
+    }
+
+    return null;
+}
+
+Graph.prototype.toString = function () {
+    console.log('Nodes: ');
+    console.log(this.nodeSet.toString());
+    // TODO end this
+}
+
 exports.Graph = Graph;
 
 /***/ }),
@@ -13119,9 +13135,9 @@ const Edge = __webpack_require__(15).Edge;
  * Complement Graph
  * @param {*} graph 
  */
-function Complement(graph){
+function Complement(graph) {
     this.graph = graph;
-    this.dead = new Node("dead",false);
+    this.dead = new Node("dead", false);
     this.addDeadStates();
     this.changeStates();
     this.addTransitionsToDeadState();
@@ -13131,55 +13147,55 @@ function Complement(graph){
 Complement.prototype = Object.create(Object.prototype);
 Complement.prototype.constructor = Complement;
 
-Complement.prototype.addTransitionsToDeadState = function(){
+Complement.prototype.addTransitionsToDeadState = function () {
     var transitionsArray = this.graph.getTransitionsArray();
-    for(var i = 0; i < transitionsArray.length; i++){
-         //Adds transictions to dead state
-        let deadEdge = new Edge(this.dead,transitionsArray[i]);
+    for (var i = 0; i < transitionsArray.length; i++) {
+        //Adds transictions to dead state
+        let deadEdge = new Edge(this.dead, transitionsArray[i]);
         this.dead.addEdge(deadEdge);
-     }
+    }
 }
 
 /**
  * Add dead state to complete DFA. Change states
  */
 
-Complement.prototype.addDeadStates = function() {
+Complement.prototype.addDeadStates = function () {
     var transitionsArray = this.graph.getTransitionsArray();
 
-     for(var i = 0; i < this.graph.getNodeSet().length; i++){
+    for (var i = 0; i < this.graph.getNodeSet().length; i++) {
         var node = this.graph.getNodeSet()[i];
         this.deadStates(transitionsArray, node, node.getEdgeSet());
         console.log("Passing throw over all nodes...");
-     }
-     
-     this.graph.addNode(this.dead);
+    }
+
+    this.graph.addNode(this.dead);
 }
 
-Complement.prototype.deadStates = function(transitionsArray, node, edges){
+Complement.prototype.deadStates = function (transitionsArray, node, edges) {
 
-    for(var i = 0; i < transitionsArray.length; i++){
-        for(var j= 0; j < edges.length; j++){
+    for (var i = 0; i < transitionsArray.length; i++) {
+        for (var j = 0; j < edges.length; j++) {
 
-           if(edges[j].transition == transitionsArray[i]){
+            if (edges[j].transition == transitionsArray[i]) {
                 break;
-           } 
-           if(j===(edges.length-1)){
-               console.log("Adding transition to dead state with label " + transitionsArray[i]);
-               let edge = new Edge(this.dead,transitionsArray[i]);
-               node.addEdge(edge);
+            }
+            if (j === (edges.length - 1)) {
+                console.log("Adding transition to dead state with label " + transitionsArray[i]);
+                let edge = new Edge(this.dead, transitionsArray[i]);
+                node.addEdge(edge);
             }
         }
-        if(edges.length==0){
+        if (edges.length == 0) {
             console.log("Adding transition to dead state with label " + transitionsArray[i]);
-             let edge = new Edge(this.dead,transitionsArray[i]);
-             node.addEdge(edge);
+            let edge = new Edge(this.dead, transitionsArray[i]);
+            node.addEdge(edge);
         }
     }
 }
 
-Complement.prototype.changeStates = function(){
-     for(var i = 0; i< this.graph.getNodeSet().length; i++)
+Complement.prototype.changeStates = function () {
+    for (var i = 0; i < this.graph.getNodeSet().length; i++)
         this.graph.getNodeSet()[i].changeNodeType();
 }
 
@@ -13679,72 +13695,72 @@ const Edge = __webpack_require__(15).Edge;
 let inputParser = __webpack_require__(55).inputParser;
 $(document).ready(function () {
 
- /* let graph = new Graph();
-  //creatiang nodes
-  let a = new Node("a", false);
-  let b = new Node("b", false);
-  let c = new Node("c", true);
-  let d = new Node("d", false);
-  //creating edges
-  let edge = new Edge(b, "1");
-  let edge1 = new Edge(c, "1");
-  let edge2 = new Edge(d, "1");
-  //ading edges
-  a.addEdge(edge);
-  a.addEdge(edge2);
-  b.addEdge(edge1);
-  d.addEdge(edge1);
+  /* let graph = new Graph();
+   //creatiang nodes
+   let a = new Node("a", false);
+   let b = new Node("b", false);
+   let c = new Node("c", true);
+   let d = new Node("d", false);
+   //creating edges
+   let edge = new Edge(b, "1");
+   let edge1 = new Edge(c, "1");
+   let edge2 = new Edge(d, "1");
+   //ading edges
+   a.addEdge(edge);
+   a.addEdge(edge2);
+   b.addEdge(edge1);
+   d.addEdge(edge1);
 
-  graph.addNode(a);
-  graph.addNode(b);
-  graph.addNode(c);
-  graph.addNode(d);
-  graph.setStartNode(a);
+   graph.addNode(a);
+   graph.addNode(b);
+   graph.addNode(c);
+   graph.addNode(d);
+   graph.setStartNode(a);
 
-  graph.setGraphName('name');
+   graph.setGraphName('name');
 
-  let dotFile = graph.toDotFile();
-  console.log(dotFile);*/
+   let dotFile = graph.toDotFile();
+   console.log(dotFile);*/
 
-/*
-  //creating a graph test for complement
-  let graph = new Graph();
-  //creatiang nodes
-  let q0 = new Node("q0",true);
-  let q1 = new Node("q1",false);
-  //creating edges
-  let edge = new Edge(q1,"0");
-  let edge1 = new Edge(q0,"1");
-  let edge2 = new Edge(q0,"0");
-  //ading edges
-  q0.addEdge(edge1);
-  q0.addEdge(edge);
-  q1.addEdge(edge2);
-  graph.addNode(q0);
-  graph.addNode(q1);
-  graph.setStartNode(q0);
-  let complement = new Complement(graph);*/
+  /*
+    //creating a graph test for complement
+    let graph = new Graph();
+    //creatiang nodes
+    let q0 = new Node("q0",true);
+    let q1 = new Node("q1",false);
+    //creating edges
+    let edge = new Edge(q1,"0");
+    let edge1 = new Edge(q0,"1");
+    let edge2 = new Edge(q0,"0");
+    //ading edges
+    q0.addEdge(edge1);
+    q0.addEdge(edge);
+    q1.addEdge(edge2);
+    graph.addNode(q0);
+    graph.addNode(q1);
+    graph.setStartNode(q0);
+    let complement = new Complement(graph);*/
 
 
-   //creating a graph test for product
+  //creating a graph test for product
   let graph1 = new Graph();
   let graph2 = new Graph();
   //creatiang nodes
-  let q1 = new Node("q1",true);
-  let q2 = new Node("q2",false);
-  let q3 = new Node("q3",false);
-  let q4= new Node("q4",true);
-    
-  //creating edges
-  let edge = new Edge(q1,"b");
-  let edge1 = new Edge(q2,"b");
-  let edge2 = new Edge(q2,"a");
-  let edge3 = new Edge(q1,"a");
+  let q1 = new Node("q1", true);
+  let q2 = new Node("q2", false);
+  let q3 = new Node("q3", false);
+  let q4 = new Node("q4", true);
 
-  let edge4 = new Edge(q3,"b");
-  let edge5 = new Edge(q3,"a");
-  let edge6 = new Edge(q4,"a");
-  let edge7 = new Edge(q4,"b");
+  //creating edges
+  let edge = new Edge(q1, "b");
+  let edge1 = new Edge(q2, "b");
+  let edge2 = new Edge(q2, "a");
+  let edge3 = new Edge(q1, "a");
+
+  let edge4 = new Edge(q3, "b");
+  let edge5 = new Edge(q3, "a");
+  let edge6 = new Edge(q4, "a");
+  let edge7 = new Edge(q4, "b");
 
   q1.addEdge(edge2);
   q1.addEdge(edge);
@@ -13767,9 +13783,9 @@ $(document).ready(function () {
   //INTERSECTION 1 UNION 2
   console.log(graph1.toDotFile());
   console.log(graph2.toDotFile());
-  let product = new Product(graph1,graph2,1);
+  let product = new Product(graph1, graph2, 1);
 
-  $('#text-input-submit').on('click',function(e){
+  $('#text-input-submit').on('click', function (e) {
     e.preventDefault();
     let textarea = $('#text-input-area');
     let input = textarea.val();
@@ -13822,6 +13838,7 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
   this.graph = new Graph();
   if (ctx.instruction() != null) {
     this.visitInstruction(ctx.instruction());
+    console.log(this.graph);
     return this.graph;
   }
 }
@@ -13829,21 +13846,24 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
 
 // Visit a parse tree produced by DotFileParser#instruction.
 DotFileVisitor.prototype.visitInstruction = function (ctx) {
-  //return this.visitChildren(ctx);
   if (ctx.children == null)
     return null;
 
-  let nameToken = ctx.NAME();
-  if (nameToken != null) {
-    let node = new Node(nameToken.getText());
+  let valToken = ctx.NAME();
+  if (valToken != null) {
+    let value = valToken.getText();
+    let node = this.graph.getNode(value);
+    if (node == null) {
+      node = new Node(value);
+      this.graph.addNode(node);
+    }
 
     /* Check for transitions */
     let transition = ctx.stateTransition();
     if (transition != null) {
       let edge = this.visitStateTransition(transition);
       if (edge != null) {
-        console.log(edge);
-        //node.addEdge(edge);
+        node.addEdge(edge);
       }
     }
 
@@ -13851,12 +13871,9 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     let shaping = ctx.shaping();
     if (shaping != null) {
       let shape = this.visitShaping(shaping);
-      if (shape != null) {
-        console.log(shape);
-      }
+      if (shape != null) {}
     }
   }
-
 
   /* Semicolon Instruction */
   let instruction = ctx.instruction();
@@ -13865,24 +13882,52 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
   }
 };
 
-
 // Visit a parse tree produced by DotFileParser#stateTransition.
 DotFileVisitor.prototype.visitStateTransition = function (ctx) {
-  console.log(ctx);
+  if (ctx.children === null)
+    return null;
+
+  /* Get destination node */
+  let valToken = ctx.NAME();
+  if (valToken != null) {
+
+    let value = valToken.getText();
+    let node = this.graph.getNode(value);
+
+    if (node == null) {
+      node = new Node(value);
+      this.graph.addNode(node);
+    }
+
+    let transition = ctx.stateTransition();
+    if (transition != null) {
+      let newEdge = this.visitStateTransition(transition);
+      if (newEdge != null) {
+        node.addEdge(newEdge);
+      }
+    }
+
+    let transitionChar = '';
+    let labeling = ctx.labeling();
+    if (labeling != null)
+      transitionChar = this.visitLabeling(labeling);
+
+    let returnVal = new Edge(node, transitionChar);
+    return returnVal;
+  }
   return null;
-  //return this.visitChildren(ctx);
 };
 
 
 // Visit a parse tree produced by DotFileParser#labeling.
 DotFileVisitor.prototype.visitLabeling = function (ctx) {
-  return this.visitChildren(ctx);
+  return null;
+  //return this.visitChildren(ctx);
 };
 
 
 // Visit a parse tree produced by DotFileParser#shaping.
 DotFileVisitor.prototype.visitShaping = function (ctx) {
-  console.log(ctx);
   return null;
   //return this.visitChildren(ctx);
 };
@@ -14729,44 +14774,43 @@ var DotFileVisitor = __webpack_require__(32).DotFileVisitor;
 var grammarFileName = "DotFile.g4";
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
-    "\u0003\u0012A\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0003\u0012@\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
     "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0003",
     "\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003",
     "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
-    "\u0003\u0003\u0003\u0005\u0003\u001d\n\u0003\u0003\u0004\u0003\u0004",
-    "\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004",
-    "\u0003\u0004\u0003\u0004\u0005\u0004)\n\u0004\u0003\u0005\u0003\u0005",
-    "\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005",
-    "\u0005\u00053\n\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006",
-    "\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0005\u0006=\n\u0006",
-    "\u0003\u0007\u0003\u0007\u0003\u0007\u0002\u0002\b\u0002\u0004\u0006",
-    "\b\n\f\u0002\u0002@\u0002\u000e\u0003\u0002\u0002\u0002\u0004\u001c",
-    "\u0003\u0002\u0002\u0002\u0006(\u0003\u0002\u0002\u0002\b2\u0003\u0002",
-    "\u0002\u0002\n<\u0003\u0002\u0002\u0002\f>\u0003\u0002\u0002\u0002\u000e",
-    "\u000f\u0007\u0004\u0002\u0002\u000f\u0010\u0007\u0011\u0002\u0002\u0010",
-    "\u0011\u0007\r\u0002\u0002\u0011\u0012\u0005\u0004\u0003\u0002\u0012",
-    "\u0013\u0007\u000e\u0002\u0002\u0013\u0003\u0003\u0002\u0002\u0002\u0014",
-    "\u0015\u0007\u0011\u0002\u0002\u0015\u0016\u0005\u0006\u0004\u0002\u0016",
-    "\u0017\u0005\n\u0006\u0002\u0017\u0018\u0005\u0004\u0003\u0002\u0018",
-    "\u001d\u0003\u0002\u0002\u0002\u0019\u001a\u0007\f\u0002\u0002\u001a",
-    "\u001d\u0005\u0004\u0003\u0002\u001b\u001d\u0003\u0002\u0002\u0002\u001c",
-    "\u0014\u0003\u0002\u0002\u0002\u001c\u0019\u0003\u0002\u0002\u0002\u001c",
-    "\u001b\u0003\u0002\u0002\u0002\u001d\u0005\u0003\u0002\u0002\u0002\u001e",
-    "\u001f\u0007\t\u0002\u0002\u001f \u0007\u0011\u0002\u0002 !\u0005\u0006",
-    "\u0004\u0002!\"\u0005\b\u0005\u0002\"#\u0007\f\u0002\u0002#)\u0003\u0002",
-    "\u0002\u0002$%\u0007\t\u0002\u0002%&\u0007\u0011\u0002\u0002&)\u0005",
-    "\b\u0005\u0002\')\u0003\u0002\u0002\u0002(\u001e\u0003\u0002\u0002\u0002",
-    "($\u0003\u0002\u0002\u0002(\'\u0003\u0002\u0002\u0002)\u0007\u0003\u0002",
-    "\u0002\u0002*+\u0007\u000f\u0002\u0002+,\u0007\u0005\u0002\u0002,-\u0007",
-    "\u000b\u0002\u0002-.\u0007\n\u0002\u0002./\u0007\u0011\u0002\u0002/",
-    "0\u0007\n\u0002\u000203\u0007\u0010\u0002\u000213\u0003\u0002\u0002",
-    "\u00022*\u0003\u0002\u0002\u000221\u0003\u0002\u0002\u00023\t\u0003",
-    "\u0002\u0002\u000245\u0007\u000f\u0002\u000256\u0007\u0007\u0002\u0002",
-    "67\u0007\u000b\u0002\u000278\u0007\n\u0002\u000289\u0007\b\u0002\u0002",
-    "9:\u0007\n\u0002\u0002:=\u0007\u0010\u0002\u0002;=\u0003\u0002\u0002",
-    "\u0002<4\u0003\u0002\u0002\u0002<;\u0003\u0002\u0002\u0002=\u000b\u0003",
-    "\u0002\u0002\u0002>?\u0005\u0002\u0002\u0002?\r\u0003\u0002\u0002\u0002",
-    "\u0006\u001c(2<"].join("");
+    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0005\u0003 ",
+    "\n\u0003\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004",
+    "\u0003\u0004\u0005\u0004(\n\u0004\u0003\u0005\u0003\u0005\u0003\u0005",
+    "\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0005\u0005",
+    "2\n\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006",
+    "\u0003\u0006\u0003\u0006\u0003\u0006\u0005\u0006<\n\u0006\u0003\u0007",
+    "\u0003\u0007\u0003\u0007\u0002\u0002\b\u0002\u0004\u0006\b\n\f\u0002",
+    "\u0002?\u0002\u000e\u0003\u0002\u0002\u0002\u0004\u001f\u0003\u0002",
+    "\u0002\u0002\u0006\'\u0003\u0002\u0002\u0002\b1\u0003\u0002\u0002\u0002",
+    "\n;\u0003\u0002\u0002\u0002\f=\u0003\u0002\u0002\u0002\u000e\u000f\u0007",
+    "\u0004\u0002\u0002\u000f\u0010\u0007\u0011\u0002\u0002\u0010\u0011\u0007",
+    "\r\u0002\u0002\u0011\u0012\u0005\u0004\u0003\u0002\u0012\u0013\u0007",
+    "\u000e\u0002\u0002\u0013\u0003\u0003\u0002\u0002\u0002\u0014\u0015\u0007",
+    "\u0011\u0002\u0002\u0015\u0016\u0005\u0006\u0004\u0002\u0016\u0017\u0005",
+    "\u0004\u0003\u0002\u0017 \u0003\u0002\u0002\u0002\u0018\u0019\u0007",
+    "\f\u0002\u0002\u0019 \u0005\u0004\u0003\u0002\u001a\u001b\u0007\u0011",
+    "\u0002\u0002\u001b\u001c\u0005\n\u0006\u0002\u001c\u001d\u0005\u0004",
+    "\u0003\u0002\u001d \u0003\u0002\u0002\u0002\u001e \u0003\u0002\u0002",
+    "\u0002\u001f\u0014\u0003\u0002\u0002\u0002\u001f\u0018\u0003\u0002\u0002",
+    "\u0002\u001f\u001a\u0003\u0002\u0002\u0002\u001f\u001e\u0003\u0002\u0002",
+    "\u0002 \u0005\u0003\u0002\u0002\u0002!\"\u0007\t\u0002\u0002\"#\u0007",
+    "\u0011\u0002\u0002#(\u0005\u0006\u0004\u0002$%\u0007\t\u0002\u0002%",
+    "&\u0007\u0011\u0002\u0002&(\u0005\b\u0005\u0002\'!\u0003\u0002\u0002",
+    "\u0002\'$\u0003\u0002\u0002\u0002(\u0007\u0003\u0002\u0002\u0002)*\u0007",
+    "\u000f\u0002\u0002*+\u0007\u0005\u0002\u0002+,\u0007\u000b\u0002\u0002",
+    ",-\u0007\n\u0002\u0002-.\u0007\u0011\u0002\u0002./\u0007\n\u0002\u0002",
+    "/2\u0007\u0010\u0002\u000202\u0003\u0002\u0002\u00021)\u0003\u0002\u0002",
+    "\u000210\u0003\u0002\u0002\u00022\t\u0003\u0002\u0002\u000234\u0007",
+    "\u000f\u0002\u000245\u0007\u0007\u0002\u000256\u0007\u000b\u0002\u0002",
+    "67\u0007\n\u0002\u000278\u0007\b\u0002\u000289\u0007\n\u0002\u00029",
+    "<\u0007\u0010\u0002\u0002:<\u0003\u0002\u0002\u0002;3\u0003\u0002\u0002",
+    "\u0002;:\u0003\u0002\u0002\u0002<\u000b\u0003\u0002\u0002\u0002=>\u0005",
+    "\u0002\u0002\u0002>\r\u0003\u0002\u0002\u0002\u0006\u001f\'1;"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -14945,16 +14989,16 @@ InstructionContext.prototype.stateTransition = function() {
     return this.getTypedRuleContext(StateTransitionContext,0);
 };
 
-InstructionContext.prototype.shaping = function() {
-    return this.getTypedRuleContext(ShapingContext,0);
-};
-
 InstructionContext.prototype.instruction = function() {
     return this.getTypedRuleContext(InstructionContext,0);
 };
 
 InstructionContext.prototype.SEMICOLON = function() {
     return this.getToken(DotFileParser.SEMICOLON, 0);
+};
+
+InstructionContext.prototype.shaping = function() {
+    return this.getTypedRuleContext(ShapingContext,0);
 };
 
 InstructionContext.prototype.enterRule = function(listener) {
@@ -14987,33 +15031,43 @@ DotFileParser.prototype.instruction = function() {
     var localctx = new InstructionContext(this, this._ctx, this.state);
     this.enterRule(localctx, 2, DotFileParser.RULE_instruction);
     try {
-        this.state = 26;
+        this.state = 29;
         this._errHandler.sync(this);
-        switch(this._input.LA(1)) {
-        case DotFileParser.NAME:
+        var la_ = this._interp.adaptivePredict(this._input,0,this._ctx);
+        switch(la_) {
+        case 1:
             this.enterOuterAlt(localctx, 1);
             this.state = 18;
             this.match(DotFileParser.NAME);
             this.state = 19;
             this.stateTransition();
             this.state = 20;
-            this.shaping();
-            this.state = 21;
             this.instruction();
             break;
-        case DotFileParser.SEMICOLON:
+
+        case 2:
             this.enterOuterAlt(localctx, 2);
-            this.state = 23;
+            this.state = 22;
             this.match(DotFileParser.SEMICOLON);
-            this.state = 24;
+            this.state = 23;
             this.instruction();
             break;
-        case DotFileParser.CLOSE_BRACKET:
+
+        case 3:
             this.enterOuterAlt(localctx, 3);
+            this.state = 24;
+            this.match(DotFileParser.NAME);
+            this.state = 25;
+            this.shaping();
+            this.state = 26;
+            this.instruction();
+            break;
+
+        case 4:
+            this.enterOuterAlt(localctx, 4);
 
             break;
-        default:
-            throw new antlr4.error.NoViableAltException(this);
+
         }
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -15061,10 +15115,6 @@ StateTransitionContext.prototype.labeling = function() {
     return this.getTypedRuleContext(LabelingContext,0);
 };
 
-StateTransitionContext.prototype.SEMICOLON = function() {
-    return this.getToken(DotFileParser.SEMICOLON, 0);
-};
-
 StateTransitionContext.prototype.enterRule = function(listener) {
     if(listener instanceof DotFileListener ) {
         listener.enterStateTransition(this);
@@ -15095,22 +15145,18 @@ DotFileParser.prototype.stateTransition = function() {
     var localctx = new StateTransitionContext(this, this._ctx, this.state);
     this.enterRule(localctx, 4, DotFileParser.RULE_stateTransition);
     try {
-        this.state = 38;
+        this.state = 37;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,1,this._ctx);
         switch(la_) {
         case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 28;
-            this.match(DotFileParser.TRANSITION);
-            this.state = 29;
-            this.match(DotFileParser.NAME);
-            this.state = 30;
-            this.stateTransition();
             this.state = 31;
-            this.labeling();
+            this.match(DotFileParser.TRANSITION);
             this.state = 32;
-            this.match(DotFileParser.SEMICOLON);
+            this.match(DotFileParser.NAME);
+            this.state = 33;
+            this.stateTransition();
             break;
 
         case 2:
@@ -15121,11 +15167,6 @@ DotFileParser.prototype.stateTransition = function() {
             this.match(DotFileParser.NAME);
             this.state = 36;
             this.labeling();
-            break;
-
-        case 3:
-            this.enterOuterAlt(localctx, 3);
-
             break;
 
         }
@@ -15221,33 +15262,34 @@ DotFileParser.prototype.labeling = function() {
     var localctx = new LabelingContext(this, this._ctx, this.state);
     this.enterRule(localctx, 6, DotFileParser.RULE_labeling);
     try {
-        this.state = 48;
+        this.state = 47;
         this._errHandler.sync(this);
-        var la_ = this._interp.adaptivePredict(this._input,2,this._ctx);
-        switch(la_) {
-        case 1:
+        switch(this._input.LA(1)) {
+        case DotFileParser.OPEN_SQUARE:
             this.enterOuterAlt(localctx, 1);
-            this.state = 40;
+            this.state = 39;
             this.match(DotFileParser.OPEN_SQUARE);
-            this.state = 41;
+            this.state = 40;
             this.match(DotFileParser.LABEL);
-            this.state = 42;
+            this.state = 41;
             this.match(DotFileParser.EQUAL);
+            this.state = 42;
+            this.match(DotFileParser.QUOTATION);
             this.state = 43;
-            this.match(DotFileParser.QUOTATION);
-            this.state = 44;
             this.match(DotFileParser.NAME);
-            this.state = 45;
+            this.state = 44;
             this.match(DotFileParser.QUOTATION);
-            this.state = 46;
+            this.state = 45;
             this.match(DotFileParser.CLOSE_SQUARE);
             break;
-
-        case 2:
+        case DotFileParser.SEMICOLON:
+        case DotFileParser.CLOSE_BRACKET:
+        case DotFileParser.NAME:
             this.enterOuterAlt(localctx, 2);
 
             break;
-
+        default:
+            throw new antlr4.error.NoViableAltException(this);
         }
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -15341,24 +15383,24 @@ DotFileParser.prototype.shaping = function() {
     var localctx = new ShapingContext(this, this._ctx, this.state);
     this.enterRule(localctx, 8, DotFileParser.RULE_shaping);
     try {
-        this.state = 58;
+        this.state = 57;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case DotFileParser.OPEN_SQUARE:
             this.enterOuterAlt(localctx, 1);
-            this.state = 50;
+            this.state = 49;
             this.match(DotFileParser.OPEN_SQUARE);
-            this.state = 51;
+            this.state = 50;
             this.match(DotFileParser.SHAPE);
-            this.state = 52;
+            this.state = 51;
             this.match(DotFileParser.EQUAL);
+            this.state = 52;
+            this.match(DotFileParser.QUOTATION);
             this.state = 53;
-            this.match(DotFileParser.QUOTATION);
-            this.state = 54;
             this.match(DotFileParser.DOUBLE_CIRCLE);
-            this.state = 55;
+            this.state = 54;
             this.match(DotFileParser.QUOTATION);
-            this.state = 56;
+            this.state = 55;
             this.match(DotFileParser.CLOSE_SQUARE);
             break;
         case DotFileParser.SEMICOLON:
@@ -15435,7 +15477,7 @@ DotFileParser.prototype.startpoint = function() {
     this.enterRule(localctx, 10, DotFileParser.RULE_startpoint);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 60;
+        this.state = 59;
         this.entry();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {

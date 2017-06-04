@@ -1,4 +1,4 @@
-function Edge(nodeTo, transition){
+function Edge(nodeTo, transition) {
     this.nodeTo = nodeTo;
     this.transition = transition;
     this.new = false;
@@ -7,11 +7,11 @@ function Edge(nodeTo, transition){
 Edge.prototype = Object.create(Object.prototype);
 Edge.prototype.constructor = Edge;
 
-Edge.prototype.getNodeTo = function(){
+Edge.prototype.getNodeTo = function () {
     return this.nodeTo;
 }
 
-Edge.prototype.getTransition = function(){
+Edge.prototype.getTransition = function () {
     return this.transition;
 }
 
