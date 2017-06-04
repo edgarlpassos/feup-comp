@@ -15,4 +15,9 @@ Edge.prototype.getTransition = function(){
     return this.transition;
 }
 
+Edge.prototype.equals = function(cmpEdge){
+    return (this.nodeTo.getVal() == cmpEdge.nodeTo.getVal() && 
+        this.transition == cmpEdge.getTransition())
+}
+
 exports.Edge = Edge;

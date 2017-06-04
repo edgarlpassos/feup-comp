@@ -16,6 +16,10 @@ Node.prototype.getEdgeSet = function(){
 }
 
 Node.prototype.addEdge = function(newEdge){
+    for(let i = 0; i < this.edgeSet.length; i++){
+        if(this.edgeSet[i].equals(newEdge))
+            return;
+    }
     this.edgeSet.push(newEdge);
 }
 
@@ -25,6 +29,10 @@ Node.prototype.getVal = function(){
 
 Node.prototype.isAcceptanceNode = function(){
     return this.acceptanceNode;
+}
+
+Node.prototype.setAcceptanceNode = function(isAcceptance){
+    this.acceptanceNode = isAcceptance;
 }
 
 Node.prototype.changeNodeType = function(){
