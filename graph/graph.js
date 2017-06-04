@@ -59,7 +59,7 @@ Graph.prototype.finalNodes = function () {
 
     for (let node of this.nodeSet) {
         if (node.isAcceptanceNode())
-            ret += node.getVal() + "[shape=doublecircle];\n"
+            ret += node.getVal() + '[shape="doublecircle"];\n';
     }
 
     return ret;

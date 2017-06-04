@@ -84,17 +84,17 @@ Node.prototype.toDotFile = function (transition) {
     this.visited = true;
 
     if (this.edgeSet.length == 0)
-        return this.getVal() + "[label=" + transition + "];\n";
+        return this.getVal() + '[label="' + transition + '"];\n';
 
     let ret = "";
     if (typeof transition != 'undefined')
-        ret += this.getVal() + "[label=" + transition + "];\n";
+        ret += this.getVal() + '[label="' + transition + '"];\n';
 
     for (let edge of this.edgeSet) {
         let node = edge.getNodeTo();
         if (node.isVisited())
-            ret += this.getVal() + "->" + node.getVal() + "[label=" + edge.getTransition() + "];\n";
-        else ret += this.getVal() + "->" + node.toDotFile(edge.getTransition());
+            ret += this.getVal() + '->' + node.getVal() + '[label="' + edge.getTransition() + '"];\n';
+        else ret += this.getVal() + '->' + node.toDotFile(edge.getTransition());
     }
 
     return ret;
