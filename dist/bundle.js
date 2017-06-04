@@ -6085,7 +6085,7 @@ Graph.prototype.getTransitionsArray = function(){
 
     for(var i=0; i < this.nodeSet.length;  i++){
         for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
-            let value = this.nodeSet[i].edgeSet[i].transition;
+            let value = this.nodeSet[i].edgeSet[j].transition;
              if(!transitions.has(value))
                 transitions.add(value);
         }
@@ -6099,7 +6099,7 @@ Graph.prototype.getTransitionsSet = function(){
 
     for(var i=0; i < this.nodeSet.length;  i++){
         for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
-            let value = this.nodeSet[i].edgeSet[i].transition;
+            let value = this.nodeSet[i].edgeSet[j].transition;
              if(!transitions.has(value))
                 transitions.add(value);
         }
@@ -13637,7 +13637,7 @@ $(document).ready(function () {
 
   let dotFile = graph.toDotFile();
   console.log(dotFile);*/
-/*
+
   //creating a graph test for complement
   let graph = new Graph();
   //creatiang nodes
@@ -13654,11 +13654,9 @@ $(document).ready(function () {
   graph.addNode(q0);
   graph.addNode(q1);
   graph.setStartNode(q0);
-  graph.addTransitions("0");
-  graph.addTransitions("1");
-  let complement = new Complement(graph);*/
+  let complement = new Complement(graph);
 
-
+/*
    //creating a graph test for product
   let graph1 = new Graph();
   let graph2 = new Graph();
@@ -13697,6 +13695,7 @@ $(document).ready(function () {
   graph2.addNode(q4);
   graph2.setStartNode(q3);
   let product = new Product(graph1,graph2);
+  */
 
 
   $('#text-input-submit').on('click',function(e){
