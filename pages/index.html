@@ -17,13 +17,13 @@
 
     <!-- Custom CSS -->
     <style>
-    body {
-        padding-top: 70px;
-        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-    }
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
     </style>
 
-     <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
     <script src="../dist/bundle.js"></script>
 
@@ -48,9 +48,9 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="#">About</a>
+                        <a data-toggle="modal" data-target="#myModal">About the project</a>
                     </li>
-                   <!-- <li>
+                    <!-- <li>
                         <a href="#">Services</a>
                     </li>
                     <li>
@@ -74,35 +74,88 @@
             </div>
         </div>
 
-        </div class="row">
-            <div class="col-lg-6 text-center inputarea">
-            <label>Input</label>
-                <form>
-                    <textarea class="input" name="text-input" id="text-input-area" rows="15" cols="30" placeholder="Write your graph here"></textarea><br>
-                    <button class="btn btn-default" id="text-input-submit" type="button">Submit</button>
-                </form>
-                <br>   
-                <label class="padding">Or insert a file: </label> 
-                 <form>
-                    <div class="col-lg-6 text-center inputarea">
-                    <input type="file" name="file-input"><br>
-                    </div>
-                     <div class="col-lg-6 text-center inputarea">
-                        
-                    <button class="btn btn-default" type="button">Submit</button>
-                    </div>
-                </form>
+    </div class="row">
+    <div class="col-lg-4 text-center inputarea nopadding">
+        <label>Input</label><br>
+        <label class="small">First Graph</label>
+        <form>
+            <textarea class="input" name="text-input" id="text-input-area" rows="15" cols="30" placeholder="Write your graph here"></textarea><br>
+            <button class="btn btn-default" id="text-input-submit" type="button">Submit</button>
+        </form>
+        <label class="padding">Or insert a file: </label> <br>
+        <form>
+            <input type="file" name="file-input"><br>
+            <button class="btn btn-default" type="button">Submit</button>
+        </form>
+    </div>
+    <div class="col-lg-4 text-center inputarea nopadding">
+        <label>Input</label><br>
+        <label class="small">Second Graph</label>
+        <form>
+            <textarea class="input" name="text-input" id="text-input-area" rows="15" cols="30" placeholder="Write your graph here"></textarea><br>
+            <button class="btn btn-default" id="text-input-submit" type="button">Submit</button>
+        </form>
+        <label class="padding">Or insert a file: </label><br>
+        <form>
+            <input type="file" name="file-input"> <br>
+            <button class="btn btn-default" type="button">Submit</button>
+        </form>
+    </div>
+    </div>
+    <div class="col-lg-4 inputarea nopadding">
+        <div class="row">
+            <div class="col-lg-5 offset-sm-2">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"> DFA Operations
+                        <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Output Input 1</a></li>
+                        <li><a href="#">Output Input 2</a></li>
+                        <li><a href="#">Complement Input 1</a></li>
+                        <li><a href="#">Reverse Input 1</a></li>
+                        <li><a href="#">Complement Input 2</a></li>
+                        <li><a href="#">Reverse Input 2</a></li>
+                        <li><a href="#">Product</a></li>
+                        <li><a href="#">Intersection</a></li>
+                        <li><a href="#">Union</a></li>
+                        <li><a href="#">Diff</a></li>
+                    </ul>
+                </div>
             </div>
+            <div class="col-lg-5">
+                <button class="btn btn-default" id="text-input-submit" type="button">Convert result into a Dot File</button><br><br>
             </div>
-                <div class="col-lg-6 text-center inputarea">
-                <label>Output</label>
-                <div id="output">
+        </div>
+
+        <div id="output">
+        </div>
+    </div>
+    </div>
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">About</h4>
+                </div>
+                <div class="modal-body">
+                    <p>This project is a tool able to read automata (e-NFA, NFA and DFA) from dotty files and it is capable
+                        of performing a number of analyzes.</p>
+                    <p>This project is able to perform some operations with the automatas, such as Cartesian product, intersection,
+                        complement, reversion and union.</p>
+                    <p>The result of the operation can turn into a dotty file again.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
-       
-    
-        <!-- /.row -->
+    </div>
+
+
+    <!-- /.row -->
 
     </div>
 

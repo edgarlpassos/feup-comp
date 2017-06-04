@@ -27,35 +27,64 @@ Graph.prototype.addNode = function (node) {
     this.nodeSet.push(node);
 }
 
-Graph.prototype.setGraphName = function(name){
+Graph.prototype.setGraphName = function (name) {
     this.graphName = name;
 }
 
 Graph.prototype.cloneGraph = function () {
 
     let object = new Graph();
-    object= JSON.parse(JSON.stringify(this));
+    object = JSON.parse(JSON.stringify(this));
     return object;
 }
 
 /**
  * This function returns dot file sintax
  */
-Graph.prototype.toDotFile = function(){
+Graph.prototype.toDotFile = function () {
 
     let ret = "digraph " + this.graphName + " {\n";
     ret += this.startNode.toDotFile();
+    ret += this.finalNodes();
     ret += "}";
+
+    this.resetVisited();
+
     return ret;
 }
 
-Graph.prototype.getTransitionsArray = function(){
+/**
+ * Gets final nodes of the graph and returns dot file final node sintax
+ */
+Graph.prototype.finalNodes = function () {
+    let ret = "";
+
+    for (let node of this.nodeSet) {
+        if (node.isAcceptanceNode())
+            ret += node.getVal() + '[shape="doublecircle"];\n';
+    }
+
+    return ret;
+}
+
+/**
+ * Puts visited field of nodes false after a 
+ * depth search
+ */
+Graph.prototype.resetVisited = function () {
+
+    for (let node of this.nodeSet) {
+        node.setVisited(false);
+    }
+}
+
+Graph.prototype.getTransitionsArray = function () {
     let transitions = new Set();
 
-    for(var i=0; i < this.nodeSet.length;  i++){
-        for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
+    for (var i = 0; i < this.nodeSet.length; i++) {
+        for (var j = 0; j < this.nodeSet[i].edgeSet.length; j++) {
             let value = this.nodeSet[i].edgeSet[j].transition;
-             if(!transitions.has(value))
+            if (!transitions.has(value))
                 transitions.add(value);
         }
     }
@@ -63,13 +92,13 @@ Graph.prototype.getTransitionsArray = function(){
     return Array.from(transitions);
 }
 
-Graph.prototype.getTransitionsSet = function(){
+Graph.prototype.getTransitionsSet = function () {
     let transitions = new Set();
 
-    for(var i=0; i < this.nodeSet.length;  i++){
-        for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
+    for (var i = 0; i < this.nodeSet.length; i++) {
+        for (var j = 0; j < this.nodeSet[i].edgeSet.length; j++) {
             let value = this.nodeSet[i].edgeSet[j].transition;
-             if(!transitions.has(value))
+            if (!transitions.has(value))
                 transitions.add(value);
         }
     }
@@ -78,14 +107,13 @@ Graph.prototype.getTransitionsSet = function(){
 }
 
 Graph.prototype.getNode = function (value) {
-      console.log('Searching node with value ' + value);
-    for (let i = 0; i < this.nodeSet.length; i++){
+    for (let i = 0; i < this.nodeSet.length; i++) {
         let node = this.nodeSet[i];
-        if(value === node.getVal())
+        if (value === node.getVal())
             return node;
     }
 
-   return null; 
+    return null;
 }
 
 Graph.prototype.toString = function () {

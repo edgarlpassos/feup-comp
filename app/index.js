@@ -10,72 +10,72 @@ const Edge = require("../graph/graphEdge.js").Edge;
 let inputParser = require('./main.js').inputParser;
 $(document).ready(function () {
 
- /* let graph = new Graph();
-  //creatiang nodes
-  let a = new Node("a", false);
-  let b = new Node("b", false);
-  let c = new Node("c", true);
-  let d = new Node("d", false);
-  //creating edges
-  let edge = new Edge(b, "1");
-  let edge1 = new Edge(c, "1");
-  let edge2 = new Edge(d, "1");
-  //ading edges
-  a.addEdge(edge);
-  a.addEdge(edge2);
-  b.addEdge(edge1);
-  d.addEdge(edge1);
+  /* let graph = new Graph();
+   //creatiang nodes
+   let a = new Node("a", false);
+   let b = new Node("b", false);
+   let c = new Node("c", true);
+   let d = new Node("d", false);
+   //creating edges
+   let edge = new Edge(b, "1");
+   let edge1 = new Edge(c, "1");
+   let edge2 = new Edge(d, "1");
+   //ading edges
+   a.addEdge(edge);
+   a.addEdge(edge2);
+   b.addEdge(edge1);
+   d.addEdge(edge1);
 
-  graph.addNode(a);
-  graph.addNode(b);
-  graph.addNode(c);
-  graph.addNode(d);
-  graph.setStartNode(a);
+   graph.addNode(a);
+   graph.addNode(b);
+   graph.addNode(c);
+   graph.addNode(d);
+   graph.setStartNode(a);
 
-  graph.setGraphName('name');
+   graph.setGraphName('name');
 
-  let dotFile = graph.toDotFile();
-  console.log(dotFile);*/
+   let dotFile = graph.toDotFile();
+   console.log(dotFile);*/
 
-/*
-  //creating a graph test for complement
-  let graph = new Graph();
-  //creatiang nodes
-  let q0 = new Node("q0",true);
-  let q1 = new Node("q1",false);
-  //creating edges
-  let edge = new Edge(q1,"0");
-  let edge1 = new Edge(q0,"1");
-  let edge2 = new Edge(q0,"0");
-  //ading edges
-  q0.addEdge(edge1);
-  q0.addEdge(edge);
-  q1.addEdge(edge2);
-  graph.addNode(q0);
-  graph.addNode(q1);
-  graph.setStartNode(q0);
-  let complement = new Complement(graph);*/
+  /*
+    //creating a graph test for complement
+    let graph = new Graph();
+    //creatiang nodes
+    let q0 = new Node("q0",true);
+    let q1 = new Node("q1",false);
+    //creating edges
+    let edge = new Edge(q1,"0");
+    let edge1 = new Edge(q0,"1");
+    let edge2 = new Edge(q0,"0");
+    //ading edges
+    q0.addEdge(edge1);
+    q0.addEdge(edge);
+    q1.addEdge(edge2);
+    graph.addNode(q0);
+    graph.addNode(q1);
+    graph.setStartNode(q0);
+    let complement = new Complement(graph);*/
 
-/*
-   //creating a graph test for product
+
+  //creating a graph test for product
   let graph1 = new Graph();
   let graph2 = new Graph();
   //creatiang nodes
-  let q1 = new Node("q1",true);
-  let q2 = new Node("q2",false);
-  let q3 = new Node("q3",false);
-  let q4= new Node("q4",true);
-    
-  //creating edges
-  let edge = new Edge(q1,"b");
-  let edge1 = new Edge(q2,"b");
-  let edge2 = new Edge(q2,"a");
-  let edge3 = new Edge(q1,"a");
+  let q1 = new Node("q1", true);
+  let q2 = new Node("q2", false);
+  let q3 = new Node("q3", false);
+  let q4 = new Node("q4", true);
 
-  let edge4 = new Edge(q3,"b");
-  let edge5 = new Edge(q3,"a");
-  let edge6 = new Edge(q4,"a");
-  let edge7 = new Edge(q4,"b");
+  //creating edges
+  let edge = new Edge(q1, "b");
+  let edge1 = new Edge(q2, "b");
+  let edge2 = new Edge(q2, "a");
+  let edge3 = new Edge(q1, "a");
+
+  let edge4 = new Edge(q3, "b");
+  let edge5 = new Edge(q3, "a");
+  let edge6 = new Edge(q4, "a");
+  let edge7 = new Edge(q4, "b");
 
   q1.addEdge(edge2);
   q1.addEdge(edge);
@@ -94,11 +94,13 @@ $(document).ready(function () {
   graph2.addNode(q3);
   graph2.addNode(q4);
   graph2.setStartNode(q3);
-  let product = new Product(graph1,graph2);
-  */
 
+  //INTERSECTION 1 UNION 2
+  console.log(graph1.toDotFile());
+  console.log(graph2.toDotFile());
+  let product = new Product(graph1, graph2, 1);
 
-  $('#text-input-submit').on('click',function(e){
+  $('#text-input-submit').on('click', function (e) {
     e.preventDefault();
     let textarea = $('#text-input-area');
     let input = textarea.val();
