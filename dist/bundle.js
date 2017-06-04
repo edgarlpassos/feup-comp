@@ -13773,10 +13773,12 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
 
 // Visit a parse tree produced by DotFileParser#stateTransition.
 DotFileVisitor.prototype.visitStateTransition = function (ctx) {
-  if(ctx.children === null)
-    return null;
+    if(ctx.children === null)
+        return null;
 
-    
+
+    if(ctx.NAME())
+        
   console.log(ctx);
   return null;
   //return this.visitChildren(ctx);

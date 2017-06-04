@@ -33,11 +33,14 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
   if (ctx.children == null)
     return null;
 
-  let nameToken = ctx.NAME();
-  if (nameToken != null) {
-    let node = new Node(nameToken.getText());
-    if(!this.graph.hasNode(node))
+  let valToken = ctx.NAME();
+  if (valToken != null) {
+    let value = valToken.getText();
+    let node = this.graph.getNode(value)  ;
+    if (node == null) {
+      node = new Node(value)
       this.graph.addNode(node);
+    }
 
     /* Check for transitions */
     let transition = ctx.stateTransition();
@@ -45,7 +48,7 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
       let edge = this.visitStateTransition(transition);
       if (edge != null) {
         console.log(edge);
-        //node.addEdge(edge);
+        node.addEdge(edge);
       }
     }
 
@@ -70,10 +73,17 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
 
 // Visit a parse tree produced by DotFileParser#stateTransition.
 DotFileVisitor.prototype.visitStateTransition = function (ctx) {
-  if(ctx.children === null)
+  if (ctx.children === null)
     return null;
 
-    
+  /* Get destination node */
+  let valToken = ctx.NAME();
+  if (valToken != null) {
+    let value = valToken.getText();
+    let node = this.graph.getNode(value);
+
+  }
+
   console.log(ctx);
   return null;
   //return this.visitChildren(ctx);

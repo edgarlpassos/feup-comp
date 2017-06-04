@@ -51,9 +51,9 @@ Graph.prototype.toDotFile = function () {
     return startNode.toDotFile();
 }
 
-Graph.prototype.hasNode = function (node) {
+Graph.prototype.getNode = function (value) {
     for (let i = 0; i < this.nodeSet.length; i++)
-        if(node.getVal() === this.nodeSet[i].getVal())
+        if(value === this.nodeSet[i].getVal())
             return true;
 
    return false; 
