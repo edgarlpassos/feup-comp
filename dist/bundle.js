@@ -5287,7 +5287,7 @@ function Node(val,acceptanceNode){
     this.edgeSet = new Array();
     this.val = val;
     this.acceptanceNode = acceptanceNode;
-    
+    this.visited = false;
 }
 Node.prototype = Object.create(Object.prototype);
 Node.prototype.constructor = Node;
@@ -5304,6 +5304,9 @@ Node.prototype.addEdge = function(newEdge){
 }
 
 Node.prototype.getVal = function(){
+    if(this.val.length === 2)
+        return this.val[0] + '' + this.val[1];
+
     return this.val;
 }
 
@@ -5361,8 +5364,13 @@ Node.prototype.nodeEquals = function(node1,node2){
  */
 Node.prototype.toDotFile = function(){
 
+    if(this.visited)
+        return;
+
+    this.visited = true;
+
     if(this.edgeSet.length == 0)
-        return this.val + ";\n";
+        return this.getVal() + ";\n";
 
     let ret = "";
 
@@ -5370,10 +5378,20 @@ Node.prototype.toDotFile = function(){
     for(let i = 0; i < this.edgeSet.length; i++){
         console.log(this.edgeSet[i].getNodeTo().getVal());
         let node = this.edgeSet[i].getNodeTo();
-        ret += this.val + "->" + node.toDotFile();
+        if(node.isVisited())
+            ret += this.getVal() + "->" + node.getVal() + ";\n";
+        else ret += this.getVal() + "->" + node.toDotFile();
     }
 
     return ret;
+}
+
+Node.prototype.isVisited = function(){
+    return this.visited;
+}
+
+Node.prototype.setVisited = function(newValue){
+    this.visited = newValue;
 }
 
 exports.Node = Node;
@@ -6077,7 +6095,21 @@ Graph.prototype.toDotFile = function(){
     let ret = "digraph " + this.graphName + " {\n";
     ret += this.startNode.toDotFile();
     ret += "}";
+
+    this.resetVisited();    
+
     return ret;
+}
+
+/**
+ * Puts visited field of nodes false after a 
+ * depth search
+ */
+Graph.prototype.resetVisited = function(){
+
+    for(let node of this.nodeSet){
+        node.setVisited(false);
+    }
 }
 
 Graph.prototype.getTransitionsArray = function(){
@@ -13148,20 +13180,25 @@ const Graph = __webpack_require__(20).Graph;
 const Node = __webpack_require__(16).Node;
 const Edge = __webpack_require__(15).Edge;
 
+const INTERSECTION = 1;
+const UNION = 2;
+
 /**
  * Product Graph
  * @param {*} graph 
  */
-function Product(graph1, graph2){
+function Product(graph1, graph2, operation) {
     this.graph1 = graph1;
     this.graph2 = graph2;
     let graph = new Graph();
     this.resultGraph = graph;
     this.resultGraphTransitions = [];
+    this.operation = operation;
     this.chooseNodes();
     this.setTransitions();
     this.addTransitions();
     console.log(graph);
+    console.log(this.resultGraph.toDotFile());
 }
 
 Product.prototype = Object.create(Object.prototype);
@@ -13170,34 +13207,51 @@ Product.prototype.constructor = Product;
 /**
  * Adds nodes to result graph { Nodes Graph1 } x { Nodes Graph2 }
  */
-Product.prototype.chooseNodes = function(){
-    for(var i = 0; i < this.graph1.nodeSet.length; i++){
+Product.prototype.chooseNodes = function () {
+    for (var i = 0; i < this.graph1.nodeSet.length; i++) {
         let node1 = this.graph1.nodeSet[i];
         let name = node1.val;
 
-        for(var j = 0; j < this.graph2.nodeSet.length; j++){
+        for (var j = 0; j < this.graph2.nodeSet.length; j++) {
             let node2 = this.graph2.nodeSet[j];
             let newVal = [name, node2.val];
-            
+
             let newNode;
-            if(node1.acceptanceNode || node2.acceptanceNode)
-                newNode = new Node(newVal,true);
-            else newNode = new Node(newVal,false);
+
+            /*   if(node1.acceptanceNode || node2.acceptanceNode)
+                   newNode = new Node(newVal,true);
+               else newNode = new Node(newVal,false);*/
+
+            switch (this.operation) {
+                case INTERSECTION:
+                    if (node1.acceptanceNode && node2.acceptanceNode)
+                        newNode = new Node(newVal, true);
+                    else newNode = new Node(newVal, false);
+                    break;
+                case UNION:
+                    if (node1.acceptanceNode || node2.acceptanceNode)
+                        newNode = new Node(newVal, true);
+                    else newNode = new Node(newVal, false);
+                    break;
+                default:
+                    newNode = new Node(newVal, false);
+                    break;
+            }
 
             this.resultGraph.addNode(newNode);
 
-            if(node1.nodeEquals(node1,this.graph1.startNode) && node2.nodeEquals(node2, this.graph2.startNode))
+            if (node1.nodeEquals(node1, this.graph1.startNode) && node2.nodeEquals(node2, this.graph2.startNode))
                 this.resultGraph.startNode = newNode;
-         }
+        }
     }
 }
 
 /**
  * Adds Transitions to new nodes
  */
-Product.prototype.addTransitions = function(){
+Product.prototype.addTransitions = function () {
 
-    for(var i = 0; i < this.resultGraph.nodeSet.length; i++){
+    for (var i = 0; i < this.resultGraph.nodeSet.length; i++) {
         let node = this.resultGraph.nodeSet[i];
         let nameNode1 = node.val[0];
         console.log("Node 1: " + nameNode1);
@@ -13206,8 +13260,8 @@ Product.prototype.addTransitions = function(){
 
         console.log(this.resultGraphTransitions);
 
-        for(var j = 0; j < this.resultGraphTransitions.length; j++){
-            
+        for (var j = 0; j < this.resultGraphTransitions.length; j++) {
+
             let transitionVal = this.resultGraphTransitions[j];
             //graph containing that node
             let graph = this.graphResponsibleForNode(nameNode1);
@@ -13218,11 +13272,11 @@ Product.prototype.addTransitions = function(){
             /**
              * Finds destination node name of node1 with transition "transitionVal"
              */
-            for(var k=0; k < graph.nodeSet.length; k++){
-                if(graph.nodeSet[k].val == nameNode1){
-                    for(var l=0; l < graph.nodeSet[k].edgeSet.length; l++){
-                        if(graph.nodeSet[k].edgeSet[l].transition==transitionVal)
-                             destinationNode1Name = graph.nodeSet[k].edgeSet[l].nodeTo.val;
+            for (var k = 0; k < graph.nodeSet.length; k++) {
+                if (graph.nodeSet[k].val == nameNode1) {
+                    for (var l = 0; l < graph.nodeSet[k].edgeSet.length; l++) {
+                        if (graph.nodeSet[k].edgeSet[l].transition == transitionVal)
+                            destinationNode1Name = graph.nodeSet[k].edgeSet[l].nodeTo.val;
                     }
                 }
             }
@@ -13230,10 +13284,10 @@ Product.prototype.addTransitions = function(){
             /**
              * Finds destination node name of node2 with transition "transitionVal"
              */
-            for(var l=0; l < graph2.nodeSet.length; l++){
-                if(graph2.nodeSet[l].val == nameNode2){
-                    for(var m=0; m < graph2.nodeSet[l].edgeSet.length; m++){
-                        if(graph2.nodeSet[l].edgeSet[m].transition==transitionVal)
+            for (var l = 0; l < graph2.nodeSet.length; l++) {
+                if (graph2.nodeSet[l].val == nameNode2) {
+                    for (var m = 0; m < graph2.nodeSet[l].edgeSet.length; m++) {
+                        if (graph2.nodeSet[l].edgeSet[m].transition == transitionVal)
                             destinationNode2Name = graph2.nodeSet[l].edgeSet[m].nodeTo.val;
                     }
                 }
@@ -13242,7 +13296,7 @@ Product.prototype.addTransitions = function(){
             /**
              * Finds destination node of node1+node2 with transition "transitionVal"
              */
-            let destination = [destinationNode1Name,destinationNode2Name];
+            let destination = [destinationNode1Name, destinationNode2Name];
             let destinationNode = this.getNode(destination);
 
             /**
@@ -13254,45 +13308,49 @@ Product.prototype.addTransitions = function(){
     }
 }
 
-Product.prototype.getNode = function(destination){
+Product.prototype.getNode = function (destination) {
 
-    for(var i = 0; i < this.resultGraph.nodeSet.length; i++){
-        if(this.resultGraph.nodeSet[i].val.toString()===destination.toString()){
+    for (var i = 0; i < this.resultGraph.nodeSet.length; i++) {
+        if (this.resultGraph.nodeSet[i].val.toString() === destination.toString()) {
             return this.resultGraph.nodeSet[i];
-        }     
+        }
     }
 }
 
-Product.prototype.setTransitions = function(){
+Product.prototype.setTransitions = function () {
 
     let setTransitions = this.graph1.getTransitionsSet();
 
-    for(var i = 0; i < this.graph2.nodeSet.length; i++){
-        for(var j=0; j< this.graph2.nodeSet[i].edgeSet.length; j++){
+    for (var i = 0; i < this.graph2.nodeSet.length; i++) {
+        for (var j = 0; j < this.graph2.nodeSet[i].edgeSet.length; j++) {
             let value = this.graph2.nodeSet[i].edgeSet[j].transition;
-            if(!setTransitions.has(value))
-                setTransitions.add(value);     
+            if (!setTransitions.has(value))
+                setTransitions.add(value);
         }
     }
 
     this.resultGraphTransitions = Array.from(setTransitions);
 }
 
-Product.prototype.graphResponsibleForNode = function(value){
+Product.prototype.graphResponsibleForNode = function (value) {
     let array = new Array();
 
-    for(var i = 0; i < this.graph1.nodeSet.length; i++){
+    for (var i = 0; i < this.graph1.nodeSet.length; i++) {
         let name = this.graph1.nodeSet[i].val;
-        if(name==value)
+        if (name == value)
             return this.graph1;
     }
 
-    for(var i = 0; i < this.graph2.nodeSet.length; i++){
+    for (var i = 0; i < this.graph2.nodeSet.length; i++) {
         let name = this.graph2.nodeSet[i].val;
-        if(name==value)
+        if (name == value)
             return this.graph2;
     }
 
+}
+
+Product.prototype.getResultGraph = function () {
+    return this.resultGraph;
 }
 
 exports.Product = Product;
@@ -13629,15 +13687,13 @@ $(document).ready(function () {
   graph.addNode(c);
   graph.addNode(d);
   graph.setStartNode(a);
-  graph.addTransitions("0");
-  graph.addTransitions("1");
-  graph.addTransitions("ε");
 
   graph.setGraphName('name');
 
   let dotFile = graph.toDotFile();
   console.log(dotFile);*/
 
+/*
   //creating a graph test for complement
   let graph = new Graph();
   //creatiang nodes
@@ -13654,9 +13710,9 @@ $(document).ready(function () {
   graph.addNode(q0);
   graph.addNode(q1);
   graph.setStartNode(q0);
-  let complement = new Complement(graph);
+  let complement = new Complement(graph);*/
 
-/*
+
    //creating a graph test for product
   let graph1 = new Graph();
   let graph2 = new Graph();
@@ -13694,9 +13750,11 @@ $(document).ready(function () {
   graph2.addNode(q3);
   graph2.addNode(q4);
   graph2.setStartNode(q3);
-  let product = new Product(graph1,graph2);
-  */
 
+  //INTERSECTION 1 UNION 2
+  console.log(graph1.toDotFile());
+  console.log(graph2.toDotFile());
+  let product = new Product(graph1,graph2,2);
 
   $('#text-input-submit').on('click',function(e){
     e.preventDefault();

@@ -44,7 +44,21 @@ Graph.prototype.toDotFile = function(){
     let ret = "digraph " + this.graphName + " {\n";
     ret += this.startNode.toDotFile();
     ret += "}";
+
+    this.resetVisited();    
+
     return ret;
+}
+
+/**
+ * Puts visited field of nodes false after a 
+ * depth search
+ */
+Graph.prototype.resetVisited = function(){
+
+    for(let node of this.nodeSet){
+        node.setVisited(false);
+    }
 }
 
 Graph.prototype.getTransitionsArray = function(){
