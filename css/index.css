@@ -36,6 +36,13 @@
     overflow-x: scroll;
 }
 
+.result{
+    resize: none;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    height: 130px;
+}
+
 .inputarea{
     padding-top: 15px;
 }
