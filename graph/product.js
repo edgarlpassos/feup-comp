@@ -11,10 +11,10 @@ function Product(graph1, graph2){
     this.graph2 = graph2;
     let graph = new Graph();
     this.resultGraph = graph;
+    this.resultGraphTransitions = [];
     this.chooseNodes();
-    this.setTransitions(graph1);
-    this.setTransitions(graph2);
-    this.addTransitions()
+    this.setTransitions();
+    this.addTransitions();
     console.log(graph);
 }
 
@@ -57,12 +57,12 @@ Product.prototype.addTransitions = function(){
         console.log("Node 1: " + nameNode1);
         let nameNode2 = node.val[1];
         console.log("Node 2: " + nameNode2);
-        
-        let transitionsArray = this.resultGraph.getTransitionsArray();
 
-        for(var j = 0; j < transitionsArray.length; j++){
+        console.log(this.resultGraphTransitions);
+
+        for(var j = 0; j < this.resultGraphTransitions.length; j++){
             
-            let transitionVal = transitionsArray[j];
+            let transitionVal = this.resultGraphTransitions[j];
             //graph containing that node
             let graph = this.graphResponsibleForNode(nameNode1);
             //graph containing that node
@@ -117,13 +117,19 @@ Product.prototype.getNode = function(destination){
     }
 }
 
-Product.prototype.setTransitions = function(graph){
+Product.prototype.setTransitions = function(){
 
-    for(var i = 0; i < graph.nodeSet.length; i++){
-        for(var j=0; j< graph.nodeSet[i].edgeSet.length; j++){
-            this.resultGraph.addTransitions(graph.nodeSet[i].edgeSet[j].transition);
+    let setTransitions = this.graph1.getTransitionsSet();
+
+    for(var i = 0; i < this.graph2.nodeSet.length; i++){
+        for(var j=0; j< this.graph2.nodeSet[i].edgeSet.length; j++){
+            let value = this.graph2.nodeSet[i].edgeSet[j].transition;
+            if(!setTransitions.has(value))
+                setTransitions.add(value);     
         }
     }
+
+    this.resultGraphTransitions = Array.from(setTransitions);
 }
 
 Product.prototype.graphResponsibleForNode = function(value){

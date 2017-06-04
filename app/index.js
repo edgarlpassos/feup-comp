@@ -10,33 +10,32 @@ const Edge = require("../graph/graphEdge.js").Edge;
 let inputParser = require('./main.js').inputParser;
 $(document).ready(function () {
 
-  /*
-  //creating a graph test for reverse
-  let graph = new Graph();
+ /* let graph = new Graph();
   //creatiang nodes
-  let p0 = new Node("p0",false);
-  let p1 = new Node("p1",false);
-  let p2 = new Node("p2",true);
+  let a = new Node("a", false);
+  let b = new Node("b", false);
+  let c = new Node("c", true);
+  let d = new Node("d", false);
   //creating edges
-  let edge = new Edge(p2,"ε");
-  let edge1 = new Edge(p1,"0");
-  let edge2 = new Edge(p0,"0");
-  let edge3 = new Edge(p2,"1");
+  let edge = new Edge(b, "1");
+  let edge1 = new Edge(c, "1");
+  let edge2 = new Edge(d, "1");
   //ading edges
-  p0.addEdge(edge1);
-  p0.addEdge(edge2);
-  p0.addEdge(edge);
-  p1.addEdge(edge2);
-  p2.addEdge(edge3);
-  graph.addNode(p0);
-  graph.addNode(p1);
-  graph.addNode(p2);
-  graph.setStartNode(p0);
-  graph.addTransitions("0");
-  graph.addTransitions("1");
-  graph.addTransitions("ε");
-  let reverse = new Reverse(graph);*/
+  a.addEdge(edge);
+  a.addEdge(edge2);
+  b.addEdge(edge1);
+  d.addEdge(edge1);
 
+  graph.addNode(a);
+  graph.addNode(b);
+  graph.addNode(c);
+  graph.addNode(d);
+  graph.setStartNode(a);
+
+  graph.setGraphName('name');
+
+  let dotFile = graph.toDotFile();
+  console.log(dotFile);*/
 
 /*
   //creating a graph test for complement
@@ -55,11 +54,9 @@ $(document).ready(function () {
   graph.addNode(q0);
   graph.addNode(q1);
   graph.setStartNode(q0);
-  graph.addTransitions("0");
-  graph.addTransitions("1");
   let complement = new Complement(graph);*/
 
-
+/*
    //creating a graph test for product
   let graph1 = new Graph();
   let graph2 = new Graph();
@@ -92,19 +89,13 @@ $(document).ready(function () {
 
   graph1.addNode(q1);
   graph1.addNode(q2);
-
   graph1.setStartNode(q1);
-  graph1.addTransitions("b");
-  graph1.addTransitions("a");
 
   graph2.addNode(q3);
   graph2.addNode(q4);
-
   graph2.setStartNode(q3);
-  graph2.addTransitions("b");
-  graph2.addTransitions("a");
-
   let product = new Product(graph1,graph2);
+  */
 
 
   $('#text-input-submit').on('click',function(e){
@@ -116,20 +107,19 @@ $(document).ready(function () {
     let currentImg = outputDiv.children('#output-image');
     console.log(currentImg);
 
-    if(currentImg != null){
+    if (currentImg != null) {
       currentImg.remove();
     }
 
-    let image = vizJs(input,{format: "png-image-element"});
+    let image = vizJs(input, {
+      format: "png-image-element"
+    });
 
     outputDiv.append(image);
 
-    if(input === '')
+    if (input === '')
       return;
-    
+
     inputParser.parse(input)
   });
 });
-
-
-

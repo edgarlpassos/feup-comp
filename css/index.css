@@ -1,0 +1,53 @@
+.navbar-header{
+    background-color: #3c4b61;
+    color: white;
+}
+
+.navbar-header a.navbar-brand{
+        color: white;
+}
+
+.navbar.navbar-inverse.navbar-fixed-top{
+    color: white;
+    background-color: #3c4b61;
+}
+
+
+.small{
+    font-size: x-small;
+    font-style: italic;
+    margin-top: 5px !important;
+}
+
+.medium{
+    font-size: medium;
+    margin-bottom: 0 !important;
+}
+
+.input{
+    margin-top: 5px;
+    width: 85%;
+    resize: none;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+
+.inputarea{
+    padding-top: 15px;
+}
+
+body{
+    position: relative;
+}
+
+#output{
+    padding-top: 45px;
+}
+
+.padding{
+    padding-top: 5px;
+}
+
+.logo{
+    width: 200px;
+}

@@ -3,7 +3,7 @@ const Node = require('./graphNode.js').Node;
 function Graph() {
     this.nodeSet = [];
     this.startNode = null;
-    this.transitions = new Set();
+    this.graphName = null;
 }
 
 Graph.prototype = Object.create(Object.prototype);
@@ -25,30 +25,54 @@ Graph.prototype.addNode = function (node) {
     this.nodeSet.push(node);
 }
 
-Graph.prototype.addTransitions = function (value) {
-    if (!this.transitions.has(value))
-        this.transitions.add(value);
-}
-
-Graph.prototype.getTransitions = function (value) {
-    return this.transitions;
-}
-
-Graph.prototype.getTransitionsArray = function () {
-    return Array.from(this.transitions);
+Graph.prototype.setGraphName = function(name){
+    this.graphName = name;
 }
 
 Graph.prototype.cloneGraph = function () {
 
     let object = new Graph();
-
-    object = JSON.parse(JSON.stringify(this));
+    object= JSON.parse(JSON.stringify(this));
     return object;
 }
 
-Graph.prototype.toDotFile = function () {
+/**
+ * This function returns dot file sintax
+ */
+Graph.prototype.toDotFile = function(){
 
-    return startNode.toDotFile();
+    let ret = "digraph " + this.graphName + " {\n";
+    ret += this.startNode.toDotFile();
+    ret += "}";
+    return ret;
+}
+
+Graph.prototype.getTransitionsArray = function(){
+    let transitions = new Set();
+
+    for(var i=0; i < this.nodeSet.length;  i++){
+        for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
+            let value = this.nodeSet[i].edgeSet[j].transition;
+             if(!transitions.has(value))
+                transitions.add(value);
+        }
+    }
+
+    return Array.from(transitions);
+}
+
+Graph.prototype.getTransitionsSet = function(){
+    let transitions = new Set();
+
+    for(var i=0; i < this.nodeSet.length;  i++){
+        for( var j=0; j < this.nodeSet[i].edgeSet.length; j++){
+            let value = this.nodeSet[i].edgeSet[j].transition;
+             if(!transitions.has(value))
+                transitions.add(value);
+        }
+    }
+
+    return transitions;
 }
 
 Graph.prototype.getNode = function (value) {

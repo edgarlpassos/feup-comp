@@ -72,4 +72,24 @@ Node.prototype.nodeEquals = function(node1,node2){
     return true;
 }
 
+/**
+ * This function returns dot file sintax
+ */
+Node.prototype.toDotFile = function(){
+
+    if(this.edgeSet.length == 0)
+        return this.val + ";\n";
+
+    let ret = "";
+
+    console.log(this);
+    for(let i = 0; i < this.edgeSet.length; i++){
+        console.log(this.edgeSet[i].getNodeTo().getVal());
+        let node = this.edgeSet[i].getNodeTo();
+        ret += this.val + "->" + node.toDotFile();
+    }
+
+    return ret;
+}
+
 exports.Node = Node;

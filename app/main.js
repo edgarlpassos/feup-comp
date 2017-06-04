@@ -24,7 +24,7 @@ inputParser.parse = function(input){
     var tree = parser.entry();
     var visitor = new CustomDotFileVisitor();
     visitor.visitEntry(tree);
-
+       
 }
 
 exports.inputParser = inputParser;
