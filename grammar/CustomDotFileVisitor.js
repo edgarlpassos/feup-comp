@@ -29,16 +29,15 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
 
 // Visit a parse tree produced by DotFileParser#instruction.
 DotFileVisitor.prototype.visitInstruction = function (ctx) {
-  //return this.visitChildren(ctx);
   if (ctx.children == null)
     return null;
 
   let valToken = ctx.NAME();
   if (valToken != null) {
     let value = valToken.getText();
-    let node = this.graph.getNode(value)  ;
+    let node = this.graph.getNode(value);
     if (node == null) {
-      node = new Node(value)
+      node = new Node(value);
       this.graph.addNode(node);
     }
 
@@ -47,7 +46,6 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     if (transition != null) {
       let edge = this.visitStateTransition(transition);
       if (edge != null) {
-        console.log(edge);
         node.addEdge(edge);
       }
     }
@@ -56,12 +54,9 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     let shaping = ctx.shaping();
     if (shaping != null) {
       let shape = this.visitShaping(shaping);
-      if (shape != null) {
-        console.log(shape);
-      }
+      if (shape != null) {}
     }
   }
-
 
   /* Semicolon Instruction */
   let instruction = ctx.instruction();
@@ -69,7 +64,6 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     this.visitInstruction(instruction);
   }
 };
-
 
 // Visit a parse tree produced by DotFileParser#stateTransition.
 DotFileVisitor.prototype.visitStateTransition = function (ctx) {
@@ -79,26 +73,44 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
   /* Get destination node */
   let valToken = ctx.NAME();
   if (valToken != null) {
+
     let value = valToken.getText();
     let node = this.graph.getNode(value);
 
-  }
+    if (node == null) {
+      node = new Node(value);
+      this.graph.addNode(node);
+    }
 
-  console.log(ctx);
+    let transition = ctx.stateTransition();
+    if (transition != null) {
+      let newEdge = this.visitStateTransition(transition);
+      if (newEdge != null) {
+        node.addEdge(newEdge);
+      }
+    }
+
+    let transitionChar = '';
+    let labeling = ctx.labeling();
+    if (labeling != null)
+      transitionChar = this.visitLabeling(labeling);
+
+    let returnVal = new Edge(node, transitionChar);
+    return returnVal;
+  }
   return null;
-  //return this.visitChildren(ctx);
 };
 
 
 // Visit a parse tree produced by DotFileParser#labeling.
 DotFileVisitor.prototype.visitLabeling = function (ctx) {
-  return this.visitChildren(ctx);
+  return null;
+  //return this.visitChildren(ctx);
 };
 
 
 // Visit a parse tree produced by DotFileParser#shaping.
 DotFileVisitor.prototype.visitShaping = function (ctx) {
-  console.log(ctx);
   return null;
   //return this.visitChildren(ctx);
 };

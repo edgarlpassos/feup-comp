@@ -52,11 +52,13 @@ Graph.prototype.toDotFile = function () {
 }
 
 Graph.prototype.getNode = function (value) {
-    for (let i = 0; i < this.nodeSet.length; i++)
-        if(value === this.nodeSet[i].getVal())
-            return true;
+    for (let i = 0; i < this.nodeSet.length; i++){
+        let node = this.nodeSet[i];
+        if(value === node.getVal())
+            return node;
+    }
 
-   return false; 
+   return null; 
 }
 
 Graph.prototype.toString = function () {

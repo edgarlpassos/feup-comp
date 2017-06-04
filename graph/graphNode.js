@@ -1,6 +1,6 @@
 const Edge = require('./graphEdge.js').Edge;
 function Node(val,acceptanceNode){
-    this.edgeSet = new Array();
+    this.edgeSet = [];
     this.val = val;
     this.acceptanceNode = acceptanceNode;
     
