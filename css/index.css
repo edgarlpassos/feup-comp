@@ -3,6 +3,10 @@
     color: white;
 }
 
+.navbar-header a.navbar-brand{
+        color: white;
+}
+
 .navbar.navbar-inverse.navbar-fixed-top{
     color: white;
     background-color: #3c4b61;
@@ -42,4 +46,8 @@ body{
 
 .padding{
     padding-top: 5px;
+}
+
+.logo{
+    width: 200px;
 }
