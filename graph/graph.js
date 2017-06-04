@@ -43,9 +43,24 @@ Graph.prototype.toDotFile = function(){
 
     let ret = "digraph " + this.graphName + " {\n";
     ret += this.startNode.toDotFile();
+    ret += this.finalNodes();
     ret += "}";
 
-    this.resetVisited();    
+    this.resetVisited();
+
+    return ret;
+}
+
+/**
+ * Gets final nodes of the graph and returns dot file final node sintax
+ */
+Graph.prototype.finalNodes = function(){
+    let ret = "";
+
+    for(let node of this.nodeSet){
+        if(node.isAcceptanceNode())
+            ret += node.getVal() + "[shape=doublecircle];\n"
+    }
 
     return ret;
 }

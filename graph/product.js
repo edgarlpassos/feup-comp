@@ -19,7 +19,6 @@ function Product(graph1, graph2, operation) {
     this.chooseNodes();
     this.setTransitions();
     this.addTransitions();
-    console.log(graph);
     console.log(this.resultGraph.toDotFile());
 }
 
@@ -39,10 +38,6 @@ Product.prototype.chooseNodes = function () {
             let newVal = [name, node2.val];
 
             let newNode;
-
-            /*   if(node1.acceptanceNode || node2.acceptanceNode)
-                   newNode = new Node(newVal,true);
-               else newNode = new Node(newVal,false);*/
 
             switch (this.operation) {
                 case INTERSECTION:
