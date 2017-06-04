@@ -12,6 +12,10 @@
     background-color: #3c4b61;
 }
 
+.nopadding{
+    padding: 0 !important;
+}
+
 
 .small{
     font-size: x-small;
@@ -50,4 +54,13 @@ body{
 
 .logo{
     width: 200px;
+}
+
+.button-upload{
+    padding-left: 20px;
+}
+
+.dropdown-menu{
+    margin-left: 0;
+
 }
