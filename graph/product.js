@@ -55,6 +55,11 @@ Product.prototype.chooseNodes = function () {
                         newNode = new Node(newVal, true);
                     else newNode = new Node(newVal, false);
                     break;
+                case DIFF:
+                    if (node1.acceptanceNode && !node2.acceptanceNode)
+                        newNode = new Node(newVal, true);
+                    else newNode = new Node(newVal, false);
+                    break;
                 default:
                     newNode = new Node(newVal, false);
                     break;
