@@ -42,6 +42,12 @@ DotFileVisitor.prototype.visitShaping = function(ctx) {
 };
 
 
+// Visit a parse tree produced by DotFileParser#labelname.
+DotFileVisitor.prototype.visitLabelname = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
 // Visit a parse tree produced by DotFileParser#startpoint.
 DotFileVisitor.prototype.visitStartpoint = function(ctx) {
   return this.visitChildren(ctx);

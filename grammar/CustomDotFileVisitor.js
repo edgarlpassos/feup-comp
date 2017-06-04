@@ -29,8 +29,10 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
 
 // Visit a parse tree produced by DotFileParser#instruction.
 DotFileVisitor.prototype.visitInstruction = function (ctx) {
+  console.log(ctx);
   if (ctx.children == null)
     return null;
+
 
   let valToken = ctx.NAME();
   if (valToken != null) {
@@ -61,6 +63,8 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
   /* Semicolon Instruction */
   let instruction = ctx.instruction();
   if (instruction != null) {
+    console.log('visiting instruction');
+    console.log(instruction);
     this.visitInstruction(instruction);
   }
 };
@@ -80,14 +84,6 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
     if (node == null) {
       node = new Node(value);
       this.graph.addNode(node);
-    }
-
-    let transition = ctx.stateTransition();
-    if (transition != null) {
-      let newEdge = this.visitStateTransition(transition);
-      if (newEdge != null) {
-        node.addEdge(newEdge);
-      }
     }
 
     let transitionChar = '';

@@ -56,6 +56,15 @@ DotFileListener.prototype.exitShaping = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DotFileParser#labelname.
+DotFileListener.prototype.enterLabelname = function(ctx) {
+};
+
+// Exit a parse tree produced by DotFileParser#labelname.
+DotFileListener.prototype.exitLabelname = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DotFileParser#startpoint.
 DotFileListener.prototype.enterStartpoint = function(ctx) {
 };

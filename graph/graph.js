@@ -76,6 +76,7 @@ Graph.prototype.getTransitionsSet = function(){
 }
 
 Graph.prototype.getNode = function (value) {
+      console.log('Searching node with value ' + value);
     for (let i = 0; i < this.nodeSet.length; i++){
         let node = this.nodeSet[i];
         if(value === node.getVal())
