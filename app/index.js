@@ -31,15 +31,13 @@ $(document).ready(function () {
   graph.addNode(c);
   graph.addNode(d);
   graph.setStartNode(a);
-  graph.addTransitions("0");
-  graph.addTransitions("1");
-  graph.addTransitions("ε");
 
   graph.setGraphName('name');
 
   let dotFile = graph.toDotFile();
   console.log(dotFile);*/
 
+/*
   //creating a graph test for complement
   let graph = new Graph();
   //creatiang nodes
@@ -56,7 +54,7 @@ $(document).ready(function () {
   graph.addNode(q0);
   graph.addNode(q1);
   graph.setStartNode(q0);
-  let complement = new Complement(graph);
+  let complement = new Complement(graph);*/
 
 /*
    //creating a graph test for product
