@@ -126,9 +126,9 @@ Graph.prototype.toString = function () {
  */
 Graph.prototype.belongsToLanguage = function (input) {
     if (this.verifyInput(this.startNode, input))
-        console.log('Pertence à linguagem!');
-    else
-        console.log('Não pertence à linguagem!');
+        return true;
+        
+    return false;
 }
 
 /**

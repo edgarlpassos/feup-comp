@@ -71,6 +71,7 @@ $(document).ready(function () {
   });
   $('#test-new-language').on('click', function () {
     let graph1 = inputParser.parse($('#text-input-area-graph1').val());
+    testNewLanguage(graph1);
   });
 
   $("#dropdown-operations li a").click(function () {
@@ -226,7 +227,7 @@ function executeOperation(graph1, graph2) {
 }
 
 function testNewLanguage(graph) {
-
+  console.log(graph);
   let outPutDiv = $('#output-2');
   visualizeAutomaton(graph, outPutDiv);
 
@@ -236,7 +237,9 @@ function testNewLanguage(graph) {
 
   let input = $('#input-new-language').val();
 
-  if (this.graph.belongsToLanguage(input)) {
+  console.log(graph[1]);
+
+  if (graph[1].belongsToLanguage(input)) {
     $(outPutDiv).append('<div class="alert alert-success" role="alert">The FA accepts the language!</div>');
   } else {
     $(outPutDiv).append('<div class="alert alert-danger" role="alert">The FA doesn\'t accept the language!</div>');
