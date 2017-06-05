@@ -127,10 +127,13 @@ Graph.prototype.toString = function () {
  * Verifies if a given input belongs to the automaton language
  */
 Graph.prototype.belongsToLanguage = function (input) {
-    if (this.verifyInput(this.startNode, input))
+    if (this.verifyInput(this.startNode, input)) {
         console.log('Pertence à linguagem!');
-    else
-        console.log('Não pertence à linguagem!');
+        return true;
+    }
+
+    console.log('Não pertence à linguagem!');
+    return false;
 }
 
 /**

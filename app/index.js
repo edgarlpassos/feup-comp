@@ -136,6 +136,7 @@ $(document).ready(function () {
   $('#text-input-submit-graph1').on('click', graph1Submit);
   $('#text-input-submit-graph2').on('click', graph2Submit);
   $('#text-input-submit-operation').on('click', executeOperation);
+  $('#test-new-language').on('click', testNewLanguage);
 
   $("#dropdown-operations li a").click(function () {
 
@@ -153,9 +154,8 @@ function graph2Submit() {
   visualizeAutomaton($('#text-input-area-graph2').val());
 }
 
-function visualizeAutomaton(input) {
+function visualizeAutomaton(input, outputDiv) {
 
-  let outputDiv = $('#output');
   let currentImg = outputDiv.children('#output-image');
   console.log(currentImg);
 
@@ -186,10 +186,10 @@ function executeOperation(graph1, graph2) {
 
   switch (activeOperation) {
     case 'Output Input 1':
-      visualizeAutomaton(graph1);
+      visualizeAutomaton(graph1, $('#output'));
       break;
     case 'Output Input 2':
-      visualizeAutomaton(graph2);
+      visualizeAutomaton(graph2, $('#output'));
       break;
     case 'Complement Input 1':
       let complement = new Complement(graph1);
@@ -228,5 +228,24 @@ function executeOperation(graph1, graph2) {
   }
 
   if (activeOperation != 'Output Input 1' || activeOperation != 'Output Input 2')
-    visualizeAutomaton(result.toDotFile());
+    visualizeAutomaton(result.toDotFile(), $('#output'));
+}
+
+function testNewLanguage() {
+  let dotGraph = $('#new-language').val();
+  let outPutDiv = $('#output-2');
+
+  visualizeAutomaton(dotGraph, outPutDiv);
+
+  let input = $('#input-new-language').val();
+  console.log(input);
+
+  this.graph = inputParser.parse(dotGraph);
+
+  if(this.graph.belongsToLanguage(input)){
+    $(outPutDiv).append('<div class="alert alert-success" role="alert">Belongs to language!</div>');
+  }
+  else {
+    $(outPutDiv).append('<div class="alert alert-danger" role="alert">Don\'t belongs to language!</div>');
+  }
 }
