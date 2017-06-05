@@ -34,7 +34,7 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
   if(messages.length == 0){
     if(this.graph.isValid())
       return ['success',this.graph.toDotFile()];
-    else return ['Graph has no starting node!'];
+    else return['Graph has no starting node'];
   }
     return messages;
 }
@@ -42,7 +42,7 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
 // Visit a parse tree produced by DotFileParser#instruction.
 DotFileVisitor.prototype.visitInstruction = function (ctx) {
   if (ctx.children == null)
-    return null;
+    return ['No input detected'];
 
   let valToken = ctx.NAME();
   if (valToken != null) {
@@ -79,6 +79,8 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
   if (instruction != null) {
     this.visitInstruction(instruction);
   }
+
+  return [];
 };
 
 // Visit a parse tree produced by DotFileParser#stateTransition.
@@ -104,6 +106,9 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
     let labeling = ctx.labeling();
     if (labeling != null)
       transitionChar = this.visitLabeling(labeling);
+    
+    if(transitionChar == 'null')
+      transitionChar = 'ε';
 
     let returnVal = new Edge(node, transitionChar);
     return returnVal;

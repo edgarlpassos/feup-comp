@@ -16,53 +16,7 @@ const DIFF = 3;
 let inputParser = require('./main.js').inputParser;
 $(document).ready(function () {
 
-  /* let graph = new Graph();
-   //creatiang nodes
-   let a = new Node("a", false);
-   let b = new Node("b", false);
-   let c = new Node("c", true);
-   let d = new Node("d", false);
-   //creating edges
-   let edge = new Edge(b, "1");
-   let edge1 = new Edge(c, "1");
-   let edge2 = new Edge(d, "1");
-   //ading edges
-   a.addEdge(edge);
-   a.addEdge(edge2);
-   b.addEdge(edge1);
-   d.addEdge(edge1);
-
-   graph.addNode(a);
-   graph.addNode(b);
-   graph.addNode(c);
-   graph.addNode(d);
-   graph.setStartNode(a);
-
-   graph.setGraphName('name');
-
-   let dotFile = graph.toDotFile();
-   console.log(dotFile);*/
-
-  /*
-    //creating a graph test for complement
-    let graph = new Graph();
-    //creatiang nodes
-    let q0 = new Node("q0",true);
-    let q1 = new Node("q1",false);
-    //creating edges
-    let edge = new Edge(q1,"0");
-    let edge1 = new Edge(q0,"1");
-    let edge2 = new Edge(q0,"0");
-    //ading edges
-    q0.addEdge(edge1);
-    q0.addEdge(edge);
-    q1.addEdge(edge2);
-    graph.addNode(q0);
-    graph.addNode(q1);
-    graph.setStartNode(q0);
-    let complement = new Complement(graph);*/
-
-
+/*
   //creating a graph test for product
   let graph1 = new Graph();
   let graph2 = new Graph();
@@ -108,34 +62,15 @@ $(document).ready(function () {
   //let product = new Product(graph1, graph2, 1);
   let concatenation = new Concatenation(graph1, graph2);
 
-  /*$('#text-input-submit').on('click', function (e) {
-    e.preventDefault();
-    let textarea = $('#text-input-area');
-    let input = textarea.val();
-
-    let outputDiv = $('#output');
-    let currentImg = outputDiv.children('#output-image');
-    console.log(currentImg);
-
-    if (currentImg != null) {
-      currentImg.remove();
-    }
-
-    let image = vizJs(input, {
-      format: "png-image-element"
-    });
-
-    outputDiv.append(image);
-
-    if (input === '')
-      return;
-
-    inputParser.parse(input)
-  });*/
+*/
 
   $('#text-input-submit-graph1').on('click', graph1Submit);
   $('#text-input-submit-graph2').on('click', graph2Submit);
-  $('#text-input-submit-operation').on('click', executeOperation);
+  $('#text-input-submit-operation').on('click',function(){
+    let graph1 = inputParser.parse($('#text-input-area-graph1').val());
+    let graph2 = inputParser.parse($('#text-input-area-graph2').val());
+    executeOperation(graph1,graph2);
+  });
 
   $("#dropdown-operations li a").click(function () {
 
@@ -146,46 +81,47 @@ $(document).ready(function () {
 });
 
 function graph1Submit() {
-  visualizeAutomaton($('#text-input-area-graph1').val());
+  let graph = inputParser.parse($('#text-input-area-graph1').val());
+  visualizeAutomaton(graph);
 }
 
 function graph2Submit() {
-  visualizeAutomaton($('#text-input-area-graph2').val());
+  let graph = inputParser.parse($('#text-input-area-graph2').val());
+  visualizeAutomaton(graph);
 }
 
 function visualizeAutomaton(input) {
 
-  let outputDiv = $('#output');
-  let currentImg = outputDiv.children('#output-image');
-  console.log(currentImg);
+  if (input === '')
+    return;
 
+  let outputDiv = $('#output');
   outputDiv.empty();
+
+  if(input[0] != 'success'){
+    for(let i = 0; i < input.length; i++){
+      outputDiv.append($('<div class="alert alert-danger" role="alert">' + input[i] + '</div>'));
+    }
+    return;
+  }
+
+  input = input[1];
 
   let image = vizJs(input, {
     format: "png-image-element"
   });
 
   outputDiv.append(image);
-
-  if (input === '')
-    return;
-
-  try {
-    graph = inputParser.parse(input)
-  } catch (err) {
-    output = $('<h4>Error on graph: ' + err.message + '</h4>');
-  }
-
 }
 
 function executeOperation(graph1, graph2) {
+
+
   let activeOperation = $('#dropdown-button').text();
 
   if (activeOperation === 'DFA Operations') {
     return;
   }
-
-  console.log('boas');
 
   let result;
 
@@ -197,36 +133,84 @@ function executeOperation(graph1, graph2) {
       visualizeAutomaton(graph2);
       break;
     case 'Complement Input 1':
-      let complement = new Complement(graph1);
-      result = this.complement.getResult();
+      if(graph1['0'] != 'sucess'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      let complement1 = new Complement(graph1);
+      result = this.complement1.getResult();
       break;
     case 'Complement Input 2':
-      let complement = new Complement(graph2);
-      result = this.complement.getResult();
+      if(graph2['0'] != 'sucess'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      let complement2 = new Complement(graph2);
+      result = this.complement2.getResult();
       break;
     case 'Reverse Input 1':
-      let reverse = new Reverse(graph1);
-      result = this.reverse.getResult();
+      if(graph1['0'] != 'sucess'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      let reverse1 = new Reverse(graph1);
+      result = this.reverse1.getResult();
       break;
     case 'Reverse Input 2':
-      let reverse = new Reverse(graph2);
-      result = this.reverse.getResult();
+      if(graph2['0'] != 'sucess'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      let reverse2 = new Reverse(graph2);
+      result = this.reverse2.getResult();
       break;
     case 'Product':
+      if(graph1[0] != 'success'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      if(graph2[0] != 'success'){
+        visualizeAutomaton(graph2);
+        break;
+      }
       let product = new Product(graph1, graph2, PRODUCT);
       result = this.product.getResultGraph();
       break;
     case 'Intersection':
-      let product = new Product(graph1, graph2, INTERSECTION);
-      result = this.product.getResultGraph();
+      if(graph1[0] != 'success'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      if(graph2[0] != 'success'){
+        visualizeAutomaton(graph2);
+        break;
+      }
+      let intersection = new Product(graph1, graph2, INTERSECTION);
+      result = this.intersection.getResultGraph();
       break;
     case 'Union':
-      let product = new Product(graph1, graph2, UNION);
-      result = this.product.getResultGraph();
+      if(graph1[0] != 'success'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      if(graph2[0] != 'success'){
+        visualizeAutomaton(graph2);
+        break;
+      }
+      let union = new Product(graph1, graph2, UNION);
+      result = this.union.getResultGraph();
       break;
     case 'Diff':
-      let product = new Product(graph1, graph2, DIFF);
-      result = this.product.getResultGraph();
+      if(graph1[0] != 'success'){
+        visualizeAutomaton(graph1);
+        break;
+      }
+      if(graph2[0] != 'success'){
+        visualizeAutomaton(graph2);
+        break;
+      }
+      let diff = new Product(graph1, graph2, DIFF);
+      result = this.diff.getResultGraph();
       break;
     default:
       break;

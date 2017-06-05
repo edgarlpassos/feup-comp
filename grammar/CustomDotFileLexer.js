@@ -7,7 +7,7 @@ function CustomDotFileLexer(input){
 CustomDotFileLexer.prototype = Object.create(DotFileLexer.prototype);
 CustomDotFileLexer.prototype.constructor = CustomDotFileLexer;
 
-CustomLexer.prototype.notifyListeners = function(e) {
+CustomDotFileLexer.prototype.notifyListeners = function(e) {
 	var start = this._tokenStartCharIndex;
 	var stop = this._input.index;
 	var text = this._input.getText(start, stop);
@@ -15,3 +15,5 @@ CustomLexer.prototype.notifyListeners = function(e) {
 	var listener = this.getErrorListenerDispatch();
     throw "line " + this._tokenStartLine + ":" + this._tokenStartColumn + " " + msg;
 };
+
+exports.CustomDotFileLexer = CustomDotFileLexer;
