@@ -246,6 +246,6 @@ function testNewLanguage() {
     $(outPutDiv).append('<div class="alert alert-success" role="alert">Belongs to language!</div>');
   }
   else {
-    $(outPutDiv).append('<div class="alert alert-danger" role="alert">Don\'t belongs to language!</div>');
+    $(outPutDiv).append('<div class="alert alert-danger" role="alert">Don\'t belong to language!</div>');
   }
 }
