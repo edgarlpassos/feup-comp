@@ -30,7 +30,9 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
 
   console.log(this.graph);
   console.log(this.graph.toDotFile());
-  return this.graph;
+  if(this.graph.isValid())
+    return this.graph;
+  else return null;
 }
 
 
