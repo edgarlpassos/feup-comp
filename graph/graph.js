@@ -135,8 +135,6 @@ Graph.prototype.belongsToLanguage = function (input) {
  * Recursive function to verify input
  */
 Graph.prototype.verifyInput = function (node, input) {
-    console.log(input);
-    console.log(node);
     for (let edge of node.getEdgeSet()) {
         if (edge.getTransition() === input[0]) {
             if (input.length === 1 && edge.getNodeTo().isAcceptanceNode())
