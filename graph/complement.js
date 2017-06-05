@@ -62,8 +62,10 @@ Complement.prototype.deadStates = function (transitionsArray, node, edges) {
 }
 
 Complement.prototype.changeStates = function () {
-    for (var i = 0; i < this.graph.getNodeSet().length; i++)
-        this.graph.getNodeSet()[i].changeNodeType();
+    console.log(this.graph.getNodeSet());
+
+    for (let node of this.graph.getNodeSet())
+        node.toggleAcceptanceNodeFlag();
 }
 
 Complement.prototype.getResult = function () {

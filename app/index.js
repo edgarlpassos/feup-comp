@@ -129,8 +129,6 @@ function executeOperation(graph1, graph2) {
 
   let result;
 
-  console.log('Active Operation');
-  console.log(activeOperation);
   switch (activeOperation) {
     case 'Output Input 1':
       result = graph1;
@@ -143,11 +141,8 @@ function executeOperation(graph1, graph2) {
         visualizeAutomaton(graph1);
         break;
       }
-      console.log(graph1[1]);
       let complement1 = new Complement(graph1[1]);
       result = ['success', complement1.getResult()];
-      console.log('\nsadfsafasf');
-      console.log(result);
       break;
     case 'Complement Input 2':
       if (graph2[0] != 'success') {
@@ -156,7 +151,6 @@ function executeOperation(graph1, graph2) {
       }
       let complement2 = new Complement(graph2[1]);
       result = ['success', complement2.getResult()];
-      console('complement');
       break;
     case 'Reverse Input 1':
       if (graph1[0] != 'success') {
@@ -226,7 +220,6 @@ function executeOperation(graph1, graph2) {
       break;
   }
 
-  console.log(result);
   visualizeAutomaton(result, $('#output'));
 }
 
