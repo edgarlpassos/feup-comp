@@ -98,6 +98,7 @@ $(document).ready(function () {
   //INTERSECTION 1 UNION 2
   console.log(graph1.toDotFile());
   console.log(graph2.toDotFile());
+  graph1.belongsToLanguage('abb');
   let product = new Product(graph1, graph2, 1);
 
   $('#text-input-submit').on('click', function (e) {

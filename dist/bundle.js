@@ -5276,6 +5276,11 @@ Edge.prototype.getTransition = function () {
     return this.transition;
 }
 
+Edge.prototype.equals = function(cmpEdge){
+    return (this.nodeTo.getVal() == cmpEdge.nodeTo.getVal() && 
+        this.transition == cmpEdge.getTransition())
+}
+
 exports.Edge = Edge;
 
 /***/ }),
@@ -5300,7 +5305,11 @@ Node.prototype.getEdgeSet = function () {
     return this.edgeSet;
 }
 
-Node.prototype.addEdge = function (newEdge) {
+Node.prototype.addEdge = function(newEdge){
+    for(let i = 0; i < this.edgeSet.length; i++){
+        if(this.edgeSet[i].equals(newEdge))
+            return;
+    }
     this.edgeSet.push(newEdge);
 }
 
@@ -5315,7 +5324,11 @@ Node.prototype.isAcceptanceNode = function () {
     return this.acceptanceNode;
 }
 
-Node.prototype.changeNodeType = function () {
+Node.prototype.setAcceptanceNode = function(isAcceptance){
+    this.acceptanceNode = isAcceptance;
+}
+
+Node.prototype.toggleAcceptanceNodeFlag = function () {
     this.acceptanceNode = !this.acceptanceNode;
 }
 
@@ -6049,10 +6062,10 @@ function forEach(xs, f) {
 
 const Node = __webpack_require__(16).Node;
 
-function Graph() {
+function Graph(name) {
     this.nodeSet = [];
     this.startNode = null;
-    this.graphName = null;
+    this.graphName = name;
 }
 
 Graph.prototype = Object.create(Object.prototype);
@@ -6067,6 +6080,8 @@ Graph.prototype.getStartNode = function () {
 }
 
 Graph.prototype.setStartNode = function (node) {
+    if (this.startNode != null)
+        throw "A starting node was already set";
     this.startNode = node;
 }
 
@@ -6167,6 +6182,33 @@ Graph.prototype.toString = function () {
     console.log('Nodes: ');
     console.log(this.nodeSet.toString());
     // TODO end this
+}
+
+Graph.prototype.belongsToLanguage = function (input) {
+    if (this.verifyInput(this.startNode, input))
+        console.log('pintou!');
+    else
+        console.log('fodeu');
+}
+
+Graph.prototype.verifyInput = function (node, input) {
+    console.log(input);
+    console.log(node);
+    for (let edge of node.getEdgeSet()) {
+        if (edge.getTransition() === input[0]) {
+            if (input.length === 1 && node.isAcceptanceNode()) {
+                console.log('verdade');
+                return true;
+            }
+            if (input.length === 1 && !node.isAcceptanceNode()) {
+                console.log('false');
+                return false;
+            } else if (this.verifyInput(edge.getNodeTo(), input.substring(1)))
+                return true;
+        }
+    }
+
+    return false;
 }
 
 exports.Graph = Graph;
@@ -7246,6 +7288,15 @@ DotFileListener.prototype.exitShaping = function(ctx) {
 };
 
 
+// Enter a parse tree produced by DotFileParser#labelname.
+DotFileListener.prototype.enterLabelname = function(ctx) {
+};
+
+// Exit a parse tree produced by DotFileParser#labelname.
+DotFileListener.prototype.exitLabelname = function(ctx) {
+};
+
+
 // Enter a parse tree produced by DotFileParser#startpoint.
 DotFileListener.prototype.enterStartpoint = function(ctx) {
 };
@@ -7840,6 +7891,12 @@ DotFileVisitor.prototype.visitLabeling = function(ctx) {
 
 // Visit a parse tree produced by DotFileParser#shaping.
 DotFileVisitor.prototype.visitShaping = function(ctx) {
+  return this.visitChildren(ctx);
+};
+
+
+// Visit a parse tree produced by DotFileParser#labelname.
+DotFileVisitor.prototype.visitLabelname = function(ctx) {
   return this.visitChildren(ctx);
 };
 
@@ -13783,6 +13840,7 @@ $(document).ready(function () {
   //INTERSECTION 1 UNION 2
   console.log(graph1.toDotFile());
   console.log(graph2.toDotFile());
+  graph1.belongsToLanguage('abb');
   let product = new Product(graph1, graph2, 1);
 
   $('#text-input-submit').on('click', function (e) {
@@ -13835,12 +13893,19 @@ CustomDotFileVisitor.prototype.constructor = CustomDotFileVisitor;
 
 // Visit a parse tree produced by DotFileParser#entry.
 DotFileVisitor.prototype.visitEntry = function (ctx) {
-  this.graph = new Graph();
+  let name = '';
+  if (ctx.NAME() != null)
+    name = ctx.NAME().getText();
+
+  this.graph = new Graph(name);
+
   if (ctx.instruction() != null) {
     this.visitInstruction(ctx.instruction());
-    console.log(this.graph);
-    return this.graph;
   }
+
+  console.log(this.graph);
+  console.log(this.graph.toDotFile());
+  return this.graph;
 }
 
 
@@ -13849,6 +13914,7 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
   if (ctx.children == null)
     return null;
 
+
   let valToken = ctx.NAME();
   if (valToken != null) {
     let value = valToken.getText();
@@ -13856,6 +13922,8 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     if (node == null) {
       node = new Node(value);
       this.graph.addNode(node);
+      if (value === 'start')
+        this.graph.setStartNode(node);
     }
 
     /* Check for transitions */
@@ -13871,7 +13939,9 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     let shaping = ctx.shaping();
     if (shaping != null) {
       let shape = this.visitShaping(shaping);
-      if (shape != null) {}
+      if (shape != null) {
+        node.setAcceptanceNode(true);
+      }
     }
   }
 
@@ -13897,20 +13967,16 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
     if (node == null) {
       node = new Node(value);
       this.graph.addNode(node);
-    }
-
-    let transition = ctx.stateTransition();
-    if (transition != null) {
-      let newEdge = this.visitStateTransition(transition);
-      if (newEdge != null) {
-        node.addEdge(newEdge);
-      }
+      if (value === 'start')
+        this.graph.setStartNode(node);
     }
 
     let transitionChar = '';
     let labeling = ctx.labeling();
     if (labeling != null)
       transitionChar = this.visitLabeling(labeling);
+
+    console.log(transitionChar);
 
     let returnVal = new Edge(node, transitionChar);
     return returnVal;
@@ -13921,15 +13987,29 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
 
 // Visit a parse tree produced by DotFileParser#labeling.
 DotFileVisitor.prototype.visitLabeling = function (ctx) {
-  return null;
-  //return this.visitChildren(ctx);
+  let labelname = ctx.labelname();
+  if (labelname == null)
+    return null;
+  else return this.visitLabelname(labelname);
 };
 
 
+// Visit a parse tree produced by DotFileParser#labelname.
+DotFileVisitor.prototype.visitLabelname = function (ctx) {
+  let eps = ctx.EPS();
+  if (eps != null)
+    return eps.getText();
+  let name = ctx.NAME();
+  if (name != null)
+    return name.getText();
+  return null;
+};
+
 // Visit a parse tree produced by DotFileParser#shaping.
 DotFileVisitor.prototype.visitShaping = function (ctx) {
-  return null;
-  //return this.visitChildren(ctx);
+  let shape = ctx.DOUBLE_CIRCLE();
+  if (shape != null)
+    return shape.getText();
 };
 
 
@@ -14638,67 +14718,69 @@ var antlr4 = __webpack_require__(11);
 
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
-    "\u0002\u0012k\b\u0001\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004",
+    "\u0002\u0013o\b\u0001\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004",
     "\u0004\t\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t",
     "\u0007\u0004\b\t\b\u0004\t\t\t\u0004\n\t\n\u0004\u000b\t\u000b\u0004",
     "\f\t\f\u0004\r\t\r\u0004\u000e\t\u000e\u0004\u000f\t\u000f\u0004\u0010",
-    "\t\u0010\u0004\u0011\t\u0011\u0003\u0002\u0006\u0002%\n\u0002\r\u0002",
-    "\u000e\u0002&\u0003\u0002\u0003\u0002\u0003\u0003\u0003\u0003\u0003",
+    "\t\u0010\u0004\u0011\t\u0011\u0004\u0012\t\u0012\u0003\u0002\u0006\u0002",
+    "\'\n\u0002\r\u0002\u000e\u0002(\u0003\u0002\u0003\u0002\u0003\u0003",
     "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
-    "\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003",
-    "\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003",
-    "\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003",
-    "\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003",
-    "\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003",
-    "\u0007\u0003\b\u0003\b\u0003\b\u0003\t\u0003\t\u0003\n\u0003\n\u0003",
-    "\u000b\u0003\u000b\u0003\f\u0003\f\u0003\r\u0003\r\u0003\u000e\u0003",
-    "\u000e\u0003\u000f\u0003\u000f\u0003\u0010\u0003\u0010\u0007\u0010e",
-    "\n\u0010\f\u0010\u000e\u0010h\u000b\u0010\u0003\u0011\u0003\u0011\u0002",
-    "\u0002\u0012\u0003\u0003\u0005\u0004\u0007\u0005\t\u0006\u000b\u0007",
-    "\r\b\u000f\t\u0011\n\u0013\u000b\u0015\f\u0017\r\u0019\u000e\u001b\u000f",
-    "\u001d\u0010\u001f\u0011!\u0012\u0003\u0002\u0006\u0005\u0002\u000b",
-    "\f\u000f\u000f\"\"\u0004\u0002C\\c|\u0005\u00022;C\\c|\u0003\u00022",
-    ";l\u0002\u0003\u0003\u0002\u0002\u0002\u0002\u0005\u0003\u0002\u0002",
-    "\u0002\u0002\u0007\u0003\u0002\u0002\u0002\u0002\t\u0003\u0002\u0002",
-    "\u0002\u0002\u000b\u0003\u0002\u0002\u0002\u0002\r\u0003\u0002\u0002",
-    "\u0002\u0002\u000f\u0003\u0002\u0002\u0002\u0002\u0011\u0003\u0002\u0002",
-    "\u0002\u0002\u0013\u0003\u0002\u0002\u0002\u0002\u0015\u0003\u0002\u0002",
-    "\u0002\u0002\u0017\u0003\u0002\u0002\u0002\u0002\u0019\u0003\u0002\u0002",
-    "\u0002\u0002\u001b\u0003\u0002\u0002\u0002\u0002\u001d\u0003\u0002\u0002",
-    "\u0002\u0002\u001f\u0003\u0002\u0002\u0002\u0002!\u0003\u0002\u0002",
-    "\u0002\u0003$\u0003\u0002\u0002\u0002\u0005*\u0003\u0002\u0002\u0002",
-    "\u00072\u0003\u0002\u0002\u0002\t8\u0003\u0002\u0002\u0002\u000b>\u0003",
-    "\u0002\u0002\u0002\rD\u0003\u0002\u0002\u0002\u000fQ\u0003\u0002\u0002",
-    "\u0002\u0011T\u0003\u0002\u0002\u0002\u0013V\u0003\u0002\u0002\u0002",
-    "\u0015X\u0003\u0002\u0002\u0002\u0017Z\u0003\u0002\u0002\u0002\u0019",
-    "\\\u0003\u0002\u0002\u0002\u001b^\u0003\u0002\u0002\u0002\u001d`\u0003",
-    "\u0002\u0002\u0002\u001fb\u0003\u0002\u0002\u0002!i\u0003\u0002\u0002",
-    "\u0002#%\t\u0002\u0002\u0002$#\u0003\u0002\u0002\u0002%&\u0003\u0002",
-    "\u0002\u0002&$\u0003\u0002\u0002\u0002&\'\u0003\u0002\u0002\u0002\'",
-    "(\u0003\u0002\u0002\u0002()\b\u0002\u0002\u0002)\u0004\u0003\u0002\u0002",
-    "\u0002*+\u0007f\u0002\u0002+,\u0007k\u0002\u0002,-\u0007i\u0002\u0002",
-    "-.\u0007t\u0002\u0002./\u0007c\u0002\u0002/0\u0007r\u0002\u000201\u0007",
-    "j\u0002\u00021\u0006\u0003\u0002\u0002\u000223\u0007n\u0002\u000234",
-    "\u0007c\u0002\u000245\u0007d\u0002\u000256\u0007g\u0002\u000267\u0007",
-    "n\u0002\u00027\b\u0003\u0002\u0002\u000289\u0007u\u0002\u00029:\u0007",
-    "v\u0002\u0002:;\u0007{\u0002\u0002;<\u0007n\u0002\u0002<=\u0007g\u0002",
-    "\u0002=\n\u0003\u0002\u0002\u0002>?\u0007u\u0002\u0002?@\u0007j\u0002",
-    "\u0002@A\u0007c\u0002\u0002AB\u0007r\u0002\u0002BC\u0007g\u0002\u0002",
-    "C\f\u0003\u0002\u0002\u0002DE\u0007f\u0002\u0002EF\u0007q\u0002\u0002",
-    "FG\u0007w\u0002\u0002GH\u0007d\u0002\u0002HI\u0007n\u0002\u0002IJ\u0007",
-    "g\u0002\u0002JK\u0007e\u0002\u0002KL\u0007k\u0002\u0002LM\u0007t\u0002",
-    "\u0002MN\u0007e\u0002\u0002NO\u0007n\u0002\u0002OP\u0007g\u0002\u0002",
-    "P\u000e\u0003\u0002\u0002\u0002QR\u0007/\u0002\u0002RS\u0007@\u0002",
-    "\u0002S\u0010\u0003\u0002\u0002\u0002TU\u0007$\u0002\u0002U\u0012\u0003",
-    "\u0002\u0002\u0002VW\u0007?\u0002\u0002W\u0014\u0003\u0002\u0002\u0002",
-    "XY\u0007=\u0002\u0002Y\u0016\u0003\u0002\u0002\u0002Z[\u0007}\u0002",
-    "\u0002[\u0018\u0003\u0002\u0002\u0002\\]\u0007\u007f\u0002\u0002]\u001a",
-    "\u0003\u0002\u0002\u0002^_\u0007]\u0002\u0002_\u001c\u0003\u0002\u0002",
-    "\u0002`a\u0007_\u0002\u0002a\u001e\u0003\u0002\u0002\u0002bf\t\u0003",
-    "\u0002\u0002ce\t\u0004\u0002\u0002dc\u0003\u0002\u0002\u0002eh\u0003",
-    "\u0002\u0002\u0002fd\u0003\u0002\u0002\u0002fg\u0003\u0002\u0002\u0002",
-    "g \u0003\u0002\u0002\u0002hf\u0003\u0002\u0002\u0002ij\t\u0005\u0002",
-    "\u0002j\"\u0003\u0002\u0002\u0002\u0005\u0002&f\u0003\b\u0002\u0002"].join("");
+    "\u0003\u0003\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004",
+    "\u0003\u0004\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005",
+    "\u0003\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006",
+    "\u0003\u0006\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007",
+    "\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007\u0003\u0007",
+    "\u0003\u0007\u0003\u0007\u0003\b\u0003\b\u0003\b\u0003\t\u0003\t\u0003",
+    "\n\u0003\n\u0003\u000b\u0003\u000b\u0003\f\u0003\f\u0003\r\u0003\r\u0003",
+    "\u000e\u0003\u000e\u0003\u000f\u0003\u000f\u0003\u0010\u0003\u0010\u0007",
+    "\u0010g\n\u0010\f\u0010\u000e\u0010j\u000b\u0010\u0003\u0011\u0003\u0011",
+    "\u0003\u0012\u0003\u0012\u0002\u0002\u0013\u0003\u0003\u0005\u0004\u0007",
+    "\u0005\t\u0006\u000b\u0007\r\b\u000f\t\u0011\n\u0013\u000b\u0015\f\u0017",
+    "\r\u0019\u000e\u001b\u000f\u001d\u0010\u001f\u0011!\u0012#\u0013\u0003",
+    "\u0002\u0006\u0005\u0002\u000b\f\u000f\u000f\"\"\u0004\u0002C\\c|\u0005",
+    "\u00022;C\\c|\u0003\u00022;p\u0002\u0003\u0003\u0002\u0002\u0002\u0002",
+    "\u0005\u0003\u0002\u0002\u0002\u0002\u0007\u0003\u0002\u0002\u0002\u0002",
+    "\t\u0003\u0002\u0002\u0002\u0002\u000b\u0003\u0002\u0002\u0002\u0002",
+    "\r\u0003\u0002\u0002\u0002\u0002\u000f\u0003\u0002\u0002\u0002\u0002",
+    "\u0011\u0003\u0002\u0002\u0002\u0002\u0013\u0003\u0002\u0002\u0002\u0002",
+    "\u0015\u0003\u0002\u0002\u0002\u0002\u0017\u0003\u0002\u0002\u0002\u0002",
+    "\u0019\u0003\u0002\u0002\u0002\u0002\u001b\u0003\u0002\u0002\u0002\u0002",
+    "\u001d\u0003\u0002\u0002\u0002\u0002\u001f\u0003\u0002\u0002\u0002\u0002",
+    "!\u0003\u0002\u0002\u0002\u0002#\u0003\u0002\u0002\u0002\u0003&\u0003",
+    "\u0002\u0002\u0002\u0005,\u0003\u0002\u0002\u0002\u00074\u0003\u0002",
+    "\u0002\u0002\t:\u0003\u0002\u0002\u0002\u000b@\u0003\u0002\u0002\u0002",
+    "\rF\u0003\u0002\u0002\u0002\u000fS\u0003\u0002\u0002\u0002\u0011V\u0003",
+    "\u0002\u0002\u0002\u0013X\u0003\u0002\u0002\u0002\u0015Z\u0003\u0002",
+    "\u0002\u0002\u0017\\\u0003\u0002\u0002\u0002\u0019^\u0003\u0002\u0002",
+    "\u0002\u001b`\u0003\u0002\u0002\u0002\u001db\u0003\u0002\u0002\u0002",
+    "\u001fd\u0003\u0002\u0002\u0002!k\u0003\u0002\u0002\u0002#m\u0003\u0002",
+    "\u0002\u0002%\'\t\u0002\u0002\u0002&%\u0003\u0002\u0002\u0002\'(\u0003",
+    "\u0002\u0002\u0002(&\u0003\u0002\u0002\u0002()\u0003\u0002\u0002\u0002",
+    ")*\u0003\u0002\u0002\u0002*+\b\u0002\u0002\u0002+\u0004\u0003\u0002",
+    "\u0002\u0002,-\u0007f\u0002\u0002-.\u0007k\u0002\u0002./\u0007i\u0002",
+    "\u0002/0\u0007t\u0002\u000201\u0007c\u0002\u000212\u0007r\u0002\u0002",
+    "23\u0007j\u0002\u00023\u0006\u0003\u0002\u0002\u000245\u0007n\u0002",
+    "\u000256\u0007c\u0002\u000267\u0007d\u0002\u000278\u0007g\u0002\u0002",
+    "89\u0007n\u0002\u00029\b\u0003\u0002\u0002\u0002:;\u0007u\u0002\u0002",
+    ";<\u0007v\u0002\u0002<=\u0007{\u0002\u0002=>\u0007n\u0002\u0002>?\u0007",
+    "g\u0002\u0002?\n\u0003\u0002\u0002\u0002@A\u0007u\u0002\u0002AB\u0007",
+    "j\u0002\u0002BC\u0007c\u0002\u0002CD\u0007r\u0002\u0002DE\u0007g\u0002",
+    "\u0002E\f\u0003\u0002\u0002\u0002FG\u0007f\u0002\u0002GH\u0007q\u0002",
+    "\u0002HI\u0007w\u0002\u0002IJ\u0007d\u0002\u0002JK\u0007n\u0002\u0002",
+    "KL\u0007g\u0002\u0002LM\u0007e\u0002\u0002MN\u0007k\u0002\u0002NO\u0007",
+    "t\u0002\u0002OP\u0007e\u0002\u0002PQ\u0007n\u0002\u0002QR\u0007g\u0002",
+    "\u0002R\u000e\u0003\u0002\u0002\u0002ST\u0007/\u0002\u0002TU\u0007@",
+    "\u0002\u0002U\u0010\u0003\u0002\u0002\u0002VW\u0007$\u0002\u0002W\u0012",
+    "\u0003\u0002\u0002\u0002XY\u0007?\u0002\u0002Y\u0014\u0003\u0002\u0002",
+    "\u0002Z[\u0007=\u0002\u0002[\u0016\u0003\u0002\u0002\u0002\\]\u0007",
+    "}\u0002\u0002]\u0018\u0003\u0002\u0002\u0002^_\u0007\u007f\u0002\u0002",
+    "_\u001a\u0003\u0002\u0002\u0002`a\u0007]\u0002\u0002a\u001c\u0003\u0002",
+    "\u0002\u0002bc\u0007_\u0002\u0002c\u001e\u0003\u0002\u0002\u0002dh\t",
+    "\u0003\u0002\u0002eg\t\u0004\u0002\u0002fe\u0003\u0002\u0002\u0002g",
+    "j\u0003\u0002\u0002\u0002hf\u0003\u0002\u0002\u0002hi\u0003\u0002\u0002",
+    "\u0002i \u0003\u0002\u0002\u0002jh\u0003\u0002\u0002\u0002kl\u0007\u03b7",
+    "\u0002\u0002l\"\u0003\u0002\u0002\u0002mn\t\u0005\u0002\u0002n$\u0003",
+    "\u0002\u0002\u0002\u0005\u0002(h\u0003\b\u0002\u0002"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -14730,7 +14812,8 @@ DotFileLexer.CLOSE_BRACKET = 12;
 DotFileLexer.OPEN_SQUARE = 13;
 DotFileLexer.CLOSE_SQUARE = 14;
 DotFileLexer.NAME = 15;
-DotFileLexer.DIGIT = 16;
+DotFileLexer.EPS = 16;
+DotFileLexer.DIGIT = 17;
 
 
 DotFileLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
@@ -14738,20 +14821,20 @@ DotFileLexer.prototype.modeNames = [ "DEFAULT_MODE" ];
 DotFileLexer.prototype.literalNames = [ null, null, "'digraph'", "'label'", 
                                         "'style'", "'shape'", "'doublecircle'", 
                                         "'->'", "'\"'", "'='", "';'", "'{'", 
-                                        "'}'", "'['", "']'" ];
+                                        "'}'", "'['", "']'", null, "'ε'" ];
 
 DotFileLexer.prototype.symbolicNames = [ null, "WS", "GRAPH", "LABEL", "STYLE", 
                                          "SHAPE", "DOUBLE_CIRCLE", "TRANSITION", 
                                          "QUOTATION", "EQUAL", "SEMICOLON", 
                                          "OPEN_BRACKET", "CLOSE_BRACKET", 
                                          "OPEN_SQUARE", "CLOSE_SQUARE", 
-                                         "NAME", "DIGIT" ];
+                                         "NAME", "EPS", "DIGIT" ];
 
 DotFileLexer.prototype.ruleNames = [ "WS", "GRAPH", "LABEL", "STYLE", "SHAPE", 
                                      "DOUBLE_CIRCLE", "TRANSITION", "QUOTATION", 
                                      "EQUAL", "SEMICOLON", "OPEN_BRACKET", 
                                      "CLOSE_BRACKET", "OPEN_SQUARE", "CLOSE_SQUARE", 
-                                     "NAME", "DIGIT" ];
+                                     "NAME", "EPS", "DIGIT" ];
 
 DotFileLexer.prototype.grammarFileName = "DotFileLexer.g4";
 
@@ -14774,43 +14857,41 @@ var DotFileVisitor = __webpack_require__(32).DotFileVisitor;
 var grammarFileName = "DotFile.g4";
 
 var serializedATN = ["\u0003\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd",
-    "\u0003\u0012@\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
-    "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0003",
-    "\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003",
-    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
-    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0005\u0003 ",
-    "\n\u0003\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004",
-    "\u0003\u0004\u0005\u0004(\n\u0004\u0003\u0005\u0003\u0005\u0003\u0005",
-    "\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0005\u0005",
-    "2\n\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006",
-    "\u0003\u0006\u0003\u0006\u0003\u0006\u0005\u0006<\n\u0006\u0003\u0007",
-    "\u0003\u0007\u0003\u0007\u0002\u0002\b\u0002\u0004\u0006\b\n\f\u0002",
-    "\u0002?\u0002\u000e\u0003\u0002\u0002\u0002\u0004\u001f\u0003\u0002",
-    "\u0002\u0002\u0006\'\u0003\u0002\u0002\u0002\b1\u0003\u0002\u0002\u0002",
-    "\n;\u0003\u0002\u0002\u0002\f=\u0003\u0002\u0002\u0002\u000e\u000f\u0007",
-    "\u0004\u0002\u0002\u000f\u0010\u0007\u0011\u0002\u0002\u0010\u0011\u0007",
-    "\r\u0002\u0002\u0011\u0012\u0005\u0004\u0003\u0002\u0012\u0013\u0007",
-    "\u000e\u0002\u0002\u0013\u0003\u0003\u0002\u0002\u0002\u0014\u0015\u0007",
-    "\u0011\u0002\u0002\u0015\u0016\u0005\u0006\u0004\u0002\u0016\u0017\u0005",
-    "\u0004\u0003\u0002\u0017 \u0003\u0002\u0002\u0002\u0018\u0019\u0007",
-    "\f\u0002\u0002\u0019 \u0005\u0004\u0003\u0002\u001a\u001b\u0007\u0011",
-    "\u0002\u0002\u001b\u001c\u0005\n\u0006\u0002\u001c\u001d\u0005\u0004",
-    "\u0003\u0002\u001d \u0003\u0002\u0002\u0002\u001e \u0003\u0002\u0002",
-    "\u0002\u001f\u0014\u0003\u0002\u0002\u0002\u001f\u0018\u0003\u0002\u0002",
-    "\u0002\u001f\u001a\u0003\u0002\u0002\u0002\u001f\u001e\u0003\u0002\u0002",
-    "\u0002 \u0005\u0003\u0002\u0002\u0002!\"\u0007\t\u0002\u0002\"#\u0007",
-    "\u0011\u0002\u0002#(\u0005\u0006\u0004\u0002$%\u0007\t\u0002\u0002%",
-    "&\u0007\u0011\u0002\u0002&(\u0005\b\u0005\u0002\'!\u0003\u0002\u0002",
-    "\u0002\'$\u0003\u0002\u0002\u0002(\u0007\u0003\u0002\u0002\u0002)*\u0007",
-    "\u000f\u0002\u0002*+\u0007\u0005\u0002\u0002+,\u0007\u000b\u0002\u0002",
-    ",-\u0007\n\u0002\u0002-.\u0007\u0011\u0002\u0002./\u0007\n\u0002\u0002",
-    "/2\u0007\u0010\u0002\u000202\u0003\u0002\u0002\u00021)\u0003\u0002\u0002",
-    "\u000210\u0003\u0002\u0002\u00022\t\u0003\u0002\u0002\u000234\u0007",
-    "\u000f\u0002\u000245\u0007\u0007\u0002\u000256\u0007\u000b\u0002\u0002",
-    "67\u0007\n\u0002\u000278\u0007\b\u0002\u000289\u0007\n\u0002\u00029",
-    "<\u0007\u0010\u0002\u0002:<\u0003\u0002\u0002\u0002;3\u0003\u0002\u0002",
-    "\u0002;:\u0003\u0002\u0002\u0002<\u000b\u0003\u0002\u0002\u0002=>\u0005",
-    "\u0002\u0002\u0002>\r\u0003\u0002\u0002\u0002\u0006\u001f\'1;"].join("");
+    "\u0003\u0013?\u0004\u0002\t\u0002\u0004\u0003\t\u0003\u0004\u0004\t",
+    "\u0004\u0004\u0005\t\u0005\u0004\u0006\t\u0006\u0004\u0007\t\u0007\u0004",
+    "\b\t\b\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003\u0002\u0003",
+    "\u0002\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003",
+    "\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0003\u0005",
+    "\u0003\"\n\u0003\u0003\u0004\u0003\u0004\u0003\u0004\u0003\u0004\u0003",
+    "\u0004\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003\u0005\u0003",
+    "\u0005\u0003\u0005\u0003\u0005\u0003\u0006\u0003\u0006\u0003\u0006\u0003",
+    "\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0003\u0006\u0005\u00069",
+    "\n\u0006\u0003\u0007\u0003\u0007\u0003\b\u0003\b\u0003\b\u0002\u0002",
+    "\t\u0002\u0004\u0006\b\n\f\u000e\u0002\u0003\u0003\u0002\u0011\u0012",
+    ":\u0002\u0010\u0003\u0002\u0002\u0002\u0004!\u0003\u0002\u0002\u0002",
+    "\u0006#\u0003\u0002\u0002\u0002\b(\u0003\u0002\u0002\u0002\n8\u0003",
+    "\u0002\u0002\u0002\f:\u0003\u0002\u0002\u0002\u000e<\u0003\u0002\u0002",
+    "\u0002\u0010\u0011\u0007\u0004\u0002\u0002\u0011\u0012\u0007\u0011\u0002",
+    "\u0002\u0012\u0013\u0007\r\u0002\u0002\u0013\u0014\u0005\u0004\u0003",
+    "\u0002\u0014\u0015\u0007\u000e\u0002\u0002\u0015\u0003\u0003\u0002\u0002",
+    "\u0002\u0016\u0017\u0007\u0011\u0002\u0002\u0017\u0018\u0005\u0006\u0004",
+    "\u0002\u0018\u0019\u0007\f\u0002\u0002\u0019\u001a\u0005\u0004\u0003",
+    "\u0002\u001a\"\u0003\u0002\u0002\u0002\u001b\u001c\u0007\u0011\u0002",
+    "\u0002\u001c\u001d\u0005\n\u0006\u0002\u001d\u001e\u0007\f\u0002\u0002",
+    "\u001e\u001f\u0005\u0004\u0003\u0002\u001f\"\u0003\u0002\u0002\u0002",
+    " \"\u0003\u0002\u0002\u0002!\u0016\u0003\u0002\u0002\u0002!\u001b\u0003",
+    "\u0002\u0002\u0002! \u0003\u0002\u0002\u0002\"\u0005\u0003\u0002\u0002",
+    "\u0002#$\u0007\t\u0002\u0002$%\u0007\u0011\u0002\u0002%&\u0005\b\u0005",
+    "\u0002&\'\u0005\u0004\u0003\u0002\'\u0007\u0003\u0002\u0002\u0002()",
+    "\u0007\u000f\u0002\u0002)*\u0007\u0005\u0002\u0002*+\u0007\u000b\u0002",
+    "\u0002+,\u0007\n\u0002\u0002,-\u0005\f\u0007\u0002-.\u0007\n\u0002\u0002",
+    "./\u0007\u0010\u0002\u0002/\t\u0003\u0002\u0002\u000201\u0007\u000f",
+    "\u0002\u000212\u0007\u0007\u0002\u000223\u0007\u000b\u0002\u000234\u0007",
+    "\n\u0002\u000245\u0007\b\u0002\u000256\u0007\n\u0002\u000269\u0007\u0010",
+    "\u0002\u000279\u0003\u0002\u0002\u000280\u0003\u0002\u0002\u000287\u0003",
+    "\u0002\u0002\u00029\u000b\u0003\u0002\u0002\u0002:;\t\u0002\u0002\u0002",
+    ";\r\u0003\u0002\u0002\u0002<=\u0005\u0002\u0002\u0002=\u000f\u0003\u0002",
+    "\u0002\u0002\u0004!8"].join("");
 
 
 var atn = new antlr4.atn.ATNDeserializer().deserialize(serializedATN);
@@ -14821,15 +14902,15 @@ var sharedContextCache = new antlr4.PredictionContextCache();
 
 var literalNames = [ null, null, "'digraph'", "'label'", "'style'", "'shape'", 
                      "'doublecircle'", "'->'", "'\"'", "'='", "';'", "'{'", 
-                     "'}'", "'['", "']'" ];
+                     "'}'", "'['", "']'", null, "'ε'" ];
 
 var symbolicNames = [ null, "WS", "GRAPH", "LABEL", "STYLE", "SHAPE", "DOUBLE_CIRCLE", 
                       "TRANSITION", "QUOTATION", "EQUAL", "SEMICOLON", "OPEN_BRACKET", 
                       "CLOSE_BRACKET", "OPEN_SQUARE", "CLOSE_SQUARE", "NAME", 
-                      "DIGIT" ];
+                      "EPS", "DIGIT" ];
 
 var ruleNames =  [ "entry", "instruction", "stateTransition", "labeling", 
-                   "shaping", "startpoint" ];
+                   "shaping", "labelname", "startpoint" ];
 
 function DotFileParser (input) {
 	antlr4.Parser.call(this, input);
@@ -14865,14 +14946,16 @@ DotFileParser.CLOSE_BRACKET = 12;
 DotFileParser.OPEN_SQUARE = 13;
 DotFileParser.CLOSE_SQUARE = 14;
 DotFileParser.NAME = 15;
-DotFileParser.DIGIT = 16;
+DotFileParser.EPS = 16;
+DotFileParser.DIGIT = 17;
 
 DotFileParser.RULE_entry = 0;
 DotFileParser.RULE_instruction = 1;
 DotFileParser.RULE_stateTransition = 2;
 DotFileParser.RULE_labeling = 3;
 DotFileParser.RULE_shaping = 4;
-DotFileParser.RULE_startpoint = 5;
+DotFileParser.RULE_labelname = 5;
+DotFileParser.RULE_startpoint = 6;
 
 function EntryContext(parser, parent, invokingState) {
 	if(parent===undefined) {
@@ -14941,15 +15024,15 @@ DotFileParser.prototype.entry = function() {
     this.enterRule(localctx, 0, DotFileParser.RULE_entry);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 12;
-        this.match(DotFileParser.GRAPH);
-        this.state = 13;
-        this.match(DotFileParser.NAME);
         this.state = 14;
-        this.match(DotFileParser.OPEN_BRACKET);
+        this.match(DotFileParser.GRAPH);
         this.state = 15;
-        this.instruction();
+        this.match(DotFileParser.NAME);
         this.state = 16;
+        this.match(DotFileParser.OPEN_BRACKET);
+        this.state = 17;
+        this.instruction();
+        this.state = 18;
         this.match(DotFileParser.CLOSE_BRACKET);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -14989,12 +15072,12 @@ InstructionContext.prototype.stateTransition = function() {
     return this.getTypedRuleContext(StateTransitionContext,0);
 };
 
-InstructionContext.prototype.instruction = function() {
-    return this.getTypedRuleContext(InstructionContext,0);
-};
-
 InstructionContext.prototype.SEMICOLON = function() {
     return this.getToken(DotFileParser.SEMICOLON, 0);
+};
+
+InstructionContext.prototype.instruction = function() {
+    return this.getTypedRuleContext(InstructionContext,0);
 };
 
 InstructionContext.prototype.shaping = function() {
@@ -15031,40 +15114,36 @@ DotFileParser.prototype.instruction = function() {
     var localctx = new InstructionContext(this, this._ctx, this.state);
     this.enterRule(localctx, 2, DotFileParser.RULE_instruction);
     try {
-        this.state = 29;
+        this.state = 31;
         this._errHandler.sync(this);
         var la_ = this._interp.adaptivePredict(this._input,0,this._ctx);
         switch(la_) {
         case 1:
             this.enterOuterAlt(localctx, 1);
-            this.state = 18;
-            this.match(DotFileParser.NAME);
-            this.state = 19;
-            this.stateTransition();
             this.state = 20;
-            this.instruction();
-            break;
-
-        case 2:
-            this.enterOuterAlt(localctx, 2);
+            this.match(DotFileParser.NAME);
+            this.state = 21;
+            this.stateTransition();
             this.state = 22;
             this.match(DotFileParser.SEMICOLON);
             this.state = 23;
             this.instruction();
             break;
 
-        case 3:
-            this.enterOuterAlt(localctx, 3);
-            this.state = 24;
-            this.match(DotFileParser.NAME);
+        case 2:
+            this.enterOuterAlt(localctx, 2);
             this.state = 25;
-            this.shaping();
+            this.match(DotFileParser.NAME);
             this.state = 26;
+            this.shaping();
+            this.state = 27;
+            this.match(DotFileParser.SEMICOLON);
+            this.state = 28;
             this.instruction();
             break;
 
-        case 4:
-            this.enterOuterAlt(localctx, 4);
+        case 3:
+            this.enterOuterAlt(localctx, 3);
 
             break;
 
@@ -15107,12 +15186,12 @@ StateTransitionContext.prototype.NAME = function() {
     return this.getToken(DotFileParser.NAME, 0);
 };
 
-StateTransitionContext.prototype.stateTransition = function() {
-    return this.getTypedRuleContext(StateTransitionContext,0);
-};
-
 StateTransitionContext.prototype.labeling = function() {
     return this.getTypedRuleContext(LabelingContext,0);
+};
+
+StateTransitionContext.prototype.instruction = function() {
+    return this.getTypedRuleContext(InstructionContext,0);
 };
 
 StateTransitionContext.prototype.enterRule = function(listener) {
@@ -15145,31 +15224,15 @@ DotFileParser.prototype.stateTransition = function() {
     var localctx = new StateTransitionContext(this, this._ctx, this.state);
     this.enterRule(localctx, 4, DotFileParser.RULE_stateTransition);
     try {
-        this.state = 37;
-        this._errHandler.sync(this);
-        var la_ = this._interp.adaptivePredict(this._input,1,this._ctx);
-        switch(la_) {
-        case 1:
-            this.enterOuterAlt(localctx, 1);
-            this.state = 31;
-            this.match(DotFileParser.TRANSITION);
-            this.state = 32;
-            this.match(DotFileParser.NAME);
-            this.state = 33;
-            this.stateTransition();
-            break;
-
-        case 2:
-            this.enterOuterAlt(localctx, 2);
-            this.state = 34;
-            this.match(DotFileParser.TRANSITION);
-            this.state = 35;
-            this.match(DotFileParser.NAME);
-            this.state = 36;
-            this.labeling();
-            break;
-
-        }
+        this.enterOuterAlt(localctx, 1);
+        this.state = 33;
+        this.match(DotFileParser.TRANSITION);
+        this.state = 34;
+        this.match(DotFileParser.NAME);
+        this.state = 35;
+        this.labeling();
+        this.state = 36;
+        this.instruction();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -15224,8 +15287,8 @@ LabelingContext.prototype.QUOTATION = function(i) {
 };
 
 
-LabelingContext.prototype.NAME = function() {
-    return this.getToken(DotFileParser.NAME, 0);
+LabelingContext.prototype.labelname = function() {
+    return this.getTypedRuleContext(LabelnameContext,0);
 };
 
 LabelingContext.prototype.CLOSE_SQUARE = function() {
@@ -15262,35 +15325,21 @@ DotFileParser.prototype.labeling = function() {
     var localctx = new LabelingContext(this, this._ctx, this.state);
     this.enterRule(localctx, 6, DotFileParser.RULE_labeling);
     try {
-        this.state = 47;
-        this._errHandler.sync(this);
-        switch(this._input.LA(1)) {
-        case DotFileParser.OPEN_SQUARE:
-            this.enterOuterAlt(localctx, 1);
-            this.state = 39;
-            this.match(DotFileParser.OPEN_SQUARE);
-            this.state = 40;
-            this.match(DotFileParser.LABEL);
-            this.state = 41;
-            this.match(DotFileParser.EQUAL);
-            this.state = 42;
-            this.match(DotFileParser.QUOTATION);
-            this.state = 43;
-            this.match(DotFileParser.NAME);
-            this.state = 44;
-            this.match(DotFileParser.QUOTATION);
-            this.state = 45;
-            this.match(DotFileParser.CLOSE_SQUARE);
-            break;
-        case DotFileParser.SEMICOLON:
-        case DotFileParser.CLOSE_BRACKET:
-        case DotFileParser.NAME:
-            this.enterOuterAlt(localctx, 2);
-
-            break;
-        default:
-            throw new antlr4.error.NoViableAltException(this);
-        }
+        this.enterOuterAlt(localctx, 1);
+        this.state = 38;
+        this.match(DotFileParser.OPEN_SQUARE);
+        this.state = 39;
+        this.match(DotFileParser.LABEL);
+        this.state = 40;
+        this.match(DotFileParser.EQUAL);
+        this.state = 41;
+        this.match(DotFileParser.QUOTATION);
+        this.state = 42;
+        this.labelname();
+        this.state = 43;
+        this.match(DotFileParser.QUOTATION);
+        this.state = 44;
+        this.match(DotFileParser.CLOSE_SQUARE);
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
 	        localctx.exception = re;
@@ -15383,34 +15432,111 @@ DotFileParser.prototype.shaping = function() {
     var localctx = new ShapingContext(this, this._ctx, this.state);
     this.enterRule(localctx, 8, DotFileParser.RULE_shaping);
     try {
-        this.state = 57;
+        this.state = 54;
         this._errHandler.sync(this);
         switch(this._input.LA(1)) {
         case DotFileParser.OPEN_SQUARE:
             this.enterOuterAlt(localctx, 1);
-            this.state = 49;
+            this.state = 46;
             this.match(DotFileParser.OPEN_SQUARE);
-            this.state = 50;
+            this.state = 47;
             this.match(DotFileParser.SHAPE);
-            this.state = 51;
+            this.state = 48;
             this.match(DotFileParser.EQUAL);
-            this.state = 52;
+            this.state = 49;
             this.match(DotFileParser.QUOTATION);
-            this.state = 53;
+            this.state = 50;
             this.match(DotFileParser.DOUBLE_CIRCLE);
-            this.state = 54;
+            this.state = 51;
             this.match(DotFileParser.QUOTATION);
-            this.state = 55;
+            this.state = 52;
             this.match(DotFileParser.CLOSE_SQUARE);
             break;
         case DotFileParser.SEMICOLON:
-        case DotFileParser.CLOSE_BRACKET:
-        case DotFileParser.NAME:
             this.enterOuterAlt(localctx, 2);
 
             break;
         default:
             throw new antlr4.error.NoViableAltException(this);
+        }
+    } catch (re) {
+    	if(re instanceof antlr4.error.RecognitionException) {
+	        localctx.exception = re;
+	        this._errHandler.reportError(this, re);
+	        this._errHandler.recover(this, re);
+	    } else {
+	    	throw re;
+	    }
+    } finally {
+        this.exitRule();
+    }
+    return localctx;
+};
+
+function LabelnameContext(parser, parent, invokingState) {
+	if(parent===undefined) {
+	    parent = null;
+	}
+	if(invokingState===undefined || invokingState===null) {
+		invokingState = -1;
+	}
+	antlr4.ParserRuleContext.call(this, parent, invokingState);
+    this.parser = parser;
+    this.ruleIndex = DotFileParser.RULE_labelname;
+    return this;
+}
+
+LabelnameContext.prototype = Object.create(antlr4.ParserRuleContext.prototype);
+LabelnameContext.prototype.constructor = LabelnameContext;
+
+LabelnameContext.prototype.NAME = function() {
+    return this.getToken(DotFileParser.NAME, 0);
+};
+
+LabelnameContext.prototype.EPS = function() {
+    return this.getToken(DotFileParser.EPS, 0);
+};
+
+LabelnameContext.prototype.enterRule = function(listener) {
+    if(listener instanceof DotFileListener ) {
+        listener.enterLabelname(this);
+	}
+};
+
+LabelnameContext.prototype.exitRule = function(listener) {
+    if(listener instanceof DotFileListener ) {
+        listener.exitLabelname(this);
+	}
+};
+
+LabelnameContext.prototype.accept = function(visitor) {
+    if ( visitor instanceof DotFileVisitor ) {
+        return visitor.visitLabelname(this);
+    } else {
+        return visitor.visitChildren(this);
+    }
+};
+
+
+
+
+DotFileParser.LabelnameContext = LabelnameContext;
+
+DotFileParser.prototype.labelname = function() {
+
+    var localctx = new LabelnameContext(this, this._ctx, this.state);
+    this.enterRule(localctx, 10, DotFileParser.RULE_labelname);
+    var _la = 0; // Token type
+    try {
+        this.enterOuterAlt(localctx, 1);
+        this.state = 56;
+        _la = this._input.LA(1);
+        if(!(_la===DotFileParser.NAME || _la===DotFileParser.EPS)) {
+        this._errHandler.recoverInline(this);
+        }
+        else {
+        	this._errHandler.reportMatch(this);
+            this.consume();
         }
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {
@@ -15474,10 +15600,10 @@ DotFileParser.StartpointContext = StartpointContext;
 DotFileParser.prototype.startpoint = function() {
 
     var localctx = new StartpointContext(this, this._ctx, this.state);
-    this.enterRule(localctx, 10, DotFileParser.RULE_startpoint);
+    this.enterRule(localctx, 12, DotFileParser.RULE_startpoint);
     try {
         this.enterOuterAlt(localctx, 1);
-        this.state = 59;
+        this.state = 58;
         this.entry();
     } catch (re) {
     	if(re instanceof antlr4.error.RecognitionException) {

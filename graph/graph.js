@@ -18,7 +18,7 @@ Graph.prototype.getStartNode = function () {
 }
 
 Graph.prototype.setStartNode = function (node) {
-    if(this.startNode != null)
+    if (this.startNode != null)
         throw "A starting node was already set";
     this.startNode = node;
 }
@@ -120,6 +120,29 @@ Graph.prototype.toString = function () {
     console.log('Nodes: ');
     console.log(this.nodeSet.toString());
     // TODO end this
+}
+
+Graph.prototype.belongsToLanguage = function (input) {
+    if (this.verifyInput(this.startNode, input))
+        console.log('Pertence à linguagem!');
+    else
+        console.log('Não pertence à linguagem!');
+}
+
+Graph.prototype.verifyInput = function (node, input) {
+
+    for (let edge of node.getEdgeSet()) {
+        if (edge.getTransition() === input[0]) {
+            if (input.length === 1 && node.isAcceptanceNode())
+                return true;
+            if (input.length === 1 && !node.isAcceptanceNode())
+                return false;
+            else if (this.verifyInput(edge.getNodeTo(), input.substring(1)))
+                return true;
+        }
+    }
+
+    return false;
 }
 
 exports.Graph = Graph;
