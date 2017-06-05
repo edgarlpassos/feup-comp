@@ -4,6 +4,7 @@ const Edge = require("../graph/graphEdge.js").Edge;
 
 const INTERSECTION = 1;
 const UNION = 2;
+const DIFF = 3;
 
 /**
  * Product Graph

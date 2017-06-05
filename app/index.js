@@ -5,7 +5,13 @@ const Node = require("../graph/graphNode.js").Node;
 const Complement = require("../graph/complement.js").Complement;
 const Reverse = require("../graph/reverse.js").Reverse;
 const Product = require("../graph/product.js").Product;
+const Concatenation = require("../graph/concatenation.js").Concatenation;
 const Edge = require("../graph/graphEdge.js").Edge;
+
+const PRODUCT = 0;
+const INTERSECTION = 1;
+const UNION = 2;
+const DIFF = 3;
 
 let inputParser = require('./main.js').inputParser;
 $(document).ready(function () {
@@ -99,7 +105,8 @@ $(document).ready(function () {
   console.log(graph1.toDotFile());
   console.log(graph2.toDotFile());
   graph1.belongsToLanguage('abb');
-  let product = new Product(graph1, graph2, 1);
+  //let product = new Product(graph1, graph2, 1);
+  let concatenation = new Concatenation(graph1, graph2);
 
   /*$('#text-input-submit').on('click', function (e) {
     e.preventDefault();
@@ -171,33 +178,60 @@ function visualizeAutomaton(input) {
 
 }
 
-function executeOperation() {
+function executeOperation(graph1, graph2) {
   let activeOperation = $('#dropdown-button').text();
 
   if (activeOperation === 'DFA Operations') {
     return;
   }
 
+  console.log('boas');
+
+  let result;
+
   switch (activeOperation) {
     case 'Output Input 1':
+      visualizeAutomaton(graph1);
       break;
     case 'Output Input 2':
+      visualizeAutomaton(graph2);
       break;
     case 'Complement Input 1':
-      break;
-    case 'Reverse Input 1':
+      let complement = new Complement(graph1);
+      result = this.complement.getResult();
       break;
     case 'Complement Input 2':
+      let complement = new Complement(graph2);
+      result = this.complement.getResult();
+      break;
+    case 'Reverse Input 1':
+      let reverse = new Reverse(graph1);
+      result = this.reverse.getResult();
+      break;
+    case 'Reverse Input 2':
+      let reverse = new Reverse(graph2);
+      result = this.reverse.getResult();
       break;
     case 'Product':
+      let product = new Product(graph1, graph2, PRODUCT);
+      result = this.product.getResultGraph();
       break;
     case 'Intersection':
+      let product = new Product(graph1, graph2, INTERSECTION);
+      result = this.product.getResultGraph();
       break;
     case 'Union':
+      let product = new Product(graph1, graph2, UNION);
+      result = this.product.getResultGraph();
       break;
     case 'Diff':
+      let product = new Product(graph1, graph2, DIFF);
+      result = this.product.getResultGraph();
       break;
     default:
       break;
   }
+
+  if (activeOperation != 'Output Input 1' || activeOperation != 'Output Input 2')
+    visualizeAutomaton(result.toDotFile());
 }

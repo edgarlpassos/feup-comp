@@ -70,4 +70,8 @@ Complement.prototype.changeStates = function () {
         this.graph.getNodeSet()[i].changeNodeType();
 }
 
+Complement.prototype.getResult = function () {
+    return this.graph;
+}
+
 exports.Complement = Complement;

@@ -153,9 +153,9 @@ Graph.prototype.verifyInput = function (node, input) {
 }
 
 Graph.prototype.isValid = function () {
-    if(this.startNode == null)
+    if (this.startNode == null)
         return false;
-    
+
     return true;
 }
 
