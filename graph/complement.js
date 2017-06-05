@@ -12,7 +12,6 @@ function Complement(graph) {
     this.addDeadStates();
     this.changeStates();
     this.addTransitionsToDeadState();
-    console.log(graph);
 }
 
 Complement.prototype = Object.create(Object.prototype);
@@ -37,7 +36,6 @@ Complement.prototype.addDeadStates = function () {
     for (var i = 0; i < this.graph.getNodeSet().length; i++) {
         var node = this.graph.getNodeSet()[i];
         this.deadStates(transitionsArray, node, node.getEdgeSet());
-        console.log("Passing throw over all nodes...");
     }
 
     this.graph.addNode(this.dead);
@@ -52,13 +50,11 @@ Complement.prototype.deadStates = function (transitionsArray, node, edges) {
                 break;
             }
             if (j === (edges.length - 1)) {
-                console.log("Adding transition to dead state with label " + transitionsArray[i]);
                 let edge = new Edge(this.dead, transitionsArray[i]);
                 node.addEdge(edge);
             }
         }
         if (edges.length == 0) {
-            console.log("Adding transition to dead state with label " + transitionsArray[i]);
             let edge = new Edge(this.dead, transitionsArray[i]);
             node.addEdge(edge);
         }

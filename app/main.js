@@ -17,11 +17,7 @@ inputParser.constructor = inputParser;
 
 inputParser.parse = function(input){
     var chars = new antlr4.InputStream(input);
-    try{
     var lexer = new DotFileLexer.DotFileLexer(chars);
-    }catch (err){
-        return [err.message];
-    }
     var tokens = new antlr4.CommonTokenStream(lexer);
     var parser = new DotFileParser.DotFileParser(tokens);
     parser._errHandler = new BailErrorStrategy();
@@ -29,13 +25,10 @@ inputParser.parse = function(input){
     try {
         var tree = parser.entry();
     } catch (err) {
-        console.log(err);
         return ['Invalid input'];
     }
     var visitor = new CustomDotFileVisitor();
-    graph = visitor.visitEntry(tree);
-    console.log(graph);
-    return graph;
+    return visitor.visitEntry(tree);
 }
 
 exports.inputParser = inputParser;

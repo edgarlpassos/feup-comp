@@ -10,7 +10,6 @@ function Reverse(graph){
     this.graph = graph;
     this.newStartNode = new Node("start", false);
     this.changeStartNode();
-    console.log(graph);
 }
  
 Reverse.prototype = Object.create(Object.prototype);
@@ -34,8 +33,6 @@ Reverse.prototype.changeStartNode = function(){
  * Invert transitions avoiding new transitions, change start node to acceptable node
  */
 Reverse.prototype.invertTransitions = function(){
-
-    console.log(this.graph);
 
     for(var i = 0; i < this.graph.getNodeSet().length; i++){
        var node = this.graph.getNodeSet()[i];

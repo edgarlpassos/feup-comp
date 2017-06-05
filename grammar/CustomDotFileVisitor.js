@@ -29,11 +29,9 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
     messages = this.visitInstruction(ctx.instruction());
   }
 
-  console.log(this.graph);
-  console.log(this.graph.toDotFile());
   if(messages.length == 0){
     if(this.graph.isValid())
-      return ['success',this.graph.toDotFile()];
+      return ['success',this.graph];
     else return['Graph has no starting node'];
   }
     return messages;

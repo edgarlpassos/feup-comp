@@ -46,14 +46,12 @@ Node.prototype.toggleAcceptanceNodeFlag = function () {
 Node.prototype.deleteEdge = function (transition, nodeTo) {
     for (var index = 0; index < this.edgeSet.length; index++) {
         if (this.edgeSet[index].transition == transition && this.edgeSet[index].nodeTo.val == nodeTo.val) {
-            console.log("FOUND IT");
             break;
         }
     }
 
     if (index > -1) {
         this.edgeSet.splice(index, 1);
-        console.log(this.edgeSet);
     }
 
 }
@@ -70,14 +68,10 @@ Node.prototype.nodeEquals = function (node1, node2) {
         edge1 = node2.getEdgeSet()[i];
 
         if (edge.transition.valueOf() != edge1.transition.valueOf()) {
-            console.log("dif 1");
             return false;
         }
 
         if (edge.nodeTo.val != edge1.nodeTo.val) {
-            console.log("dif 2");
-            console.log(edge.nodeTo.val);
-            console.log(edge1.nodeTo.val);
             return false;
         }
     }

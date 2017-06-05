@@ -20,7 +20,6 @@ function Product(graph1, graph2, operation) {
     this.chooseNodes();
     this.setTransitions();
     this.addTransitions();
-    console.log(this.resultGraph.toDotFile());
 }
 
 Product.prototype = Object.create(Object.prototype);
@@ -77,11 +76,8 @@ Product.prototype.addTransitions = function () {
     for (var i = 0; i < this.resultGraph.nodeSet.length; i++) {
         let node = this.resultGraph.nodeSet[i];
         let nameNode1 = node.val[0];
-        console.log("Node 1: " + nameNode1);
         let nameNode2 = node.val[1];
-        console.log("Node 2: " + nameNode2);
 
-        console.log(this.resultGraphTransitions);
 
         for (var j = 0; j < this.resultGraphTransitions.length; j++) {
 
