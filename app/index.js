@@ -169,9 +169,30 @@ function visualizeAutomaton(input) {
 function executeOperation() {
   let activeOperation = $('#dropdown-button').text();
 
-  if(activeOperation === 'DFA Operations'){
+  if (activeOperation === 'DFA Operations') {
     return;
   }
 
-  console.log(activeOperation);
+  switch (activeOperation) {
+    case 'Output Input 1':
+      break;
+    case 'Output Input 2':
+      break;
+    case 'Complement Input 1':
+      break;
+    case 'Reverse Input 1':
+      break;
+    case 'Complement Input 2':
+      break;
+    case 'Product':
+      break;
+    case 'Intersection':
+      break;
+    case 'Union':
+      break;
+    case 'Diff':
+      break;
+    default:
+      break;
+  }
 }
