@@ -122,6 +122,9 @@ Graph.prototype.toString = function () {
     // TODO end this
 }
 
+/**
+ * Verifies if a given input belongs to the automaton language
+ */
 Graph.prototype.belongsToLanguage = function (input) {
     if (this.verifyInput(this.startNode, input))
         console.log('Pertence à linguagem!');
@@ -129,6 +132,9 @@ Graph.prototype.belongsToLanguage = function (input) {
         console.log('Não pertence à linguagem!');
 }
 
+/**
+ * Recursive function to verify input
+ */
 Graph.prototype.verifyInput = function (node, input) {
 
     for (let edge of node.getEdgeSet()) {
@@ -143,6 +149,13 @@ Graph.prototype.verifyInput = function (node, input) {
     }
 
     return false;
+}
+
+Graph.prototype.isValid = function () {
+    if(this.startNode == null)
+        return false;
+    
+    return true;
 }
 
 exports.Graph = Graph;
