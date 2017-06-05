@@ -5,6 +5,7 @@ const Node = require("../graph/graphNode.js").Node;
 const Complement = require("../graph/complement.js").Complement;
 const Reverse = require("../graph/reverse.js").Reverse;
 const Product = require("../graph/product.js").Product;
+const Concatenation = require("../graph/concatenation.js").Concatenation;
 const Edge = require("../graph/graphEdge.js").Edge;
 
 let inputParser = require('./main.js').inputParser;
@@ -99,7 +100,8 @@ $(document).ready(function () {
   console.log(graph1.toDotFile());
   console.log(graph2.toDotFile());
   graph1.belongsToLanguage('abb');
-  let product = new Product(graph1, graph2, 1);
+  //let product = new Product(graph1, graph2, 1);
+  let concatenation = new Concatenation(graph1,graph2);
 
   /*$('#text-input-submit').on('click', function (e) {
     e.preventDefault();
