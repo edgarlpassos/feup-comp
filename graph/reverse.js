@@ -61,4 +61,8 @@ Reverse.prototype.invertTransitions = function(){
     this.graph.setStartNode(this.newStartNode);
 }
 
+Reverse.prototype.getResult = function () {
+    return this.graph;
+}
+
 exports.Reverse = Reverse;
