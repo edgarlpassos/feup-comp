@@ -109,78 +109,71 @@ digraph example2 {
             <div class="row">
                 <div class="col-lg-5 offset-sm-2">
                     <div class="dropdown">
-                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown"> DFA Operations
-                        <span class="caret"></span></button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Output Input 1</a></li>
-                            <li><a href="#">Output Input 2</a></li>
-                            <li><a href="#">Complement Input 1</a></li>
-                            <li><a href="#">Reverse Input 1</a></li>
-                            <li><a href="#">Complement Input 2</a></li>
-                            <li><a href="#">Reverse Input 2</a></li>
-                            <li><a href="#">Product</a></li>
-                            <li><a href="#">Intersection</a></li>
-                            <li><a href="#">Union</a></li>
-                            <li><a href="#">Diff</a></li>
+                        <button id="dropdown-button" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">DFA Operations<span class="caret"></span></button>
+                        <ul id="dropdown-operations" class="dropdown-menu">
+                            <li><a>Output Input 1</a></li>
+                            <li><a>Output Input 2</a></li>
+                            <li><a>Complement Input 1</a></li>
+                            <li><a>Reverse Input 1</a></li>
+                            <li><a>Complement Input 2</a></li>
+                            <li><a>Reverse Input 2</a></li>
+                            <li><a>Product</a></li>
+                            <li><a>Intersection</a></li>
+                            <li><a>Union</a></li>
+                            <li><a>Diff</a></li>
                         </ul>
+                       <!-- <button class="btn btn-default" id="text-input-submit" type="button">Convert result into a Dot File</button><br><br>-->
                     </div>
                 </div>
                 <div class="col-lg-5">
-                    <button class="btn btn-default" id="text-input-submit" type="button">Convert result into a Dot File</button><br><br>
+                    <button class="btn btn-default" id="text-input-submit-operation" type="button">Execute Operation</button><br><br>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <button class="btn btn-default" id="text-input-submit-operation" type="button">Execute Operation</button><br><br>
-            </div>
-        </div>
-
-        <div id="output">
 
             <div id="output">
             </div>
         </div>
-    </div>
-    <div id="myModal" class="modal fade" role="dialog">
-        <div class="modal-dialog">
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Help / About</h4>
-                </div>
-                <div class="modal-body">
-                    <h4><strong>Help:</strong></h4>
-                    <ul>
-                        <li>The first node placed will be treated as the starting node</li>
-                        <li>Any acceptance node must be marked with the doublecircle shape</li>
-                        <li>Only place a transition at a time and use the label to represent the character</li>
-                        <li>Use an &epsilon; on the label to represent an empty transition</label>
-                    </ul>
-                    <br>
-                    <h4><strong>About:</strong></h4>
-                    <p>This project is a tool able to read automata (e-NFA, NFA and DFA) from dotty files and is capable of
-                        performing a number of analyzes.</p>
-                    <p>This project is able to perform some operations with the automatas, such as Cartesian product, intersection,
-                        complement, reversion and union.</p>
-                    <p>The result of the operation can be converted into a dotty file again.</p>
-                    <p>
-                        <h4><strong>Project done by:</strong></h4>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Help / About</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4><strong>Help:</strong></h4>
                         <ul>
-                            <li>Edgar de Lemos Passos - up201404131</li>
-                            <li>Maria João dos Santos Aguiar e Mira Paulo - up201403820</li>
-                            <li>Nuno Miguel Mendes Ramos - up201405498</li>
+                            <li>The first node placed will be treated as the starting node</li>
+                            <li>Any acceptance node must be marked with the doublecircle shape</li>
+                            <li>Only place a transition at a time and use the label to represent the character</li>
+                            <li>Use an &epsilon; on the label to represent an empty transition</label>
                         </ul>
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <br>
+                        <h4><strong>About:</strong></h4>
+                        <p>This project is a tool able to read automata (e-NFA, NFA and DFA) from dotty files and is capable
+                            of performing a number of analyzes.</p>
+                        <p>This project is able to perform some operations with the automatas, such as Cartesian product, intersection,
+                            complement, reversion and union.</p>
+                        <p>The result of the operation can be converted into a dotty file again.</p>
+                        <p>
+                            <h4><strong>Project done by:</strong></h4>
+                            <ul>
+                                <li>Edgar de Lemos Passos - up201404131</li>
+                                <li>Maria João dos Santos Aguiar e Mira Paulo - up201403820</li>
+                                <li>Nuno Miguel Mendes Ramos - up201405498</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    <!-- /.row -->
+        <!-- /.row -->
 
     </div>
 

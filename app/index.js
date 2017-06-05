@@ -128,35 +128,31 @@ $(document).ready(function () {
 
   $('#text-input-submit-graph1').on('click', graph1Submit);
   $('#text-input-submit-graph2').on('click', graph2Submit);
+  $('#text-input-submit-operation').on('click', executeOperation);
+
+  $("#dropdown-operations li a").click(function () {
+
+    $("#dropdown-button:first-child").text($(this).text());
+    $("#dropdown-button:first-child").val($(this).text());
+    $("#dropdown-button").append('<span class="caret"></span>');
+  });
 });
 
 function graph1Submit() {
-
-  console.log($('#text-input-area-graph1').val());
-
   visualizeAutomaton($('#text-input-area-graph1').val());
 }
 
-
 function graph2Submit() {
-
-  console.log($('#text-input-area-graph2').val());
-
   visualizeAutomaton($('#text-input-area-graph2').val());
 }
 
 function visualizeAutomaton(input) {
-  console.log('entrou crl!');
 
   let outputDiv = $('#output');
-  let currentImg = outputDiv.children('#output-image'); 
+  let currentImg = outputDiv.children('#output-image');
   console.log(currentImg);
 
   outputDiv.empty();
-/*
-  if (currentImg != null) {
-    currentImg.remove();
-  }*/
 
   let image = vizJs(input, {
     format: "png-image-element"
@@ -168,8 +164,40 @@ function visualizeAutomaton(input) {
     return;
 
   try {
-  graph = inputParser.parse(input)
-  } catch(err){
-  output = $('<h4>Error on graph: '+err.message + '</h4>');
+    graph = inputParser.parse(input)
+  } catch (err) {
+    output = $('<h4>Error on graph: ' + err.message + '</h4>');
+  }
+
+}
+
+function executeOperation() {
+  let activeOperation = $('#dropdown-button').text();
+
+  if (activeOperation === 'DFA Operations') {
+    return;
+  }
+
+  switch (activeOperation) {
+    case 'Output Input 1':
+      break;
+    case 'Output Input 2':
+      break;
+    case 'Complement Input 1':
+      break;
+    case 'Reverse Input 1':
+      break;
+    case 'Complement Input 2':
+      break;
+    case 'Product':
+      break;
+    case 'Intersection':
+      break;
+    case 'Union':
+      break;
+    case 'Diff':
+      break;
+    default:
+      break;
   }
 }
