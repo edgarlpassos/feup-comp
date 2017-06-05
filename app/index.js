@@ -134,6 +134,7 @@ $(document).ready(function () {
 
     $("#dropdown-button:first-child").text($(this).text());
     $("#dropdown-button:first-child").val($(this).text());
+    $("#dropdown-button").append('<span class="caret"></span>');
   });
 });
 
