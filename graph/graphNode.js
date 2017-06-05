@@ -53,7 +53,6 @@ Node.prototype.deleteEdge = function (transition, nodeTo) {
     if (index > -1) {
         this.edgeSet.splice(index, 1);
     }
-
 }
 
 Node.prototype.nodeEquals = function (node1, node2) {

@@ -61,6 +61,30 @@ $(document).ready(function () {
     let concatenation = new Concatenation(graph1, graph2);
 
   */
+/*
+  //creating a graph test for reverse
+  let graph1 = new Graph();
+  //creatiang nodes
+  let p0 = new Node("p0",false);
+  let p1 = new Node("p1",false);
+  let p2 = new Node("p2",true);
+  //creating edges
+  let edge = new Edge(p2,"ε");
+  let edge1 = new Edge(p1,"0");
+  let edge2 = new Edge(p0,"0");
+  let edge3 = new Edge(p2,"1");
+  //ading edges
+  p0.addEdge(edge1);
+  p0.addEdge(edge2);
+  p0.addEdge(edge);
+  p1.addEdge(edge2);
+  p2.addEdge(edge3);
+  graph1.addNode(p0);
+  graph1.addNode(p1);
+  graph1.addNode(p2);
+  graph1.setStartNode(p0);*/
+
+
 
   $('#text-input-submit-graph1').on('click', graph1Submit);
   $('#text-input-submit-graph2').on('click', graph2Submit);
@@ -102,7 +126,6 @@ function visualizeAutomaton(input, outputDiv) {
   let currentImg = outputDiv.children('#output-image');
   outputDiv.empty();
 
-  console.log(input);
   if (input[0] != 'success') {
     for (let i = 0; i < input.length; i++) {
       outputDiv.append($('<div class="alert alert-danger" role="alert">' + input[i] + '</div>'));
@@ -110,7 +133,10 @@ function visualizeAutomaton(input, outputDiv) {
     return;
   }
 
+  console.log(input[1]);
   input = input[1].toDotFile();
+
+  console.log(input);
 
   let image = vizJs(input, {
     format: "png-image-element"
@@ -226,6 +252,7 @@ function executeOperation(graph1, graph2) {
       break;
   }
 
+  console.log("teste");
   console.log(result);
   visualizeAutomaton(result, $('#output'));
 }
