@@ -46,12 +46,12 @@ Reverse.prototype.invertTransitions = function(){
         for(var j=0; j< node.getEdgeSet().length; j++){
 
             if(! node.getEdgeSet()[j].new){
-                var nodeTo = node.getEdgeSet()[j].nodeTo;
+               var nodeTo = node.getEdgeSet()[j].nodeTo;
                 var transition = node.getEdgeSet()[j].transition;
-                //node.deleteEdge(transition,nodeTo);
                 var edge = new Edge(node,transition);
                 edge.new = true;
-                nodeTo.addEdge(edge);
+                nodeTo.forceAddEdge(edge);
+                node.deleteEdge(transition,nodeTo);
             }
      }
     

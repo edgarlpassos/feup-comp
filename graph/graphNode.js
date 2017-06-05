@@ -109,4 +109,8 @@ Node.prototype.setVisited = function (newValue) {
     this.visited = newValue;
 }
 
+Node.prototype.forceAddEdge = function(newEdge){
+    this.edgeSet.push(newEdge);
+}
+
 exports.Node = Node;

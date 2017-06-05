@@ -136,15 +136,17 @@ Graph.prototype.belongsToLanguage = function (input) {
  */
 Graph.prototype.verifyInput = function (node, input) {
 
-    for (let edge of node.getEdgeSet()) {
-        if (edge.getTransition() === input[0]) {
-            if (input.length === 1 && node.isAcceptanceNode())
+    for(var i= 0; i<  node.getEdgeSet(); i++){
+        let edge = node.getEdgeSet()[i];
+         if (edge.getTransition() === input[0]) {
+            if (input.length === 1 && edge.getNodeTo().isAcceptanceNode())
                 return true;
-            if (input.length === 1 && !node.isAcceptanceNode())
+            if (input.length === 1 && !edge.getNodeTo().isAcceptanceNode())
                 return false;
             else if (this.verifyInput(edge.getNodeTo(), input.substring(1)))
                 return true;
         }
+
     }
 
     return false;
