@@ -115,7 +115,10 @@ function visualizeAutomaton(input, outputDiv) {
     format: "png-image-element"
   });
 
+  outputDiv.append('<button id="empty-output" class="btn btn-default pull-right" type="button">x</button>');
+  $('#empty-output').on('click', emptyContent.bind(this,outputDiv));
   outputDiv.append(image);
+  outputDiv.append('<textarea class="input" name="text-input" id="text-input-area-graph2" rows="15" cols="7">' + input + '</textarea>')
 }
 
 function executeOperation(graph1, graph2) {
@@ -238,4 +241,8 @@ function testNewLanguage(graph) {
   } else {
     $(outPutDiv).append('<div class="alert alert-danger" role="alert">The FA doesn\'t accept the language!</div>');
   }
+}
+
+function emptyContent(content) {
+  $(content).empty();
 }
