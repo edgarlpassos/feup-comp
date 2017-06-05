@@ -23,24 +23,26 @@ DotFileVisitor.prototype.visitEntry = function (ctx) {
     name = ctx.NAME().getText();
 
   this.graph = new Graph(name);
+  messages = [];
 
   if (ctx.instruction() != null) {
-    this.visitInstruction(ctx.instruction());
+    messages = this.visitInstruction(ctx.instruction());
   }
 
   console.log(this.graph);
   console.log(this.graph.toDotFile());
-  if(this.graph.isValid())
-    return this.graph;
-  else return null;
+  if(messages.length == 0){
+    if(this.graph.isValid())
+      return ['success',this.graph.toDotFile()];
+    else return ['Graph has no starting node!'];
+  }
+    return messages;
 }
-
 
 // Visit a parse tree produced by DotFileParser#instruction.
 DotFileVisitor.prototype.visitInstruction = function (ctx) {
   if (ctx.children == null)
     return null;
-
 
   let valToken = ctx.NAME();
   if (valToken != null) {
@@ -102,8 +104,6 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
     let labeling = ctx.labeling();
     if (labeling != null)
       transitionChar = this.visitLabeling(labeling);
-
-    console.log(transitionChar);
 
     let returnVal = new Edge(node, transitionChar);
     return returnVal;

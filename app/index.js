@@ -167,5 +167,9 @@ function visualizeAutomaton(input) {
   if (input === '')
     return;
 
-  inputParser.parse(input)
+  try {
+  graph = inputParser.parse(input)
+  } catch(err){
+  output = $('<h4>Error on graph: '+err.message + '</h4>');
+  }
 }
