@@ -164,7 +164,7 @@ function executeOperation(graph1, graph2) {
         break;
       }
       let reverse1 = new Reverse(graph1[1]);
-      result = ['success', this.reverse1.getResult()];
+      result = ['success', reverse1.getResult()];
       break;
     case 'Reverse Input 2':
       if (graph2[0] != 'success') {
