@@ -128,35 +128,30 @@ $(document).ready(function () {
 
   $('#text-input-submit-graph1').on('click', graph1Submit);
   $('#text-input-submit-graph2').on('click', graph2Submit);
+  $('#text-input-submit-operation').on('click', executeOperation);
+
+  $("#dropdown-operations li a").click(function () {
+
+    $("#dropdown-button:first-child").text($(this).text());
+    $("#dropdown-button:first-child").val($(this).text());
+  });
 });
 
 function graph1Submit() {
-
-  console.log($('#text-input-area-graph1').val());
-
   visualizeAutomaton($('#text-input-area-graph1').val());
 }
 
-
 function graph2Submit() {
-
-  console.log($('#text-input-area-graph2').val());
-
   visualizeAutomaton($('#text-input-area-graph2').val());
 }
 
 function visualizeAutomaton(input) {
-  console.log('entrou crl!');
 
   let outputDiv = $('#output');
-  let currentImg = outputDiv.children('#output-image'); 
+  let currentImg = outputDiv.children('#output-image');
   console.log(currentImg);
 
   outputDiv.empty();
-/*
-  if (currentImg != null) {
-    currentImg.remove();
-  }*/
 
   let image = vizJs(input, {
     format: "png-image-element"
@@ -168,4 +163,14 @@ function visualizeAutomaton(input) {
     return;
 
   inputParser.parse(input)
+}
+
+function executeOperation() {
+  let activeOperation = $('#dropdown-button').text();
+
+  if(activeOperation === 'DFA Operations'){
+    return;
+  }
+
+  console.log(activeOperation);
 }
