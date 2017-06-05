@@ -127,7 +127,7 @@ Graph.prototype.toString = function () {
 Graph.prototype.belongsToLanguage = function (input) {
     if (this.verifyInput(this.startNode, input))
         return true;
-        
+
     return false;
 }
 
@@ -135,10 +135,10 @@ Graph.prototype.belongsToLanguage = function (input) {
  * Recursive function to verify input
  */
 Graph.prototype.verifyInput = function (node, input) {
-
-    for(var i= 0; i<  node.getEdgeSet(); i++){
-        let edge = node.getEdgeSet()[i];
-         if (edge.getTransition() === input[0]) {
+    console.log(input);
+    console.log(node);
+    for (let edge of node.getEdgeSet()) {
+        if (edge.getTransition() === input[0]) {
             if (input.length === 1 && edge.getNodeTo().isAcceptanceNode())
                 return true;
             if (input.length === 1 && !edge.getNodeTo().isAcceptanceNode())
@@ -146,7 +146,6 @@ Graph.prototype.verifyInput = function (node, input) {
             else if (this.verifyInput(edge.getNodeTo(), input.substring(1)))
                 return true;
         }
-
     }
 
     return false;
