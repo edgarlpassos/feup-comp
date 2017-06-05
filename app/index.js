@@ -79,7 +79,7 @@ function visualizeAutomaton(input, outputDiv) {
 
   outputDiv.append('<button id="empty-output" class="btn btn-default pull-right" type="button">x</button>');
   $('#empty-output').on('click', emptyContent.bind(this, outputDiv));
-  outputDiv.append('<button type="button" class="btn btn-default" data-toggle="modal" data-target="#dot-file">Get Dot Sintax</button>')
+  outputDiv.append('<button type="button" class="btn btn-default" data-toggle="modal" data-target="#dot-file">Get Dot File</button>')
   $('#dot-file-modal-body').empty();
   outputDiv.append(image);
   $('#dot-file-modal-body').append('<textarea class="input" name="text-input" id="text-input-area-graph2" rows="15" cols="7">' + input + '</textarea>')
@@ -203,7 +203,7 @@ function testNewLanguage(graph) {
   console.log(graph[1]);
 
   if (graph[1].belongsToLanguage(input)) {
-    $(outPutDiv).append('<div class="alert alert-success" role="alert">The FA accepts the language!</div>');
+    $(outPutDiv).append('<div class="alert alert-success" role="alert">The FA accepts the input!</div>');
   } else {
     $(outPutDiv).append('<div class="alert alert-danger" role="alert">The FA doesn\'t accept the language!</div>');
   }
