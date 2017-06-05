@@ -122,4 +122,11 @@ Graph.prototype.toString = function () {
     // TODO end this
 }
 
+Graph.prototype.isValid = function () {
+    if(this.startNode == null)
+        return false;
+    
+    return true;
+}
+
 exports.Graph = Graph;
