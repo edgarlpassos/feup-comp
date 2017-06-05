@@ -101,7 +101,7 @@ $(document).ready(function () {
   graph1.belongsToLanguage('abb');
   let product = new Product(graph1, graph2, 1);
 
-  $('#text-input-submit').on('click', function (e) {
+  /*$('#text-input-submit').on('click', function (e) {
     e.preventDefault();
     let textarea = $('#text-input-area');
     let input = textarea.val();
@@ -124,5 +124,48 @@ $(document).ready(function () {
       return;
 
     inputParser.parse(input)
-  });
+  });*/
+
+  $('#text-input-submit-graph1').on('click', graph1Submit);
+  $('#text-input-submit-graph2').on('click', graph2Submit);
 });
+
+function graph1Submit() {
+
+  console.log($('#text-input-area-graph1').val());
+
+  visualizeAutomaton($('#text-input-area-graph1').val());
+}
+
+
+function graph2Submit() {
+
+  console.log($('#text-input-area-graph2').val());
+
+  visualizeAutomaton($('#text-input-area-graph2').val());
+}
+
+function visualizeAutomaton(input) {
+  console.log('entrou crl!');
+
+  let outputDiv = $('#output');
+  let currentImg = outputDiv.children('#output-image'); 
+  console.log(currentImg);
+
+  outputDiv.empty();
+/*
+  if (currentImg != null) {
+    currentImg.remove();
+  }*/
+
+  let image = vizJs(input, {
+    format: "png-image-element"
+  });
+
+  outputDiv.append(image);
+
+  if (input === '')
+    return;
+
+  inputParser.parse(input)
+}

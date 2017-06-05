@@ -6186,24 +6186,20 @@ Graph.prototype.toString = function () {
 
 Graph.prototype.belongsToLanguage = function (input) {
     if (this.verifyInput(this.startNode, input))
-        console.log('pintou!');
+        console.log('Pertence à linguagem!');
     else
-        console.log('fodeu');
+        console.log('Não pertence à linguagem!');
 }
 
 Graph.prototype.verifyInput = function (node, input) {
-    console.log(input);
-    console.log(node);
+
     for (let edge of node.getEdgeSet()) {
         if (edge.getTransition() === input[0]) {
-            if (input.length === 1 && node.isAcceptanceNode()) {
-                console.log('verdade');
+            if (input.length === 1 && node.isAcceptanceNode())
                 return true;
-            }
-            if (input.length === 1 && !node.isAcceptanceNode()) {
-                console.log('false');
+            if (input.length === 1 && !node.isAcceptanceNode())
                 return false;
-            } else if (this.verifyInput(edge.getNodeTo(), input.substring(1)))
+            else if (this.verifyInput(edge.getNodeTo(), input.substring(1)))
                 return true;
         }
     }
@@ -13843,7 +13839,7 @@ $(document).ready(function () {
   graph1.belongsToLanguage('abb');
   let product = new Product(graph1, graph2, 1);
 
-  $('#text-input-submit').on('click', function (e) {
+  /*$('#text-input-submit').on('click', function (e) {
     e.preventDefault();
     let textarea = $('#text-input-area');
     let input = textarea.val();
@@ -13856,7 +13852,7 @@ $(document).ready(function () {
       currentImg.remove();
     }
 
-    let image = __WEBPACK_IMPORTED_MODULE_1_viz_js__(input, {
+    let image = vizJs(input, {
       format: "png-image-element"
     });
 
@@ -13866,8 +13862,51 @@ $(document).ready(function () {
       return;
 
     inputParser.parse(input)
-  });
+  });*/
+
+  $('#text-input-submit-graph1').on('click', graph1Submit);
+  $('#text-input-submit-graph2').on('click', graph2Submit);
 });
+
+function graph1Submit() {
+
+  console.log($('#text-input-area-graph1').val());
+
+  visualizeAutomaton($('#text-input-area-graph1').val());
+}
+
+
+function graph2Submit() {
+
+  console.log($('#text-input-area-graph2').val());
+
+  visualizeAutomaton($('#text-input-area-graph2').val());
+}
+
+function visualizeAutomaton(input) {
+  console.log('entrou crl!');
+
+  let outputDiv = $('#output');
+  let currentImg = outputDiv.children('#output-image'); 
+  console.log(currentImg);
+
+  outputDiv.empty();
+/*
+  if (currentImg != null) {
+    currentImg.remove();
+  }*/
+
+  let image = __WEBPACK_IMPORTED_MODULE_1_viz_js__(input, {
+    format: "png-image-element"
+  });
+
+  outputDiv.append(image);
+
+  if (input === '')
+    return;
+
+  inputParser.parse(input)
+}
 
 /***/ }),
 /* 61 */
