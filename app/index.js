@@ -62,8 +62,11 @@ $(document).ready(function () {
 
   */
 
-  $('#text-input-submit-graph1').on('click', graph1Submit);
-  $('#text-input-submit-graph2').on('click', graph2Submit);
+  $('#visualize-language').on('click', function () {
+    let graph = inputParser.parse($('#new-language').val());
+    let outPutDiv = $('#output-2');
+    visualizeAutomaton(graph, outPutDiv);
+  });
   $('#text-input-submit-operation').on('click', function () {
     let graph1 = inputParser.parse($('#text-input-area-graph1').val());
     let graph2 = inputParser.parse($('#text-input-area-graph2').val());
@@ -116,10 +119,14 @@ function visualizeAutomaton(input, outputDiv) {
     format: "png-image-element"
   });
 
+
   outputDiv.append('<button id="empty-output" class="btn btn-default pull-right" type="button">x</button>');
-  $('#empty-output').on('click', emptyContent.bind(this,outputDiv));
+  $('#empty-output').on('click', emptyContent.bind(this, outputDiv));
+  outputDiv.append('<button type="button" class="btn btn-default" data-toggle="modal" data-target="#dot-file">Get Dot Sintax</button>')
+  $('#dot-file-modal-body').empty();
+  //$('#dot-file-modal-body').append('<p>'+input+'</p>')
   outputDiv.append(image);
-  outputDiv.append('<textarea class="input" name="text-input" id="text-input-area-graph2" rows="15" cols="7">' + input + '</textarea>')
+  $('#dot-file-modal-body').append('<textarea class="input" name="text-input" id="text-input-area-graph2" rows="15" cols="7">' + input + '</textarea>')
 }
 
 function executeOperation(graph1, graph2) {
