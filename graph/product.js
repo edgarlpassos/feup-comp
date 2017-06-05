@@ -115,14 +115,20 @@ Product.prototype.addTransitions = function () {
             /**
              * Finds destination node of node1+node2 with transition "transitionVal"
              */
-            let destination = [destinationNode1Name, destinationNode2Name];
-            let destinationNode = this.getNode(destination);
 
-            /**
-             * Adds edge to node1+node2 
-             */
-            let edge = new Edge(destinationNode, transitionVal);
-            node.addEdge(edge);
+            
+            if(destinationNode1Name===undefined || destinationNode2Name==undefined){
+                break;
+            }
+            else{
+                let destination = [destinationNode1Name, destinationNode2Name];
+                let destinationNode = this.getNode(destination);
+                /**
+                 * Adds edge to node1+node2 
+                */
+                let edge = new Edge(destinationNode, transitionVal);
+                node.addEdge(edge);
+            } 
         }
     }
 }
