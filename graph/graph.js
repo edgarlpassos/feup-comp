@@ -18,8 +18,6 @@ Graph.prototype.getStartNode = function () {
 }
 
 Graph.prototype.setStartNode = function (node) {
-    if (this.startNode != null)
-        throw "A starting node was already set";
     this.startNode = node;
 }
 
