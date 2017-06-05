@@ -102,7 +102,6 @@ function visualizeAutomaton(input, outputDiv) {
   let currentImg = outputDiv.children('#output-image');
   outputDiv.empty();
 
-  console.log(input);
   if (input[0] != 'success') {
     for (let i = 0; i < input.length; i++) {
       outputDiv.append($('<div class="alert alert-danger" role="alert">' + input[i] + '</div>'));
@@ -138,7 +137,7 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Complement Input 1':
       if (graph1[0] != 'success') {
-        visualizeAutomaton(graph1);
+        result = graph1;
         break;
       }
       let complement1 = new Complement(graph1[1]);
@@ -146,7 +145,7 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Complement Input 2':
       if (graph2[0] != 'success') {
-        visualizeAutomaton(graph2);
+        result = graph2;
         break;
       }
       let complement2 = new Complement(graph2[1]);
@@ -154,7 +153,7 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Reverse Input 1':
       if (graph1[0] != 'success') {
-        visualizeAutomaton(graph1);
+        result = graph1;
         break;
       }
       let reverse1 = new Reverse(graph1[1]);
@@ -162,7 +161,7 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Reverse Input 2':
       if (graph2[0] != 'success') {
-        visualizeAutomaton(graph2);
+        result = graph2;
         break;
       }
       let reverse2 = new Reverse(graph2[1]);
@@ -170,11 +169,11 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Product':
       if (graph1[0] != 'success') {
-        visualizeAutomaton(graph1);
+        result = graph1;
         break;
       }
       if (graph2[0] != 'success') {
-        visualizeAutomaton(graph2);
+        result = graph2;
         break;
       }
       let product = new Product(graph1[1], graph2[1], PRODUCT);
@@ -182,11 +181,11 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Intersection':
       if (graph1[0] != 'success') {
-        visualizeAutomaton(graph1);
+        result = graph1;
         break;
       }
       if (graph2[0] != 'success') {
-        visualizeAutomaton(graph2);
+        result = graph2;
         break;
       }
       let intersection = new Product(graph1[1], graph2[1], INTERSECTION);
@@ -194,11 +193,11 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Union':
       if (graph1[0] != 'success') {
-        visualizeAutomaton(graph1);
+        result = graph1;
         break;
       }
       if (graph2[0] != 'success') {
-        visualizeAutomaton(graph2);
+        result = graph2;
         break;
       }
       let union = new Product(graph1[1], graph2[1], UNION);
@@ -206,11 +205,11 @@ function executeOperation(graph1, graph2) {
       break;
     case 'Diff':
       if (graph1[0] != 'success') {
-        visualizeAutomaton(graph1);
+        result = graph1;
         break;
       }
       if (graph2[0] != 'success') {
-        visualizeAutomaton(graph2);
+        result = graph2;
         break;
       }
       let diff = new Product(graph1[1], graph2[1], DIFF);
