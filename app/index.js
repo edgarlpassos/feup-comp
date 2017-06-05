@@ -14,54 +14,8 @@ const UNION = 2;
 const DIFF = 3;
 
 let inputParser = require('./main.js').inputParser;
+
 $(document).ready(function () {
-
-  /*
-    //creating a graph test for product
-    let graph1 = new Graph();
-    let graph2 = new Graph();
-    //creatiang nodes
-    let q1 = new Node("q1", true);
-    let q2 = new Node("q2", false);
-    let q3 = new Node("q3", false);
-    let q4 = new Node("q4", true);
-
-    //creating edges
-    let edge = new Edge(q1, "b");
-    let edge1 = new Edge(q2, "b");
-    let edge2 = new Edge(q2, "a");
-    let edge3 = new Edge(q1, "a");
-
-    let edge4 = new Edge(q3, "b");
-    let edge5 = new Edge(q3, "a");
-    let edge6 = new Edge(q4, "a");
-    let edge7 = new Edge(q4, "b");
-
-    q1.addEdge(edge2);
-    q1.addEdge(edge);
-    q2.addEdge(edge1);
-    q2.addEdge(edge3);
-
-    q3.addEdge(edge7);
-    q3.addEdge(edge5);
-    q4.addEdge(edge4);
-    q4.addEdge(edge6);
-
-    graph1.addNode(q1);
-    graph1.addNode(q2);
-    graph1.setStartNode(q1);
-
-    graph2.addNode(q3);
-    graph2.addNode(q4);
-    graph2.setStartNode(q3);
-
-    //INTERSECTION 1 UNION 2
-    graph1.belongsToLanguage('abb');
-    //let product = new Product(graph1, graph2, 1);
-    let concatenation = new Concatenation(graph1, graph2);
-
-  */
-
   $('#visualize-language').on('click', function () {
     let graph = inputParser.parse($('#new-language').val());
     let outPutDiv = $('#output-2');
@@ -124,7 +78,6 @@ function visualizeAutomaton(input, outputDiv) {
   $('#empty-output').on('click', emptyContent.bind(this, outputDiv));
   outputDiv.append('<button type="button" class="btn btn-default" data-toggle="modal" data-target="#dot-file">Get Dot Sintax</button>')
   $('#dot-file-modal-body').empty();
-  //$('#dot-file-modal-body').append('<p>'+input+'</p>')
   outputDiv.append(image);
   $('#dot-file-modal-body').append('<textarea class="input" name="text-input" id="text-input-area-graph2" rows="15" cols="7">' + input + '</textarea>')
 }
