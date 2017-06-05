@@ -49,7 +49,7 @@ DotFileVisitor.prototype.visitInstruction = function (ctx) {
     if (node == null) {
       node = new Node(value);
       this.graph.addNode(node);
-      if (value === 'start')
+      if (this.graph.getStartNode() === null)
         this.graph.setStartNode(node);
     }
 
@@ -94,7 +94,7 @@ DotFileVisitor.prototype.visitStateTransition = function (ctx) {
     if (node == null) {
       node = new Node(value);
       this.graph.addNode(node);
-      if (value === 'start')
+      if (this.graph.getStartNode() == null)
         this.graph.setStartNode(node);
     }
 

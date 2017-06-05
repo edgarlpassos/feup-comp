@@ -116,6 +116,7 @@ Graph.prototype.getNode = function (value) {
     return null;
 }
 
+
 Graph.prototype.toString = function () {
     console.log('Nodes: ');
     console.log(this.nodeSet.toString());
