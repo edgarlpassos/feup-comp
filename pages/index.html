@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>COMP</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/index.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            padding-top: 70px;
+            /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+        }
+    </style>
+</head>
+
+<body data-spy="scroll">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+                <a class="navbar-brand" href="#">Autoanalyze</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a data-toggle="modal" data-target="#myModal">Help / About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Finite Automata Parser - Autoanalyze</h1>
+                <p class="lead medium">Compiladores</p>
+                <p class="small">Faculdade de Engenharia da Universidade do Porto</p>
+            </div>
+        </div>
+        <br>
+        <div class="col-lg-4 text-center inputarea nopadding">
+            <label>Input</label><br>
+            <label class="small">First Graph</label>
+            <form>
+                <textarea class="input" name="text-input" id="text-input-area-graph1" rows="15" cols="30">
+digraph example1 {
+    q1->q2[label=&quot;a&quot;];
+    q2->q2[label=&quot;b&quot;];
+    q2->q1[label=&quot;a&quot;];
+    q1->q1[label=&quot;b&quot;];
+    q1[shape=&quot;doublecircle&quot;];
+}
+                </textarea>
+            </form>
+        </div>
+        <div class="col-lg-4 text-center inputarea nopadding">
+            <label>Input</label><br>
+            <label class="small">Second Graph</label>
+            <form>
+                <textarea class="input" name="text-input" id="text-input-area-graph2" rows="15" cols="30">
+digraph example2 {
+    q3->q4[label=&quot;b&quot;];
+    q4->q3[label=&quot;b&quot;];
+    q4->q4[label=&quot;a&quot;];
+    q3->q3[label=&quot;a&quot;];
+    q4[shape=&quot;doublecircle&quot;];
+}
+            </textarea>
+            </form>
+        </div>
+        <div class="col-lg-4 inputarea nopadding">
+            <div class="row">
+                <div class="col-lg-5 offset-sm-2">
+                    <div class="dropdown">
+                        <button id="dropdown-button" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">DFA Operations<span class="caret"></span></button>
+                        <ul id="dropdown-operations" class="dropdown-menu">
+                            <li><a>Output Input 1</a></li>
+                            <li><a>Output Input 2</a></li>
+                            <li><a>Complement Input 1</a></li>
+                            <li><a>Reverse Input 1</a></li>
+                            <li><a>Complement Input 2</a></li>
+                            <li><a>Reverse Input 2</a></li>
+                            <li><a>Product</a></li>
+                            <li><a>Intersection</a></li>
+                            <li><a>Union</a></li>
+                            <li><a>Diff</a></li>
+                            <li><a>Concatenation</a></li>
+                        </ul>
+                        <!-- <button class="btn btn-default" id="text-input-submit" type="button">Convert result into a Dot File</button><br><br>-->
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <button class="btn btn-default" id="text-input-submit-operation" type="button">Execute Operation</button><br><br>
+                </div>
+            </div>
+
+            <div id="output">
+            </div>
+        </div>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Help / About</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4><strong>Help:</strong></h4>
+                        <ul>
+                            <li>The first node placed will be treated as the starting node</li>
+                            <li>Any acceptance node must be marked with the doublecircle shape</li>
+                            <li>Only place a transition at a time and use the label to represent the character</li>
+                            <li>Use an &epsilon; on the label to represent an empty transition</li>
+                        </ul>
+                        <br>
+                        <h4><strong>About:</strong></h4>
+                        <p>This project is a tool able to read automata (e-NFA, NFA and DFA) from dotty files and is capable
+                            of performing a number of analyzes.</p>
+                        <p>This project is able to perform some operations with the automatas, such as Cartesian product, intersection,
+                            complement, reversion and union.</p>
+                        <p>The result of the operation can be converted into a dotty file again.</p>
+                        <p>
+                            <h4><strong>Project done by:</strong></h4>
+                            <ul>
+                                <li>Edgar de Lemos Passos - up201404131</li>
+                                <li>Maria João dos Santos Aguiar e Mira Paulo - up201403820</li>
+                                <li>Nuno Miguel Mendes Ramos - up201405498</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+<div id="dot-file" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Dot Sintax</h4>
+      </div>
+      <div id="dot-file-modal-body" class="modal-body">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+    <div class="container" id="test-your-language">
+        <br>
+        <br>
+        <div class="col-lg-offset-2 col-lg-4 text-center inputarea nopadding">
+            <label>Input</label><br>
+            <label class="small">Language Graph</label>
+            <form>
+                <textarea class="input" name="text-input" id="new-language" rows="15" cols="30">
+digraph example1 {
+    q1->q2[label=&quot;a&quot;];
+    q2->q2[label=&quot;b&quot;];
+    q2->q1[label=&quot;a&quot;];
+    q1->q1[label=&quot;b&quot;];
+    q1[shape=&quot;doublecircle&quot;];
+}
+                </textarea>
+                <button class="btn btn-default center" id="visualize-language" type="button">Visualise Language</button>
+            </form>
+        </div>
+        <div class="col-lg-4 inputarea">
+            <br>
+            <br>
+            <input type="text" id="input-new-language"><br><br>
+            <button class="btn btn-default center" id="test-new-language" type="button">Try your input</button>
+            <br><br><br>
+            <div id="output-2">
+            </div>
+        </div>
+    </div>
+
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+    <script src="../dist/bundle.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+
+</body>
+
+</html>

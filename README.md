@@ -1,4 +1,5 @@
-Repo for the project for the **Compilers (COMP)** class of the **Integrated Master in Informatics and Computation (MIEIC)** at the **Faculty of Engineering of the University of Porto (FEUP)**
+# feup-comp
+COMP - Project
 
 Project done cooperatively with [Maria Joao Mira Paulo](https://github.com/MariaJoaoMiraPaulo) and [Nuno Ramos](https://github.com/NunoRamos).
 
@@ -10,3 +11,14 @@ Project done cooperatively with [Maria Joao Mira Paulo](https://github.com/Maria
 * [Antlr Tutorial](https://tomassetti.me/antlr-mega-tutorial/)
 * [Antlr Getting Started](https://github.com/antlr/antlr4/blob/master/doc/getting-started.md#unix)
 
+#### To run this project you will need to build the webpack, to do it run the follow command on the root of the project:
+
+```
+./node_modules/.bin/webpack --config webpack.config.js
+```
+
+#### After you build the webpack, run the server: 
+
+```
+python3 -m http.server 8080
+``` 
