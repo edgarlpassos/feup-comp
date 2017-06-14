@@ -182,6 +182,18 @@ function executeOperation(graph1, graph2) {
       let diff = new Product(graph1[1], graph2[1], DIFF);
       result = ['success', diff.getResultGraph()];
       break;
+    case 'Concatenation':
+      if (graph1[0] != 'success') {
+        result = graph1;
+        break;
+      }
+      if (graph2[0] != 'success') {
+        result = graph2;
+        break;
+      }
+      let concatenation = new Concatenation(graph1[1], graph2[1]);
+      result = ['success', concatenation.getResultGraph()];
+      break;
     default:
       break;
   }

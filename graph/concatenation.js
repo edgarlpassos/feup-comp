@@ -39,4 +39,8 @@ Concatenation.prototype.concatenateGraphs = function () {
     }
 }
 
+Concatenation.prototype.getResultGraph = function () {
+    return this.resultGraph;
+}
+
 exports.Concatenation = Concatenation;
